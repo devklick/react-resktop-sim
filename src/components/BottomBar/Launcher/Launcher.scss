@@ -1,0 +1,13 @@
+.launcher {
+  min-width: 0;
+  height: 100% !important;
+  aspect-ratio: 1/1;
+  background-color: white;
+  border-radius: 50%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: black;
+  justify-content: center;
+  vertical-align: middle;
+}

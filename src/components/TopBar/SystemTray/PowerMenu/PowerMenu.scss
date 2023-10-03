@@ -1,0 +1,17 @@
+#power-menu {
+  height: 100%;
+  width: fit-content;
+  padding: 3px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-end;
+
+  .power-icon {
+    height: 100%;
+    aspect-ratio: 1/1;
+    width: auto;
+    path {
+      fill: white;
+    }
+  }
+}

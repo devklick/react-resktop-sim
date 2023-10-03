@@ -1,0 +1,147 @@
+.bordered-app {
+  min-height: 0;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 10px 10px 0 0;
+  backdrop-filter: blur(8px) brightness(130%);
+  box-shadow: 0px -2px 10px 1px rgb(0, 0, 0, 0.5);
+  position: fixed;
+
+  &__corner-nw,
+  &__corner-ne,
+  &__corner-sw,
+  &__corner-se {
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    z-index: 1;
+  }
+
+  &__corner-nw {
+    top: 0;
+    left: 0;
+    &:hover {
+      cursor: nw-resize;
+    }
+  }
+  &__corner-ne {
+    top: 0;
+    right: 0;
+    &:hover {
+      cursor: ne-resize;
+    }
+  }
+  &__corner-sw {
+    bottom: 0;
+    left: 0;
+    &:hover {
+      cursor: sw-resize;
+    }
+  }
+  &__corner-se {
+    bottom: 0;
+    right: 0;
+    &:hover {
+      cursor: se-resize;
+    }
+  }
+
+  &__edge-n,
+  &__edge-s,
+  &__edge-e,
+  &__edge-w {
+    position: absolute;
+    z-index: 1;
+  }
+  &__edge-n,
+  &__edge-s {
+    height: 3px;
+    width: 100%;
+  }
+  &__edge-e,
+  &__edge-w {
+    height: 100%;
+    width: 3px;
+  }
+
+  &__edge-n {
+    top: 0;
+    &:hover {
+      cursor: n-resize;
+    }
+  }
+  &__edge-s {
+    bottom: 0;
+    &:hover {
+      cursor: s-resize;
+    }
+  }
+  &__edge-w {
+    left: 0;
+    &:hover {
+      cursor: e-resize;
+    }
+  }
+  &__edge-e {
+    right: 0;
+    &:hover {
+      cursor: w-resize;
+    }
+  }
+
+  &__title-bar {
+    cursor: default;
+    padding: 0 12px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 32px;
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "window-menus window-title window-buttons";
+  }
+  &__window-menus {
+    display: flex;
+    gap: 5px;
+    &-wrapper {
+      grid-area: window-menus;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+  }
+
+  &__title {
+    &-wrapper {
+      grid-area: window-title;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  &__window-buttons {
+    &-wrapper {
+      grid-area: window-buttons;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+    }
+    display: flex;
+    gap: 5px;
+  }
+
+  &__content {
+    padding: 5px;
+    padding-top: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+  }
+}
