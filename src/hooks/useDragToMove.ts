@@ -5,7 +5,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { throttle } from "../components/BorderedApp/throttle";
+
+// https://stackoverflow.com/a/39192992/6236042
 
 type StyledElement = {
   style: CSSStyleDeclaration;
@@ -147,5 +148,26 @@ const useDragToMove = ({
   // > seems the best of them all to me
   // this code doesn't look pretty anymore, huh?
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function throttle(f: any) {
+  let token: number | null = null;
+  let lastArgs: unknown[] | null = null;
+
+  const invoke = () => {
+    f(...(lastArgs ?? []));
+    token = null;
+  };
+
+  const result = (...args: unknown[]) => {
+    lastArgs = args;
+    if (!token) {
+      token = requestAnimationFrame(invoke);
+    }
+  };
+
+  result.cancel = () => token && cancelAnimationFrame(token);
+  return result;
+}
 
 export default useDragToMove;

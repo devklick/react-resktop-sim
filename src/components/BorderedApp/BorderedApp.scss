@@ -106,6 +106,7 @@
   &__window-menus {
     display: flex;
     gap: 5px;
+    height: 100%;
     &-wrapper {
       grid-area: window-menus;
       display: flex;

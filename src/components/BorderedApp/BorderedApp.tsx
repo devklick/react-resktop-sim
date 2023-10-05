@@ -4,6 +4,10 @@ import useWindowManagerStore from "../../stores/windowManagerStore";
 
 import "./BorderedApp.scss";
 import useDragToResize, { Dimensions } from "../../hooks/useDragToResize";
+import BorderedAppMenu, {
+  BorderedAppMenuItemProps,
+  BorderedAppMenuProps,
+} from "./BorderedAppMenu/BorderedAppMenu";
 
 interface BorderedAppProps {
   title: string;
@@ -12,6 +16,7 @@ interface BorderedAppProps {
   initialDimensions: Dimensions;
   maxDimensions?: Dimensions;
   minDimensions?: Dimensions;
+  menus?: Array<BorderedAppMenuItemProps>;
 }
 
 function BorderedApp({
@@ -21,6 +26,7 @@ function BorderedApp({
   children,
   initialDimensions,
   minDimensions = { height: 350, width: 350 },
+  menus,
 }: React.PropsWithChildren<BorderedAppProps>) {
   const winMan = useWindowManagerStore();
 
@@ -76,9 +82,9 @@ function BorderedApp({
       <div className="bordered-app__title-bar" ref={clickRef}>
         <div className="bordered-app__window-menus-wrapper">
           <div className="bordered-app__window-menus">
-            <div className="bordered-app__window-menu file">File</div>
-            <div className="bordered-app__window-menu file">Edit</div>
-            <div className="bordered-app__window-menu file">Help</div>
+            {menus?.map((m) => (
+              <BorderedAppMenu title={m.title} items={m.items ?? []} />
+            ))}
           </div>
         </div>
         <div className="bordered-app__title-wrapper">

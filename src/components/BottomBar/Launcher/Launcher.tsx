@@ -5,12 +5,15 @@ import useWindowManagerStore from "../../../stores/windowManagerStore";
 import { v4 as uuid } from "uuid";
 import BorderedApp from "../../BorderedApp";
 import { Dimensions } from "../../../hooks/useDragToResize";
+import { BorderedAppMenuProps } from "../../BorderedApp/BorderedAppMenu";
+import { BorderedAppMenuItemProps } from "../../BorderedApp/BorderedAppMenu/BorderedAppMenu";
 
 interface LauncherProps {
   windowType: string;
   WindowTitle: string;
   windowId?: string;
   initialDimensions: Dimensions;
+  menus?: Array<BorderedAppMenuItemProps>;
 }
 
 // eslint-disable-next-line no-empty-pattern
@@ -20,6 +23,7 @@ function Launcher({
   WindowTitle,
   children,
   initialDimensions,
+  menus,
 }: React.PropsWithChildren<LauncherProps>) {
   const winMan = useWindowManagerStore();
   const ref = useRef<HTMLDivElement>(null);
@@ -34,6 +38,7 @@ function Launcher({
         title={WindowTitle}
         type={windowType}
         initialDimensions={initialDimensions}
+        menus={menus}
       >
         {children}
       </BorderedApp>

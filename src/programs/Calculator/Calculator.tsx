@@ -41,8 +41,12 @@ function Calculator({}: CalculatorProps) {
           setInput(String(input).slice(0, -1));
           break;
         case "evaluate":
-          setInput(eval(input));
-          setOutput("");
+          try {
+            setInput(eval(input));
+            setOutput("");
+          } catch {
+            setOutput("Invalid");
+          }
           break;
         case "clear":
           setInput("");
