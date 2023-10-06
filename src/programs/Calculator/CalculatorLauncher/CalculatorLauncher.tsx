@@ -13,9 +13,8 @@ function CalculatorLauncher({}: CalculatorLauncherProps) {
       windowType={windowType}
       WindowTitle="Calculator"
       initialDimensions={{ height: 400, width: 400 }}
-    >
-      <Calculator />
-    </Launcher>
+      appContent={<Calculator />}
+    ></Launcher>
   );
 }
 

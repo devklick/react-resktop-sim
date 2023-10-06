@@ -1,4 +1,5 @@
 import CalculatorLauncher from "../../programs/Calculator/CalculatorLauncher";
+import FileBrowserLauncher from "../../programs/FileBrowser/FileBrowserLauncher";
 import TextEditorLauncher from "../../programs/TextEditor/TextEditorLauncher";
 import WebBrowserLauncher from "../../programs/WebBrowser/WebBrowserLauncher";
 
@@ -15,6 +16,7 @@ function BottomBar({}: BottomBarProps) {
           <TextEditorLauncher />
           <CalculatorLauncher />
           <WebBrowserLauncher />
+          <FileBrowserLauncher />
         </div>
       </div>
     </div>

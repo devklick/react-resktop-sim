@@ -5,7 +5,6 @@ import useWindowManagerStore from "../../../stores/windowManagerStore";
 import { v4 as uuid } from "uuid";
 import BorderedApp from "../../BorderedApp";
 import { Dimensions } from "../../../hooks/useDragToResize";
-import { BorderedAppMenuProps } from "../../BorderedApp/BorderedAppMenu";
 import { BorderedAppMenuItemProps } from "../../BorderedApp/BorderedAppMenu/BorderedAppMenu";
 
 interface LauncherProps {
@@ -14,9 +13,10 @@ interface LauncherProps {
   windowId?: string;
   initialDimensions: Dimensions;
   menus?: Array<BorderedAppMenuItemProps>;
+  appContent: JSX.Element;
+  icon: string;
 }
 
-// eslint-disable-next-line no-empty-pattern
 function Launcher({
   windowType,
   windowId,
@@ -24,6 +24,8 @@ function Launcher({
   children,
   initialDimensions,
   menus,
+  appContent,
+  icon,
 }: React.PropsWithChildren<LauncherProps>) {
   const winMan = useWindowManagerStore();
   const ref = useRef<HTMLDivElement>(null);
@@ -40,7 +42,7 @@ function Launcher({
         initialDimensions={initialDimensions}
         menus={menus}
       >
-        {children}
+        {appContent}
       </BorderedApp>
     );
   }
@@ -53,14 +55,16 @@ function Launcher({
     elementRef: ref,
     clickHandler: onLeftClick,
   });
+
   useConditionalClick({
     mouseButton: "right",
     elementRef: ref,
     clickHandler: onRightClick,
   });
+
   return (
     <div ref={ref} tabIndex={1} className="launcher">
-      {windowType}
+      <img src={icon} className="launcher-icon" alt={windowType}></img>
     </div>
   );
 }

@@ -2,6 +2,8 @@ import TextEditor from "..";
 import { BorderedAppMenuItemProps } from "../../../components/BorderedApp/BorderedAppMenu/BorderedAppMenu";
 import Launcher from "../../../components/BottomBar/Launcher";
 import "./TextEditorLauncher.scss";
+// import { ReactComponent as Icon } from "./text-editor-launcher-icon.svg";
+import icon from "./text-editor-launcher-icon.svg";
 
 const windowType = "text-editor";
 
@@ -60,8 +62,10 @@ function TextEditorLauncher({}: TextEditorLauncherProps) {
       WindowTitle="Text Editor"
       initialDimensions={{ height: 500, width: 500 }}
       menus={menus}
+      appContent={<TextEditor />}
+      icon={icon}
     >
-      <TextEditor />
+      {/* <Icon style={{ width: "100%", height: "100%" }} /> */}
     </Launcher>
   );
 }

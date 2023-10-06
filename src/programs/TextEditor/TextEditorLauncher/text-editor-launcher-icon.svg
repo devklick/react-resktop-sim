@@ -1,0 +1,19 @@
+<svg width="166.971" height="166.971" viewBox="0 0 44.178 44.178" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="a">
+      <stop style="stop-color:#ffe3ff;stop-opacity:1" offset="0"/>
+      <stop style="stop-color:#c0cbee;stop-opacity:1" offset="1"/>
+    </linearGradient>
+    <linearGradient xlink:href="#a" id="b" x1="22.089" y1="44.178" x2="22.089" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="translate(31.038 27.038)"/>
+  </defs>
+  <g transform="translate(-31.038 -27.038)">
+    <path style="fill:#ededed;fill-opacity:1;stroke:none;stroke-width:.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M38.12 32.936a22.089 22.089 0 0 0-2.411 2.634v27.15a22.089 22.089 0 0 0 2.411 2.635h30.007a22.089 22.089 0 0 0 2.096-2.24v-27.95a22.089 22.089 0 0 0-2.094-2.23z"/>
+    <circle style="fill:url(#b);fill-opacity:1;stroke:none;stroke-width:.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" cx="53.127" cy="49.127" r="22.089"/>
+    <path style="color:#000;fill:#b0b0b0;stroke-linejoin:round;-inkscape-stroke:none;paint-order:markers fill stroke;fill-opacity:1" d="M39.682 36.379a2 2 0 0 0-1.973 2 2 2 0 0 0 1.973 2h26.52a2 2 0 0 0 0-4z"/>
+    <path style="color:#000;fill:#b0b0b0;fill-opacity:1;stroke-linejoin:round;-inkscape-stroke:none;paint-order:markers fill stroke" d="M39.867 41.667a2 2 0 0 0-1.972 2 2 2 0 0 0 1.972 2h26.52a2 2 0 0 0 0-4zM39.867 47.127a2 2 0 0 0-1.972 2 2 2 0 0 0 1.972 2h26.52a2 2 0 0 0 0-4zM39.867 52.588a2 2 0 0 0-1.972 2 2 2 0 0 0 1.972 2h26.52a2 2 0 0 0 0-4zM39.867 57.991a2 2 0 0 0-1.972 2 2 2 0 0 0 1.972 2h26.52a2 2 0 0 0 0-4z"/>
+    <g style="stroke-width:.870817">
+      <path style="color:#000;fill:#6e6e6e;stroke-width:.870817;stroke-linejoin:round;-inkscape-stroke:none;paint-order:markers fill stroke" d="M69.79 42.49a1.95 1.95 0 0 0-2.884-2.627L51.742 56.516l2.884 2.627z" transform="matrix(1.14835 0 0 1.14835 -8.039 -7.288)"/>
+      <path style="fill:#6e6e6e;fill-opacity:1;stroke:#6e6e6e;stroke-width:4.02194;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke" transform="matrix(.24175 -.0575 .05744 .24205 5.606 21.867)" d="m149.6 197.329-5.374.398-5.373.399 2.341-4.853 2.342-4.853 3.032 4.454z"/>
+    </g>
+  </g>
+</svg>
