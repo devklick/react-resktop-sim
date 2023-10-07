@@ -18,10 +18,14 @@
 
   background-color: var(--ui-color-primary);
   border-radius: 50px;
+  background-color: #2e3440;
   box-shadow:
-    0px -2px 10px 1px #11172b,
-    0px -2px 3px #bce0cb inset;
-  backdrop-filter: blur(8px) brightness(130%);
+    0 -2px 10px 1px #11172b,
+    0 -2px 3px #bebebe inset;
+  // box-shadow:
+  //   0px -2px 10px 1px #11172b,
+  //   0px -2px 3px #bce0cb inset;
+  // backdrop-filter: blur(8px) brightness(130%);
 
   &__contents {
     padding: 10px 10px;

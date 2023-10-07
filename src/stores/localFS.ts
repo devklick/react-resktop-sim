@@ -1,9 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { v4 as uuid } from "uuid";
 
 export type FSDirectory = {
-  id: string;
   name: string;
   path: string;
   type: "directory";
@@ -11,7 +9,6 @@ export type FSDirectory = {
 };
 
 export type FSFile = {
-  id: string;
   name: string;
   path: string;
   type: "file";
@@ -20,24 +17,65 @@ export type FSFile = {
 
 export type FSObject = FSDirectory | FSFile;
 
-const rootDirId = uuid();
-const homeDirId = uuid();
-const userDirId = uuid();
-
 const pathSeparator = "/";
 
-const userDir: FSDirectory = {
-  id: userDirId,
-  name: "user",
+const documentsDir: FSDirectory = {
+  name: "Documents",
   get path() {
-    return [homeDir.path, this.name].join(pathSeparator);
+    return [userDir.path, this.name].join(pathSeparator);
+  },
+  type: "directory",
+  contents: {},
+};
+const picturesDir: FSDirectory = {
+  name: "Pictures",
+  get path() {
+    return [userDir.path, this.name].join(pathSeparator);
+  },
+  type: "directory",
+  contents: {},
+};
+const downloadsDir: FSDirectory = {
+  name: "Downloads",
+  get path() {
+    return [userDir.path, this.name].join(pathSeparator);
+  },
+  type: "directory",
+  contents: {},
+};
+const musicDir: FSDirectory = {
+  name: "Music",
+  get path() {
+    return [userDir.path, this.name].join(pathSeparator);
+  },
+  type: "directory",
+  contents: {},
+};
+const videosDir: FSDirectory = {
+  name: "Videos",
+  get path() {
+    return [userDir.path, this.name].join(pathSeparator);
   },
   type: "directory",
   contents: {},
 };
 
+const userDir: FSDirectory = {
+  name: "user",
+  get path() {
+    return [homeDir.path, this.name].join(pathSeparator);
+  },
+  type: "directory",
+  contents: {
+    [documentsDir.name]: documentsDir,
+    [downloadsDir.name]: downloadsDir,
+    [picturesDir.name]: picturesDir,
+    [videosDir.name]: videosDir,
+    [musicDir.name]: musicDir,
+  },
+};
+
 const homeDir: FSDirectory = {
-  id: homeDirId,
   name: "home",
   get path() {
     return pathSeparator + this.name;
@@ -47,7 +85,6 @@ const homeDir: FSDirectory = {
 };
 
 const rootDir: FSDirectory = {
-  id: rootDirId,
   name: pathSeparator,
   path: pathSeparator,
   type: "directory",
@@ -65,14 +102,15 @@ export function isFSFile(fsObject: FSObject): fsObject is FSFile {
 export interface LocalFSState {
   root: FSObject;
   getDirectory: (path: string) => FSDirectory | null;
+  favorites: Array<FSDirectory>;
 }
 
 export const useLocalFS = create<LocalFSState>()(
   persist(
     (set, get) => ({
       root: rootDir,
+      favorites: [userDir, documentsDir, downloadsDir, musicDir, videosDir],
       getDirectory(path) {
-        console.log(path);
         if (!path.startsWith(pathSeparator)) {
           throw new Error("Invalid path");
         }
@@ -82,7 +120,9 @@ export const useLocalFS = create<LocalFSState>()(
         if (path === dir.path) return dir;
 
         // for each path part, skipping the initial separator
-        for (const pathPart of path.slice(1).split(pathSeparator)) {
+        const pathParts = path.slice(1).split(pathSeparator);
+
+        for (const pathPart of pathParts) {
           // If we dont have a dir, we cant check for any child objects,
           // so need to break out - path doesnt exist
           if (!dir) break;

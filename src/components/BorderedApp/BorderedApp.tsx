@@ -6,7 +6,6 @@ import "./BorderedApp.scss";
 import useDragToResize, { Dimensions } from "../../hooks/useDragToResize";
 import BorderedAppMenu, {
   BorderedAppMenuItemProps,
-  BorderedAppMenuProps,
 } from "./BorderedAppMenu/BorderedAppMenu";
 
 interface BorderedAppProps {
