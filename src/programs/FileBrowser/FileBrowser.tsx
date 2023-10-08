@@ -54,16 +54,20 @@ function TopBar({
 interface SideBarProps {
   favorites: Array<FSDirectory>;
   openFSObject: (fsObject: FSObject) => void;
+  currentPath: string;
 }
 
-function SideBar({ favorites, openFSObject }: SideBarProps) {
+function SideBar({ favorites, openFSObject, currentPath }: SideBarProps) {
   return (
     <div className="file-browser__side-bar">
       <div className="file-browser__side-bar__favorites">
         {favorites.map((fav) => (
           <div
-            className="file-browser__side-bar__favorite"
+            className={`file-browser__side-bar__favorite ${
+              fav.path === currentPath ? "active" : ""
+            } `}
             onClick={() => openFSObject(fav)}
+            key={fav.path}
           >
             {fav.name}
           </div>
@@ -85,6 +89,7 @@ function MainContent({ diContents, openFSObject }: MainContentProps) {
         <div
           className="file-browser__main-content__item"
           onDoubleClick={() => openFSObject(fsObject)}
+          key={fsObject.path}
         >
           {isFSDirectory(fsObject) ? (
             <FolderIcon className="file-browser__main-content__item-icon" />
@@ -98,14 +103,8 @@ function MainContent({ diContents, openFSObject }: MainContentProps) {
   );
 }
 
-// eslint-disable-next-line no-empty-pattern
 function FileBrowser({ path = defaultPath }: FileBrowserProps) {
-  // const fs = useLocalFS();
   const fs = useLocalFSWithHistory(path);
-
-  // const [currentDir, setCurrentDir] = useState<FSDirectory>(
-  //   getDirOrDefault(fs, path)
-  // );
 
   const [pathSearch, setPathSearch] = useState<string>(
     fs.currentDirectory.path
@@ -135,7 +134,11 @@ function FileBrowser({ path = defaultPath }: FileBrowserProps) {
         navForward={fs.navForward}
       />
 
-      <SideBar favorites={fs.favorites} openFSObject={fs.navToObject} />
+      <SideBar
+        favorites={fs.favorites}
+        openFSObject={fs.navToObject}
+        currentPath={fs.currentDirectory.path}
+      />
 
       <MainContent
         diContents={fs.currentDirectory.contents}

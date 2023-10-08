@@ -119,3 +119,7 @@
     height: 100%;
   }
 }
+
+.active {
+  backdrop-filter: brightness(150%);
+}

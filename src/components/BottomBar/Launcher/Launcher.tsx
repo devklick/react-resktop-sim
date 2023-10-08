@@ -21,7 +21,6 @@ function Launcher({
   windowType,
   windowId,
   WindowTitle,
-  children,
   initialDimensions,
   menus,
   appContent,
@@ -41,6 +40,7 @@ function Launcher({
         type={windowType}
         initialDimensions={initialDimensions}
         menus={menus}
+        key={id}
       >
         {appContent}
       </BorderedApp>

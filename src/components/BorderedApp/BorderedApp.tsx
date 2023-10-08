@@ -82,7 +82,11 @@ function BorderedApp({
         <div className="bordered-app__window-menus-wrapper">
           <div className="bordered-app__window-menus">
             {menus?.map((m) => (
-              <BorderedAppMenu title={m.title} items={m.items ?? []} />
+              <BorderedAppMenu
+                title={m.title}
+                items={m.items ?? []}
+                key={m.title}
+              />
             ))}
           </div>
         </div>

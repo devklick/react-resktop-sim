@@ -28,6 +28,7 @@ function ClockMenu({}: ClockMenuProps) {
         type={windowType}
         id={id}
         children={<div></div>}
+        key={id}
       />
     );
   }

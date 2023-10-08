@@ -104,6 +104,7 @@ function BorderedAppMenuItems({
             items={item.items}
             itemNo={i + 1}
             position={{ ...position }}
+            key={`${item.title}-${i}`}
           />
         ))}
       </div>
