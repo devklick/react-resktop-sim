@@ -7,8 +7,10 @@ interface ContentProps {}
 function Content({}: ContentProps) {
   const winMan = useWindowManagerStore();
   return (
-    <div id="content__container" ref={winMan.contentRef}>
-      <div id="content">{winMan.getWindows()}</div>
+    <div id="content__container">
+      <div id="content" ref={winMan.contentRef}>
+        {winMan.getWindows()}
+      </div>
     </div>
   );
 }

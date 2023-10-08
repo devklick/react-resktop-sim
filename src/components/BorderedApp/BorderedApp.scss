@@ -141,6 +141,32 @@
     gap: 5px;
   }
 
+  &__window-button {
+    border-radius: 20px;
+    width: 14px;
+    height: 14px;
+    background-color: black;
+    transform: scale(1);
+    transition: all 0.2s ease;
+    &:hover {
+      transform: scale(1.2);
+      transition: all 0.2s ease;
+    }
+    &:active {
+      box-shadow: 2px 2px 4px rgb(0, 0, 0, 0.5) inset;
+    }
+
+    &.close {
+      background-color: rgb(151, 59, 59);
+    }
+    &.minimize {
+      background-color: rgb(219, 196, 90);
+    }
+    &.maximize {
+      background-color: rgb(108, 158, 108);
+    }
+  }
+
   &__content {
     grid-area: content;
     padding: 5px;

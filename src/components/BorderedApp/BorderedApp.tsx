@@ -7,6 +7,7 @@ import useDragToResize, { Dimensions } from "../../hooks/useDragToResize";
 import BorderedAppMenu, {
   BorderedAppMenuItemProps,
 } from "./BorderedAppMenu/BorderedAppMenu";
+import useWindowMinMax from "../../hooks/useWindowMinMax";
 
 interface BorderedAppProps {
   title: string;
@@ -61,6 +62,8 @@ function BorderedApp({
     moveRef: appRef,
   });
 
+  const { minimize, maximize } = useWindowMinMax(appRef);
+
   function onClickClose() {
     winMan.closeWindow(type, id);
   }
@@ -78,7 +81,11 @@ function BorderedApp({
       <div className="bordered-app__edge-n" ref={resizeNRef} />
       <div className="bordered-app__corner-ne" ref={resizeNERef} />
       <div className="bordered-app__edge-e" ref={resizeERef} />
-      <div className="bordered-app__title-bar" ref={clickRef}>
+      <div
+        className="bordered-app__title-bar"
+        ref={clickRef}
+        onDoubleClick={maximize}
+      >
         <div className="bordered-app__window-menus-wrapper">
           <div className="bordered-app__window-menus">
             {menus?.map((m) => (
@@ -95,14 +102,18 @@ function BorderedApp({
         </div>
         <div className="bordered-app__window-buttons-wrapper">
           <div className="bordered-app__window-buttons">
-            <div className="bordered-app__window-button minimize">-</div>
-            <div className="bordered-app__window-button maximize">+</div>
+            <div
+              className="bordered-app__window-button minimize"
+              onClick={minimize}
+            ></div>
+            <div
+              className="bordered-app__window-button maximize"
+              onClick={maximize}
+            ></div>
             <div
               className="bordered-app__window-button close"
               onClick={onClickClose}
-            >
-              x
-            </div>
+            ></div>
           </div>
         </div>
       </div>
