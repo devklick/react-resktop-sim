@@ -71,6 +71,7 @@
     }
 
     &__favorite {
+      border-radius: 10px;
       padding: 6px 10px;
       box-sizing: border-box;
       box-shadow: 2px 2px 4px rgb(0, 0, 0, 0);
@@ -91,11 +92,15 @@
     overflow-y: scroll;
     display: grid;
     gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     grid-template-rows: min-content;
     box-sizing: border-box;
     &__item {
       width: 100%;
+      padding: 10px;
+      overflow-wrap: break-word;
+      word-break: normal;
+      box-sizing: border-box;
       aspect-ratio: 1/1;
       height: auto;
       display: flex;
@@ -103,6 +108,7 @@
       align-items: center;
       flex-direction: column;
       gap: 10px;
+      border-radius: 10px;
 
       &-icon {
         height: 80%;

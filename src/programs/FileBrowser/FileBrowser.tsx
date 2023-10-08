@@ -78,17 +78,21 @@ function SideBar({ favorites, openFSObject, currentPath }: SideBarProps) {
 }
 
 interface MainContentProps {
-  diContents: Record<string, FSObject>;
+  dirContents: Record<string, FSObject>;
   openFSObject: (fsObject: FSObject) => void;
 }
 
-function MainContent({ diContents, openFSObject }: MainContentProps) {
+function MainContent({ dirContents, openFSObject }: MainContentProps) {
+  const [selected, setSelected] = useState<string>("");
   return (
     <div className="file-browser__main-content">
-      {Object.values<FSObject>(diContents).map((fsObject) => (
+      {Object.values<FSObject>(dirContents).map((fsObject) => (
         <div
-          className="file-browser__main-content__item"
+          className={`file-browser__main-content__item ${
+            fsObject.path === selected ? "active" : ""
+          }`}
           onDoubleClick={() => openFSObject(fsObject)}
+          onClick={() => setSelected(fsObject.path)}
           key={fsObject.path}
         >
           {isFSDirectory(fsObject) ? (
@@ -141,7 +145,7 @@ function FileBrowser({ path = defaultPath }: FileBrowserProps) {
       />
 
       <MainContent
-        diContents={fs.currentDirectory.contents}
+        dirContents={fs.currentDirectory.contents}
         openFSObject={fs.navToObject}
       />
       <div className="file-browser__bottom-bar"></div>
