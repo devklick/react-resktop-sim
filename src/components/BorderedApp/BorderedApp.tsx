@@ -1,13 +1,12 @@
 import React, { useRef } from "react";
-import useDragToMove from "../../hooks/useDragToMove";
 import useWindowManagerStore from "../../stores/windowManagerStore";
 
 import "./BorderedApp.scss";
-import useDragToResize, { Dimensions } from "../../hooks/useDragToResize";
+import { Dimensions } from "../../hooks/useDragToResize";
 import BorderedAppMenu, {
   BorderedAppMenuItemProps,
 } from "./BorderedAppMenu/BorderedAppMenu";
-import useWindowMinMax from "../../hooks/useWindowMinMax";
+import usePositionableElement from "../../hooks/usePositionableElement";
 
 interface BorderedAppProps {
   title: string;
@@ -45,7 +44,7 @@ function BorderedApp({
   const resizeSERef = useRef<HTMLDivElement>(null);
   const resizeSWRef = useRef<HTMLDivElement>(null);
 
-  useDragToResize({
+  const { clickToMoveRef, maximize, minimize } = usePositionableElement({
     elementRef: appRef,
     resizeERef,
     resizeNRef,
@@ -57,12 +56,6 @@ function BorderedApp({
     resizeSWRef,
     minDimensions,
   });
-
-  const [clickRef] = useDragToMove({
-    moveRef: appRef,
-  });
-
-  const { minimize, maximize } = useWindowMinMax(appRef);
 
   function onClickClose() {
     winMan.closeWindow(type, id);
@@ -83,7 +76,7 @@ function BorderedApp({
       <div className="bordered-app__edge-e" ref={resizeERef} />
       <div
         className="bordered-app__title-bar"
-        ref={clickRef}
+        ref={clickToMoveRef}
         onDoubleClick={maximize}
       >
         <div className="bordered-app__window-menus-wrapper">

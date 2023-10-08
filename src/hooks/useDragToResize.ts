@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { MutableRefObject, useEffect } from "react";
 
 // reference: https://stackoverflow.com/questions/62436814/react-drag-corner-of-element-to-resize-contents
 
@@ -25,6 +25,7 @@ type MouseMovementHandler = (
 
 interface UseDragToResizeProps {
   elementRef: React.RefObject<HTMLElement>;
+  elementRect: MutableRefObject<Partial<Rect>>;
   minDimensions: Dimensions;
   resizeNRef?: React.RefObject<HTMLElement> | null;
   resizeNERef?: React.RefObject<HTMLElement> | null;
@@ -47,28 +48,8 @@ function useDragToResize({
   resizeSERef,
   resizeSWRef,
   minDimensions,
+  elementRect,
 }: UseDragToResizeProps): void {
-  const elementRect = useRef<Partial<Rect>>({
-    width: undefined,
-    height: undefined,
-    left: undefined,
-    top: undefined,
-  });
-
-  // Since we dont know the size that the element should initialize to,
-  // we need to grab the sizes from the element rect
-  useEffect(() => {
-    if (elementRef.current) {
-      const rect = elementRef.current?.getBoundingClientRect();
-      elementRect.current = {
-        height: rect.height,
-        width: rect.width,
-        left: rect.left,
-        top: rect.top,
-      };
-    }
-  }, [elementRef]);
-
   useEffect(() => {
     /**
      * Whenever a mousedown event happens on any of the resize refs,

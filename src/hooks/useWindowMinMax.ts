@@ -1,9 +1,16 @@
+import { MutableRefObject } from "react";
 import useWindowManagerStore from "../stores/windowManagerStore";
+import { Rect } from "./useDragToResize";
 
 function toPx(value: number) {
   return `${value}px`;
 }
-function useWindowMinMax(windowRef: React.RefObject<HTMLElement>) {
+
+interface UseWindowMinMaxProps {
+  windowRef: React.RefObject<HTMLElement>;
+  windowRect: MutableRefObject<Partial<Rect>>;
+}
+function useWindowMinMax({ windowRect, windowRef }: UseWindowMinMaxProps) {
   const winMan = useWindowManagerStore();
 
   function maximize() {
@@ -11,11 +18,15 @@ function useWindowMinMax(windowRef: React.RefObject<HTMLElement>) {
     const window = windowRef.current;
     if (!boundary || !window) return;
 
+    windowRect.current.top = boundary.y;
+    windowRect.current.left = boundary.x;
+    windowRect.current.width = boundary.width;
+    windowRect.current.height = boundary.height;
+
     window.style.top = toPx(boundary.y);
     window.style.left = toPx(boundary.x);
     window.style.width = toPx(boundary.width);
     window.style.height = toPx(boundary.height);
-    window.style.transform = "";
   }
 
   function minimize() {
