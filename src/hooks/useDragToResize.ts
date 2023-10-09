@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect } from "react";
+import { MutableRefObject, useEffect, useRef } from "react";
 
 // reference: https://stackoverflow.com/questions/62436814/react-drag-corner-of-element-to-resize-contents
 
@@ -27,29 +27,22 @@ interface UseDragToResizeProps {
   elementRef: React.RefObject<HTMLElement>;
   elementRect: MutableRefObject<Partial<Rect>>;
   minDimensions: Dimensions;
-  resizeNRef?: React.RefObject<HTMLElement> | null;
-  resizeNERef?: React.RefObject<HTMLElement> | null;
-  resizeERef?: React.RefObject<HTMLElement> | null;
-  resizeSERef?: React.RefObject<HTMLElement> | null;
-  resizeSRef?: React.RefObject<HTMLElement> | null;
-  resizeSWRef?: React.RefObject<HTMLElement> | null;
-  resizeWRef?: React.RefObject<HTMLElement> | null;
-  resizeNWRef?: React.RefObject<HTMLElement> | null;
 }
 
 function useDragToResize({
   elementRef,
-  resizeERef,
-  resizeNRef,
-  resizeSRef,
-  resizeWRef,
-  resizeNERef,
-  resizeNWRef,
-  resizeSERef,
-  resizeSWRef,
   minDimensions,
   elementRect,
-}: UseDragToResizeProps): void {
+}: UseDragToResizeProps) {
+  const resizeHandleN = useRef<HTMLDivElement>(null);
+  const resizeHandleNE = useRef<HTMLDivElement>(null);
+  const resizeHandleE = useRef<HTMLDivElement>(null);
+  const resizeHandleSE = useRef<HTMLDivElement>(null);
+  const resizeHandleS = useRef<HTMLDivElement>(null);
+  const resizeHandleSW = useRef<HTMLDivElement>(null);
+  const resizeHandleW = useRef<HTMLDivElement>(null);
+  const resizeHandleNW = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     /**
      * Whenever a mousedown event happens on any of the resize refs,
@@ -222,25 +215,25 @@ function useDragToResize({
     //#endregion
 
     //#region add/remove handlers
-    resizeERef?.current?.addEventListener("mousedown", handleMouseDownE);
-    resizeNRef?.current?.addEventListener("mousedown", handleMouseDownN);
-    resizeSRef?.current?.addEventListener("mousedown", handleMouseDownS);
-    resizeWRef?.current?.addEventListener("mousedown", handleMouseDownW);
+    resizeHandleE?.current?.addEventListener("mousedown", handleMouseDownE);
+    resizeHandleN?.current?.addEventListener("mousedown", handleMouseDownN);
+    resizeHandleS?.current?.addEventListener("mousedown", handleMouseDownS);
+    resizeHandleW?.current?.addEventListener("mousedown", handleMouseDownW);
 
-    resizeNERef?.current?.addEventListener("mousedown", handleMouseDownNE);
-    resizeSERef?.current?.addEventListener("mousedown", handleMouseDownSE);
-    resizeSWRef?.current?.addEventListener("mousedown", handleMouseDownSW);
-    resizeNWRef?.current?.addEventListener("mousedown", handleMouseDownNW);
+    resizeHandleNE?.current?.addEventListener("mousedown", handleMouseDownNE);
+    resizeHandleSE?.current?.addEventListener("mousedown", handleMouseDownSE);
+    resizeHandleSW?.current?.addEventListener("mousedown", handleMouseDownSW);
+    resizeHandleNW?.current?.addEventListener("mousedown", handleMouseDownNW);
 
-    const _resizeERef = resizeERef;
-    const _resizeNRef = resizeNRef;
-    const _resizeSRef = resizeSRef;
-    const _resizeWRef = resizeWRef;
+    const _resizeERef = resizeHandleE;
+    const _resizeNRef = resizeHandleN;
+    const _resizeSRef = resizeHandleS;
+    const _resizeWRef = resizeHandleW;
 
-    const _resizeNERef = resizeNERef;
-    const _resizeSERef = resizeSERef;
-    const _resizeSWRef = resizeSWRef;
-    const _resizeNWRef = resizeNWRef;
+    const _resizeNERef = resizeHandleNE;
+    const _resizeSERef = resizeHandleSE;
+    const _resizeSWRef = resizeHandleSW;
+    const _resizeNWRef = resizeHandleNW;
 
     return () => {
       _resizeERef?.current?.removeEventListener("mousedown", handleMouseDownE);
@@ -266,6 +259,17 @@ function useDragToResize({
     };
     //#endregion
   });
+
+  return {
+    resizeHandleN: resizeHandleN,
+    resizeHandleNE: resizeHandleNE,
+    resizeHandleE: resizeHandleE,
+    resizeHandleSE: resizeHandleSE,
+    resizeHandleS: resizeHandleS,
+    resizeHandleSW: resizeHandleSW,
+    resizeHandleW: resizeHandleW,
+    resizeHandleNW: resizeHandleNW,
+  };
 }
 
 export default useDragToResize;

@@ -6,14 +6,6 @@ import useWindowMinMax from "./useWindowMinMax";
 interface UsePositionableElementProps {
   elementRef: React.RefObject<HTMLElement>;
   minDimensions: Dimensions;
-  resizeNRef?: React.RefObject<HTMLElement> | null;
-  resizeNERef?: React.RefObject<HTMLElement> | null;
-  resizeERef?: React.RefObject<HTMLElement> | null;
-  resizeSERef?: React.RefObject<HTMLElement> | null;
-  resizeSRef?: React.RefObject<HTMLElement> | null;
-  resizeSWRef?: React.RefObject<HTMLElement> | null;
-  resizeWRef?: React.RefObject<HTMLElement> | null;
-  resizeNWRef?: React.RefObject<HTMLElement> | null;
 }
 
 /**
@@ -25,14 +17,6 @@ interface UsePositionableElementProps {
 function usePositionableElement({
   elementRef,
   minDimensions,
-  resizeNRef,
-  resizeNERef,
-  resizeERef,
-  resizeSERef,
-  resizeSRef,
-  resizeSWRef,
-  resizeWRef,
-  resizeNWRef,
 }: UsePositionableElementProps) {
   // Hold a single ref for the elements rect,
   // so we dont have to call getBoundingClientRect every
@@ -62,24 +46,16 @@ function usePositionableElement({
   // by dragging the corners or edges of the element.
   // It needs to know the elementRect, so any changes
   // it makes can be shared with the other hooks.
-  useDragToResize({
+  const resizeHandles = useDragToResize({
     elementRef,
     elementRect,
     minDimensions,
-    resizeNRef,
-    resizeNERef,
-    resizeERef,
-    resizeSERef,
-    resizeSRef,
-    resizeSWRef,
-    resizeWRef,
-    resizeNWRef,
   });
 
   // The move hook allows the app to be moved when
   // the element that has the clickToMoveRef is clicked and dragged.
   // Again, it needs to know the elementRect for the same reason mentioned above.
-  const [clickToMoveRef] = useDragToMove({
+  const { moveHandle } = useDragToMove({
     moveRef: elementRef,
     elementRect,
   });
@@ -92,9 +68,10 @@ function usePositionableElement({
   });
 
   return {
-    clickToMoveRef,
+    moveHandle,
     minimize,
     maximize,
+    ...resizeHandles,
   };
 }
 

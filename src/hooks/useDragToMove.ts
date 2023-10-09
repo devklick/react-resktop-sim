@@ -30,15 +30,12 @@ interface UseDraggableProps {
 }
 
 // complex logic should be a hook, not a component
-const useDragToMove = ({
-  moveRef = null,
-  elementRect,
-}: UseDraggableProps): [React.RefCallback<HTMLElement>, boolean] => {
+const useDragToMove = ({ moveRef = null, elementRect }: UseDraggableProps) => {
   const [pressed, setPressed] = useState(false);
   const ref = useRef<HTMLElement | null>(null);
 
   const unsubscribe = useRef<VoidFunction>();
-  const legacyRef: RefCallback<HTMLElement> = useCallback(
+  const moveHandle: RefCallback<HTMLElement> = useCallback(
     (elem) => {
       ref.current = elem;
       if (unsubscribe.current) {
@@ -110,7 +107,7 @@ const useDragToMove = ({
   // actually it makes sense to return an array only when
   // you expect that on the caller side all of the fields
   // will be usually renamed
-  return [legacyRef, pressed];
+  return { moveHandle, pressed };
 
   // > seems the best of them all to me
   // this code doesn't look pretty anymore, huh?

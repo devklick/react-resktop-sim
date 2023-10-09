@@ -2,6 +2,7 @@ import React, { ReactNode, createRef } from "react";
 import { create } from "zustand";
 
 interface WindowManagerStoreState {
+  contentRef: React.RefObject<HTMLDivElement>;
   /**
    * A map of all windows.
    * The key is the type of window, and the value is another map.
@@ -12,16 +13,15 @@ interface WindowManagerStoreState {
   getWindows: () => Array<ReactNode>;
   addWindow: (windowType: string, windowId: string, window: ReactNode) => void;
   closeWindow: (windowType: string, windowId: string) => void;
-  contentRef: React.RefObject<HTMLDivElement>;
 }
 const useWindowManagerStore = create<WindowManagerStoreState>()((set, get) => ({
+  contentRef: createRef<HTMLDivElement>(),
   windowsMap: new Map(),
   getWindows() {
     return Array.from(get().windowsMap.values()).flatMap((map) =>
       Array.from(map.values())
     );
   },
-  contentRef: createRef<HTMLDivElement>(),
   addWindow(windowType, windowId, window) {
     const windowsMap = get().windowsMap;
     const windowsOfType = windowsMap.get(windowType);

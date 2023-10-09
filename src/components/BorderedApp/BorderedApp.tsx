@@ -1,13 +1,12 @@
 import React, { useRef } from "react";
 import useWindowManagerStore from "../../stores/windowManagerStore";
-
-import "./BorderedApp.scss";
 import { Dimensions } from "../../hooks/useDragToResize";
 import BorderedAppMenu, {
   BorderedAppMenuItemProps,
 } from "./BorderedAppMenu/BorderedAppMenu";
 import usePositionableElement from "../../hooks/usePositionableElement";
 
+import "./BorderedApp.scss";
 interface BorderedAppProps {
   title: string;
   type: string;
@@ -32,28 +31,20 @@ function BorderedApp({
   // Need a ref to point to the app for moving it around the screen
   const appRef = useRef<HTMLDivElement>(null);
 
-  // Need a ref for each of the cardinal (n,e,s,w)
-  // and ordinal (ne, se, sw, nw) directions. These represent
-  // the edges and corners of the app and are used for resizing it
-  const resizeNRef = useRef<HTMLDivElement>(null);
-  const resizeERef = useRef<HTMLDivElement>(null);
-  const resizeSRef = useRef<HTMLDivElement>(null);
-  const resizeWRef = useRef<HTMLDivElement>(null);
-  const resizeNERef = useRef<HTMLDivElement>(null);
-  const resizeNWRef = useRef<HTMLDivElement>(null);
-  const resizeSERef = useRef<HTMLDivElement>(null);
-  const resizeSWRef = useRef<HTMLDivElement>(null);
-
-  const { clickToMoveRef, maximize, minimize } = usePositionableElement({
+  const {
+    resizeHandleN,
+    resizeHandleNE,
+    resizeHandleE,
+    resizeHandleSE,
+    resizeHandleS,
+    resizeHandleSW,
+    resizeHandleW,
+    resizeHandleNW,
+    moveHandle,
+    maximize,
+    minimize,
+  } = usePositionableElement({
     elementRef: appRef,
-    resizeERef,
-    resizeNRef,
-    resizeSRef,
-    resizeWRef,
-    resizeNERef,
-    resizeNWRef,
-    resizeSERef,
-    resizeSWRef,
     minDimensions,
   });
 
@@ -70,13 +61,13 @@ function BorderedApp({
         height: initialDimensions.height,
       }}
     >
-      <div className="bordered-app__corner-nw" ref={resizeNWRef} />
-      <div className="bordered-app__edge-n" ref={resizeNRef} />
-      <div className="bordered-app__corner-ne" ref={resizeNERef} />
-      <div className="bordered-app__edge-e" ref={resizeERef} />
+      <div className="bordered-app__corner-nw" ref={resizeHandleNW} />
+      <div className="bordered-app__edge-n" ref={resizeHandleN} />
+      <div className="bordered-app__corner-ne" ref={resizeHandleNE} />
+      <div className="bordered-app__edge-e" ref={resizeHandleE} />
       <div
         className="bordered-app__title-bar"
-        ref={clickToMoveRef}
+        ref={moveHandle}
         onDoubleClick={maximize}
       >
         <div className="bordered-app__window-menus-wrapper">
@@ -111,10 +102,10 @@ function BorderedApp({
         </div>
       </div>
       <div className="bordered-app__content">{children}</div>
-      <div className="bordered-app__corner-sw" ref={resizeSWRef} />
-      <div className="bordered-app__edge-s" ref={resizeSRef} />
-      <div className="bordered-app__corner-se" ref={resizeSERef} />
-      <div className="bordered-app__edge-w" ref={resizeWRef} />
+      <div className="bordered-app__corner-sw" ref={resizeHandleSW} />
+      <div className="bordered-app__edge-s" ref={resizeHandleS} />
+      <div className="bordered-app__corner-se" ref={resizeHandleSE} />
+      <div className="bordered-app__edge-w" ref={resizeHandleW} />
     </div>
   );
 }
