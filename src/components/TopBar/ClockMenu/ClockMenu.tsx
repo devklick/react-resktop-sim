@@ -19,18 +19,16 @@ function ClockMenu({}: ClockMenuProps) {
 
   function handleClick() {
     const id = uuid();
-    winMan.addWindow(
-      windowType,
-      id,
-      <BorderedApp
-        title="Calendar"
-        initialDimensions={{ height: 500, width: 500 }}
-        type={windowType}
-        id={id}
-        children={<div></div>}
-        key={id}
-      />
-    );
+    winMan.addWindow(windowType, id, {
+      component: BorderedApp,
+      props: {
+        title: "Calendar",
+        initialDimensions: { height: 500, width: 500 },
+        type: windowType,
+        id: id,
+      },
+      key: id,
+    });
   }
   return (
     <div id="clock-menu" onClick={() => handleClick()}>

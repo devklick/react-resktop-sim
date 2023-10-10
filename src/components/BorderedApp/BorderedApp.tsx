@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
-import useWindowManagerStore from "../../stores/windowManagerStore";
+import useWindowManagerStore, {
+  BaseProps,
+} from "../../stores/windowManagerStore";
 import { Dimensions } from "../../hooks/useDragToResize";
 import BorderedAppMenu, {
   BorderedAppMenuItemProps,
@@ -7,7 +9,7 @@ import BorderedAppMenu, {
 import usePositionableElement from "../../hooks/usePositionableElement";
 
 import "./BorderedApp.scss";
-interface BorderedAppProps {
+interface BorderedAppProps extends BaseProps {
   title: string;
   type: string;
   id: string;
@@ -25,6 +27,7 @@ function BorderedApp({
   initialDimensions,
   minDimensions = { height: 350, width: 350 },
   menus,
+  zIndex,
 }: React.PropsWithChildren<BorderedAppProps>) {
   const winMan = useWindowManagerStore();
 
@@ -56,9 +59,11 @@ function BorderedApp({
     <div
       className="bordered-app"
       ref={appRef}
+      onMouseDown={() => winMan.focusWindow(type, id)}
       style={{
         width: initialDimensions.width,
         height: initialDimensions.height,
+        zIndex,
       }}
     >
       <div className="bordered-app__corner-nw" ref={resizeHandleNW} />

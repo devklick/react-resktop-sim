@@ -29,24 +29,37 @@ function Launcher({
   const winMan = useWindowManagerStore();
   const ref = useRef<HTMLDivElement>(null);
 
-  function onLeftClick() {
+  function addWindow() {
     const id = windowId ?? uuid();
-    winMan.addWindow(
-      windowType,
-      id,
-      <BorderedApp
-        id={id}
-        title={WindowTitle}
-        type={windowType}
-        initialDimensions={initialDimensions}
-        menus={menus}
-        key={id}
-      >
-        {appContent}
-      </BorderedApp>
-    );
+    winMan.addWindow(windowType, id, {
+      component: BorderedApp,
+      props: {
+        id,
+        title: WindowTitle,
+        type: windowType,
+        initialDimensions,
+        menus,
+      },
+      key: id,
+      children: appContent,
+    });
+  }
+  function onLeftClick() {
+    // If there are one or more windows of this type open,
+    // we want to focus them. This means revealing them if they
+    // are minimized and bring them to the top of the window stack.
+    if (winMan.windowsOfTypeExist(windowType)) {
+      winMan.focusWindowsOfType(windowType);
+      return;
+    }
+
+    // If there are no windows of this type, we want to add one.
+    addWindow();
   }
   function onRightClick() {
+    // TODO: Display a context menu with various options that are
+    // specified by the program-specific launcher and passed via props.
+    // This will include things like "open new window", "close windows", etc.
     console.log("right clicked");
   }
 

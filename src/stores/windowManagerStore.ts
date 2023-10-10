@@ -1,46 +1,121 @@
 import React, { ReactNode, createRef } from "react";
 import { create } from "zustand";
 
+export interface BaseProps {
+  zIndex?: number;
+  children?: ReactNode;
+}
+
+interface ComponentDefinition<Props extends BaseProps = BaseProps> {
+  component: React.FC<Props>;
+  props: Props;
+  children?: ReactNode;
+  key: string | number;
+}
+
 interface WindowManagerStoreState {
   contentRef: React.RefObject<HTMLDivElement>;
-  /**
-   * A map of all windows.
-   * The key is the type of window, and the value is another map.
-   * The key of the nested map is the ID of the window, and the value
-   * is the window JSX element.
-   */
-  windowsMap: Map<string, Map<string, ReactNode>>;
-  getWindows: () => Array<ReactNode>;
-  addWindow: (windowType: string, windowId: string, window: ReactNode) => void;
+  windowsMap: Map<string, Map<string, ComponentDefinition>>;
+  highestZIndex: number;
+  getWindowDefinitions: () => Array<ComponentDefinition>;
+  addWindow: <Props extends BaseProps = BaseProps>(
+    windowType: string,
+    windowId: string,
+    definition: ComponentDefinition<Props>
+  ) => void;
   closeWindow: (windowType: string, windowId: string) => void;
+  focusWindowsOfType: (windowType: string) => void;
+  focusWindow: (windowType: string, windowId: string) => void;
+  windowsOfTypeExist: (windowType: string) => boolean;
 }
+
 const useWindowManagerStore = create<WindowManagerStoreState>()((set, get) => ({
   contentRef: createRef<HTMLDivElement>(),
   windowsMap: new Map(),
-  getWindows() {
+  highestZIndex: 0,
+  getWindowDefinitions() {
     return Array.from(get().windowsMap.values()).flatMap((map) =>
       Array.from(map.values())
     );
   },
-  addWindow(windowType, windowId, window) {
+  addWindow<Props extends BaseProps = BaseProps>(
+    windowType: string,
+    windowId: string,
+    definition: ComponentDefinition<Props>
+  ) {
     const windowsMap = get().windowsMap;
     const windowsOfType = windowsMap.get(windowType);
+    const highestZIndex = get().highestZIndex + 1;
+    definition.props.zIndex = highestZIndex;
 
+    // TODO: Need to find a better way of dealing with this rather than risky casting
     if (!windowsOfType) {
-      windowsMap.set(windowType, new Map([[windowId, window]]));
+      windowsMap.set(
+        windowType,
+        new Map([[windowId, definition as unknown as ComponentDefinition]])
+      );
     } else {
-      windowsOfType.set(windowId, window);
+      windowsOfType.set(windowId, definition as unknown as ComponentDefinition);
     }
 
-    set({ windowsMap });
+    set({ windowsMap, highestZIndex });
   },
   closeWindow(windowType, windowId) {
     const windowsMap = get().windowsMap;
     const windowsOfType = windowsMap.get(windowType);
-    if (windowsOfType) {
-      windowsOfType.delete(windowId);
+
+    // Delete the window, and if there are no windows left of this type,
+    // remove the window type map from the master window map
+    windowsOfType?.delete(windowId);
+
+    if (windowsOfType?.size === 0) {
+      windowsMap.delete(windowType);
     }
+
+    // If there are no windows left open, reset the zIndex counter
+    let highestZIndex = get().highestZIndex;
+    if (!windowsMap.size) highestZIndex = 1;
+
+    set({ windowsMap, highestZIndex });
+  },
+  focusWindowsOfType(windowType) {
+    const windowsMap = get().windowsMap;
+    const windowsOfType = windowsMap.get(windowType);
+
+    // If no windows of this type exist, nothing to do
+    if (!windowsOfType?.size) return;
+
+    let highestZIndex = get().highestZIndex;
+
+    // There may be multiple instances of this window type open,
+    // so we want to preserve the zindex order they have relative to each other.
+    // To do this, we sort them so we're processing the one with the lowest zindex first
+    Array.from(windowsOfType.values())
+      .sort((a, b) => (a.props.zIndex ?? 0) - (b.props.zIndex ?? 0))
+      .forEach((window) => (window.props.zIndex = ++highestZIndex));
+
     set({ windowsMap });
+  },
+  focusWindow(windowType, windowId) {
+    let highestZIndex = get().highestZIndex;
+    const windowsMap = get().windowsMap;
+    const windowsOfType = windowsMap.get(windowType);
+    const window = windowsOfType?.get(windowId);
+
+    // If the window doesnt exist, nothing to do
+    if (!windowsOfType || !window) return;
+
+    // If the window is already top most, nothing to do
+    if (window.props.zIndex === highestZIndex) return;
+
+    // Increase the zindex counter and set the window to have this zindex
+    highestZIndex++;
+    window.props.zIndex = highestZIndex;
+
+    set({ windowsMap, highestZIndex });
+  },
+  windowsOfTypeExist(windowType) {
+    return (get().windowsMap.get(windowType)?.size ?? 0) > 0;
   },
 }));
 
