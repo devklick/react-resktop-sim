@@ -2,7 +2,7 @@ import AppSideBar from "../../components/AppSideBar";
 import { getPages } from "./settingsPageConfig";
 
 import "./Settings.scss";
-import { HTMLInputTypeAttribute, useRef, useState } from "react";
+import { HTMLInputTypeAttribute, useState } from "react";
 import useSystemSettings from "../../stores/systemSettingsStore";
 
 interface SettingsSectionProps {
@@ -28,9 +28,12 @@ function SettingsSection(section: SettingsSectionProps) {
   }
   return (
     <div className="settings__page-section">
-      <h1>{section.title}</h1>
-      <p>{section.description}</p>
+      <h1 className="settings__page-section__title">{section.title}</h1>
+      <p className="settings__page-section__description">
+        {section.description}
+      </p>
       <input
+        className="settings__page-section__value"
         type={getInputType(section.type)}
         value={String(section.currentValue)}
         onChange={(e) => {

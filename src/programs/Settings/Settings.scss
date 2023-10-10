@@ -8,5 +8,26 @@
 
   &__page {
     overflow: auto;
+
+    &-sections {
+      margin: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      &:last-of-type ~ hr {
+        display: none;
+      }
+    }
+
+    &-section {
+      h1 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      &__value {
+        width: 100%;
+      }
+    }
   }
 }
