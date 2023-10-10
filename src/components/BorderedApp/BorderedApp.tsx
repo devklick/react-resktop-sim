@@ -9,6 +9,7 @@ import BorderedAppMenu, {
 import usePositionableElement from "../../hooks/usePositionableElement";
 
 import "./BorderedApp.scss";
+import useSystemSettings from "../../stores/systemSettingsStore";
 interface BorderedAppProps extends BaseProps {
   title: string;
   type: string;
@@ -30,6 +31,7 @@ function BorderedApp({
   zIndex,
 }: React.PropsWithChildren<BorderedAppProps>) {
   const winMan = useWindowManagerStore();
+  const settings = useSystemSettings();
 
   // Need a ref to point to the app for moving it around the screen
   const appRef = useRef<HTMLDivElement>(null);
@@ -64,6 +66,7 @@ function BorderedApp({
         width: initialDimensions.width,
         height: initialDimensions.height,
         zIndex,
+        backgroundColor: settings.mainColor,
       }}
     >
       <div className="bordered-app__corner-nw" ref={resizeHandleNW} />

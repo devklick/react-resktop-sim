@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./BorderedAppMenu.scss";
+import useSystemSettings from "../../../stores/systemSettingsStore";
 
 export interface BorderedAppMenuItemProps {
   title: string;
@@ -88,12 +89,14 @@ function BorderedAppMenuItems({
   items: Array<BorderedAppMenuItemProps>;
   position: { x: number; y: number };
 }) {
+  const settings = useSystemSettings();
   return (
     <div
       className="bordered-app-menu-items"
       style={{
         left: position.x,
         top: position.y,
+        backgroundColor: settings.mainColor,
       }}
     >
       <div className="bordered-app-menu-items__content">
@@ -116,6 +119,7 @@ function BorderedAppMenu({ title, items }: BorderedAppMenuProps) {
   const [open, setOpen] = useState<boolean>(false);
   const elementRef = useRef<HTMLDivElement>(null);
   const position = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const settings = useSystemSettings();
 
   useEffect(() => {
     const rect = elementRef.current?.getBoundingClientRect();
