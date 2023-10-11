@@ -43,15 +43,16 @@ function SettingsSection(section: SettingsSectionProps) {
       }
 
       if (section.valueValidation) {
-        console.error("Not a valid value");
         const error = section.valueValidation(newValue);
-        if (error) return;
+        if (error) {
+          console.error("Not a valid value", newValue);
+          return;
+        }
       }
       section.onValueChanged(newValue);
     }, 1000);
   }
 
-  console.log("value is ", value);
   return (
     <div className="settings__page-section">
       <h1 className="settings__page-section__title">{section.title}</h1>

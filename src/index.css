@@ -1,7 +1,6 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  color: white;
   overflow: hidden;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */

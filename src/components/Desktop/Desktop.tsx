@@ -11,7 +11,7 @@ interface DesktopProps {}
 function Desktop({}: DesktopProps) {
   const settings = useSystemSettings();
   return (
-    <div id="desktop">
+    <div id="desktop" style={{ color: settings.fontColor }}>
       <div
         id="desktop__background"
         style={{

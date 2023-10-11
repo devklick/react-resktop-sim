@@ -43,13 +43,37 @@ export function getPages(
         {
           title: "Accent Color",
           description:
-            "The accent for the desktop UI, for things such as currently-selected items",
+            "The accent for the desktop UI, for things such as currently-selected items (not yet supported)",
           currentValue: systemsSettings.accentColor,
           type: "color",
           valueValidation: (value) =>
             isHexColorCode(value) ? undefined : "Invalid HEX color code",
           onValueChanged(value) {
             systemsSettings.setAccentColor(value);
+          },
+        },
+        {
+          title: "Font Color",
+          description: "The color to display the main UI font in",
+          currentValue: systemsSettings.fontColor,
+          type: "color",
+          valueValidation: (value) =>
+            isHexColorCode(value) ? undefined : "Invalid HEX color code",
+          onValueChanged(value) {
+            systemsSettings.setFontColor(value);
+          },
+        },
+        {
+          title: "Icon Color",
+          description: `The color to display any basic icons in. This will affect icons which 
+            are essentially just outlines, however more complex icons such as launcher 
+            icons will remain unaffected (not yet supported)`,
+          currentValue: systemsSettings.iconColor,
+          type: "color",
+          valueValidation: (value) =>
+            isHexColorCode(value) ? undefined : "Invalid HEX color code",
+          onValueChanged(value) {
+            systemsSettings.setIconColor(value);
           },
         },
       ],

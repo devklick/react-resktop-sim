@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-11.5 -10.23174 23 23"
+   version="1.1"
+   id="svg14"
+   sodipodi:docname="React-icon.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   width="23"
+   height="23"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs18" />
+  <sodipodi:namedview
+     id="namedview16"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-paths="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-edge-midpoints="true"
+     inkscape:snap-bbox-midpoints="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:object-paths="true"
+     inkscape:snap-midpoints="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-center="true"
+     inkscape:snap-text-baseline="true"
+     inkscape:snap-page="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:zoom="45.254834"
+     inkscape:cx="21.876116"
+     inkscape:cy="11.733553"
+     inkscape:window-width="3440"
+     inkscape:window-height="1372"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg14">
+    <sodipodi:guide
+       position="11.5,8.7881286"
+       orientation="1,0"
+       id="guide2593" />
+    <sodipodi:guide
+       position="11.499931,14.193672"
+       orientation="1,0"
+       id="guide4340" />
+    <sodipodi:guide
+       position="11.5,11.324649"
+       orientation="0,-1"
+       id="guide4526" />
+    <sodipodi:guide
+       position="0.84179688,11.5"
+       orientation="1,0"
+       id="guide7486" />
+    <sodipodi:guide
+       position="22.158203,11.324649"
+       orientation="1,0"
+       id="guide7488" />
+    <sodipodi:guide
+       position="11.5,22.158203"
+       orientation="0,-1"
+       id="guide7490" />
+    <sodipodi:guide
+       position="11.499931,0.841797"
+       orientation="0,-1"
+       id="guide7492" />
+  </sodipodi:namedview>
+  <title
+     id="title2">React Logo</title>
+  <metadata
+     id="metadata835">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>React Logo</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:15.1181;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+     id="rect7532"
+     width="21.316406"
+     height="21.316406"
+     x="-10.658203"
+     y="-9.3899431" />
+  <circle
+     style="fill:#83e080;fill-opacity:1;stroke:none;stroke-width:15.1181;stroke-linecap:round;stroke-linejoin:round"
+     id="path1099"
+     cx="-7.3582029"
+     cy="-6.0899429"
+     r="3.3000002" />
+  <circle
+     style="fill:#ecbc74;fill-opacity:1;stroke:none;stroke-width:15.1181;stroke-linecap:round;stroke-linejoin:round"
+     id="circle1525"
+     cx="-1.2005188e-09"
+     cy="-6.0899429"
+     r="3.3000002" />
+  <circle
+     style="fill:#e65947;fill-opacity:1;stroke:none;stroke-width:15.1181;stroke-linecap:round;stroke-linejoin:round"
+     id="circle2139"
+     cx="7.3582029"
+     cy="-6.0899429"
+     r="3.3000002" />
+  <path
+     id="rect6976"
+     style="fill:#969696;fill-opacity:1;stroke:none;stroke-width:15.1181;stroke-linecap:round;stroke-linejoin:round"
+     d="M 1.8125 0 C 0.8088653 0 0 0.8088653 0 1.8125 L 0 21.1875 C 0 22.191135 0.8088653 23 1.8125 23 L 21.1875 23 C 22.191135 23 23 22.191135 23 21.1875 L 23 1.8125 C 23 0.8088653 22.191135 0 21.1875 0 L 1.8125 0 z M 2.6523438 0.84179688 L 20.347656 0.84179688 C 21.351291 0.84179688 22.158203 1.648709 22.158203 2.6523438 L 22.158203 20.347656 C 22.158203 21.351291 21.351291 22.158203 20.347656 22.158203 L 2.6523438 22.158203 C 1.648709 22.158203 0.84179688 21.351291 0.84179688 20.347656 L 0.84179688 2.6523438 C 0.84179688 1.648709 1.648709 0.84179688 2.6523438 0.84179688 z "
+     transform="translate(-11.5,-10.23174)" />
+</svg>
