@@ -53,6 +53,11 @@ function BorderedAppMenuItem({
     if (hoverRevealDelayRef.current) {
       clearTimeout(hoverRevealDelayRef.current);
     }
+    if (open) {
+      hoverRevealDelayRef.current = setTimeout(() => {
+        if (open) setOpen(false);
+      });
+    }
   }
 
   function handleOnClick(e: React.MouseEvent<HTMLDivElement>) {
@@ -119,7 +124,6 @@ function BorderedAppMenu({ title, items }: BorderedAppMenuProps) {
   const [open, setOpen] = useState<boolean>(false);
   const elementRef = useRef<HTMLDivElement>(null);
   const position = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const settings = useSystemSettings();
 
   useEffect(() => {
     const rect = elementRef.current?.getBoundingClientRect();
