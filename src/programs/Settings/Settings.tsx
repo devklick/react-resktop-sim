@@ -2,7 +2,7 @@ import AppSideBar from "../../components/AppSideBar";
 import { getPages } from "./settingsPageConfig";
 
 import "./Settings.scss";
-import { HTMLInputTypeAttribute, useState } from "react";
+import React, { HTMLInputTypeAttribute, useRef, useState } from "react";
 import useSystemSettings from "../../stores/systemSettingsStore";
 
 interface SettingsSectionProps {
@@ -16,6 +16,12 @@ interface SettingsSectionProps {
 }
 
 function SettingsSection(section: SettingsSectionProps) {
+  // We'll keep the section value in local state for a short time
+  // before updating global state with it. This will allow values which
+  // are actively being input and at the time are technically "invalid"
+  // to still be shown on the screen
+  const updateStateDelay = useRef<NodeJS.Timeout | null>(null);
+  const [value, setValue] = useState(section.currentValue);
   function getInputType(type: string): HTMLInputTypeAttribute {
     switch (type) {
       case "color":
@@ -26,6 +32,26 @@ function SettingsSection(section: SettingsSectionProps) {
         return "text";
     }
   }
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setValue(event.currentTarget.value);
+    updateStateDelay.current && clearTimeout(updateStateDelay.current);
+    updateStateDelay.current = setTimeout(() => {
+      const newValue = event.target.value;
+      if (section.validValues && !section.validValues.includes(newValue)) {
+        console.error("Not an allowed value");
+        return;
+      }
+
+      if (section.valueValidation) {
+        console.error("Not a valid value");
+        const error = section.valueValidation(newValue);
+        if (error) return;
+      }
+      section.onValueChanged(newValue);
+    }, 1000);
+  }
+
+  console.log("value is ", value);
   return (
     <div className="settings__page-section">
       <h1 className="settings__page-section__title">{section.title}</h1>
@@ -35,11 +61,8 @@ function SettingsSection(section: SettingsSectionProps) {
       <input
         className="settings__page-section__value"
         type={getInputType(section.type)}
-        value={String(section.currentValue)}
-        onChange={(e) => {
-          console.log("value changed to", e.currentTarget.value);
-          section.onValueChanged(e.currentTarget.value);
-        }}
+        value={String(value)}
+        onChange={handleChange}
       ></input>
     </div>
   );

@@ -1,6 +1,10 @@
 import { SystemSettingState } from "../../stores/systemSettingsStore";
 import { SettingsPageProps } from "./Settings";
 
+function isHexColorCode(value: string) {
+  return !!value.match("^#(?:[0-9a-fA-F]{3}){1,2}$");
+}
+
 export function getPages(
   systemsSettings: SystemSettingState
 ): Record<string, SettingsPageProps> {
@@ -31,9 +35,7 @@ export function getPages(
           currentValue: systemsSettings.mainColor,
           type: "color",
           valueValidation: (value) =>
-            value.match("^#(?:[0-9a-fA-F]{3}){1,2}$")
-              ? undefined
-              : "Invalid HEX color code",
+            isHexColorCode(value) ? undefined : "Invalid HEX color code",
           onValueChanged(value) {
             systemsSettings.setMainColor(value);
           },
@@ -45,9 +47,7 @@ export function getPages(
           currentValue: systemsSettings.accentColor,
           type: "color",
           valueValidation: (value) =>
-            value.match("^#(?:[0-9a-fA-F]{3}){1,2}$")
-              ? undefined
-              : "Invalid HEX color code",
+            isHexColorCode(value) ? undefined : "Invalid HEX color code",
           onValueChanged(value) {
             systemsSettings.setAccentColor(value);
           },
