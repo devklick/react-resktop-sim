@@ -1,0 +1,21 @@
+.menu {
+  &-items {
+    width: auto;
+    position: absolute;
+    white-space: nowrap;
+    box-sizing: border-box;
+    box-shadow: 0 0 2px rgb(0, 0, 0, 0.5);
+
+    &__content {
+      box-sizing: border-box;
+    }
+  }
+
+  &-item {
+    padding: 5px 12px;
+    height: 20px;
+    &__title {
+      box-sizing: border-box;
+    }
+  }
+}
