@@ -79,7 +79,7 @@ function SettingsPage({ sections }: SettingsPageProps) {
     <div className="settings__page">
       <div className="settings__page-sections">
         {sections.map((section) => (
-          <SettingsSection {...section} />
+          <SettingsSection {...section} key={section.title} />
         ))}
       </div>
     </div>

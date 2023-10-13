@@ -112,6 +112,7 @@ function MainContent({
           openFSObject={openFSObject}
           selected={selected === fsObject.path}
           setSelected={setSelected}
+          key={fsObject.path}
         />
       ))}
     </div>
