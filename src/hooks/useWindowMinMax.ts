@@ -1,4 +1,4 @@
-import { MutableRefObject } from "react";
+import { MutableRefObject, useEffect, useRef } from "react";
 import useWindowManagerStore from "../stores/windowManagerStore";
 import { Rect } from "./useDragToResize";
 
@@ -12,6 +12,9 @@ interface UseWindowMinMaxProps {
 }
 function useWindowMinMax({ windowRect, windowRef }: UseWindowMinMaxProps) {
   const winMan = useWindowManagerStore();
+  const oldTransition = useRef<string>("");
+  const oldTransform = useRef<string>("");
+  const oldOpacity = useRef<string>("");
 
   function maximize() {
     const boundary = winMan.contentRef.current?.getBoundingClientRect();
@@ -33,23 +36,36 @@ function useWindowMinMax({ windowRect, windowRef }: UseWindowMinMaxProps) {
     const window = windowRef.current;
     if (!window) return;
 
-    const oldTransition = window.style.transition;
-    const oldTransform = window.style.transform;
-    const oldOpacity = window.style.opacity;
+    oldTransition.current = window.style.transition;
+    oldTransform.current = window.style.transform;
+    oldOpacity.current = window.style.opacity;
 
     window.style.transition = "all 0.2s linear";
     window.style.opacity = "0";
     window.style.transform = "scale(0.5) translate(0, 500%)";
 
-    window.addEventListener("transitionend", (e) => {
-      if (e.target === window) {
-        window.style.display = "none";
-        window.style.transition = oldTransition;
-        window.style.transform = oldTransform;
-        window.style.opacity = oldOpacity;
-      }
-    });
+    window.addEventListener("transitionend", handleTransitionEnd);
   }
+
+  function handleTransitionEnd(e: TransitionEvent) {
+    const window = windowRef.current;
+    if (!window) return;
+    if (e.target === window) {
+      console.log("Setting no display");
+      if (window.style) {
+        window.style.display = "inline";
+        window.style.transition = oldTransition.current;
+        window.style.transform = oldTransform.current;
+        window.style.opacity = oldOpacity.current;
+      }
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      window.removeEventListener("transitionend", handleTransitionEnd);
+    };
+  });
 
   return {
     maximize,

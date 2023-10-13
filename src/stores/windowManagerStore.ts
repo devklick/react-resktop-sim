@@ -3,6 +3,7 @@ import { create } from "zustand";
 
 export interface BaseProps {
   zIndex?: number;
+  hidden?: boolean;
   children?: React.ReactNode;
 }
 
@@ -92,7 +93,10 @@ const useWindowManagerStore = create<WindowManagerStoreState>()((set, get) => ({
     // To do this, we sort them so we're processing the one with the lowest zindex first
     Array.from(windowsOfType.values())
       .sort((a, b) => (a.props.zIndex ?? 0) - (b.props.zIndex ?? 0))
-      .forEach((window) => (window.props.zIndex = ++highestZIndex));
+      .forEach((window) => {
+        window.props.zIndex = ++highestZIndex;
+        window.props.hidden = false;
+      });
 
     set({ windowsMap });
   },
@@ -111,6 +115,7 @@ const useWindowManagerStore = create<WindowManagerStoreState>()((set, get) => ({
     // Increase the zindex counter and set the window to have this zindex
     highestZIndex++;
     window.props.zIndex = highestZIndex;
+    window.props.hidden = false;
 
     set({ windowsMap, highestZIndex });
   },

@@ -29,6 +29,7 @@ function BorderedApp({
   minDimensions = { height: 350, width: 350 },
   menus,
   zIndex,
+  hidden,
 }: React.PropsWithChildren<BorderedAppProps>) {
   const winMan = useWindowManagerStore();
   const settings = useSystemSettings();
@@ -57,6 +58,8 @@ function BorderedApp({
     winMan.closeWindow(type, id);
   }
 
+  console.log("Hidden", hidden);
+
   return (
     <div
       className="bordered-app"
@@ -67,6 +70,8 @@ function BorderedApp({
         height: initialDimensions.height,
         zIndex,
         backgroundColor: settings.mainColor,
+        display: hidden === true ? "none" : "grid",
+        color: hidden === true ? "black" : "green",
       }}
     >
       <div className="bordered-app__corner-nw" ref={resizeHandleNW} />
