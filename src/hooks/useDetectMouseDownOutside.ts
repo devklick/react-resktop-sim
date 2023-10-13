@@ -24,6 +24,11 @@ function useDetectMouseDownOutside<Element extends HTMLElement>({
 }: UseDetectMouseDownOutsideProps<Element>) {
   useEffect(() => {
     function handler(e: MouseEvent) {
+      // TODO: Fix this - doesnt work for fixed/absolute positioned items.
+      // Instead of checking if it's inside/outside the rect,
+      // we'll probs have to recursively check all children to see
+      // if the child element is equal to the event target. If so,
+      // the click is within, otherwise it's outside.
       const bounds = elementRef.current?.getBoundingClientRect();
       if (e.clientX < (bounds?.left ?? 0)) {
         return onMouseDown();
