@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./FullAppPrompt.scss";
 import { Rect } from "../../hooks/useDragToResize";
 import useDetectMouseDownOutside from "../../hooks/useDetectMouseDownOutside";
 import useSystemSettings from "../../stores/systemSettingsStore";
+
+import "./FullAppPrompt.scss";
 
 interface FullAppPromptProps<Element extends HTMLElement> {
   appRef: React.RefObject<Element>;

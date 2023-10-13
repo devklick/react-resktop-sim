@@ -1,18 +1,19 @@
 import { useRef } from "react";
-import useConditionalClick from "../../../hooks/useConditionalClick";
-import "./Launcher.scss";
-import useWindowManagerStore from "../../../stores/windowManagerStore";
 import { v4 as uuid } from "uuid";
+
+import useConditionalClick from "../../../hooks/useConditionalClick";
+import useWindowManagerStore from "../../../stores/windowManagerStore";
 import BorderedApp from "../../BorderedApp";
 import { Dimensions } from "../../../hooks/useDragToResize";
-import { BorderedAppMenuItemProps } from "../../BorderedApp/BorderedAppMenu/BorderedAppMenu";
+import { MenuItemProps } from "../../MenuItems";
 
+import "./Launcher.scss";
 interface LauncherProps {
   windowType: string;
   WindowTitle: string;
   windowId?: string;
   initialDimensions: Dimensions;
-  menus?: Array<BorderedAppMenuItemProps>;
+  menus?: Array<MenuItemProps>;
   appContent: JSX.Element;
   icon: string;
 }

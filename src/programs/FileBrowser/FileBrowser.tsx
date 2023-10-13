@@ -8,13 +8,13 @@ import useLocalFS, {
   isFSDirectory,
 } from "../../stores/localFS";
 import useLocalFSWithHistory from "../../hooks/useLocalFSWithHistory";
-
-import "./FileBrowser.scss";
 import AppSideBar from "../../components/AppSideBar";
 import ContextMenu from "../../ContextMenu/ContextMenu";
 import { getMainContentContextItems } from "./contextMenus";
 import FullAppPrompt from "../../components/FullAppPrompt";
 const defaultPath = "/home/user";
+
+import "./FileBrowser.scss";
 
 interface FileBrowserProps {
   path?: string;

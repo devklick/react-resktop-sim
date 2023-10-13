@@ -1,4 +1,5 @@
 import useWindowManagerStore from "../../stores/windowManagerStore";
+
 import "./Content.scss";
 
 interface ContentProps {}

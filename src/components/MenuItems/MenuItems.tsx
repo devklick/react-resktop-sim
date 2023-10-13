@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import useSystemSettings from "../../stores/systemSettingsStore";
+
 import "./MenuItems.scss";
 
 export interface MenuItemsProps {

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import "./BorderedAppMenu.scss";
 import useDetectMouseDownOutside from "../../../hooks/useDetectMouseDownOutside";
 import MenuItems, { MenuItemProps } from "../../MenuItems";
+
+import "./BorderedAppMenu.scss";
 
 export interface BorderedAppMenuProps {
   title: string;
