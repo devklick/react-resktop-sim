@@ -115,8 +115,11 @@ function MenuItem({
 
   function handleOnClick(e: React.MouseEvent<HTMLDivElement>) {
     e.stopPropagation();
-    if (!items) return;
-    setOpen(!open);
+    if (action) {
+      action();
+    } else if (items) {
+      setOpen(!open);
+    }
   }
 
   return (
@@ -127,9 +130,7 @@ function MenuItem({
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
-      <span className="menu-item__title" onClick={action}>
-        {title}
-      </span>
+      <span className="menu-item__title">{title}</span>
       {items && open && (
         <MenuItems
           items={items}

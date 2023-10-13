@@ -1,13 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ReactComponent as FolderIcon } from "../../assets/icons/folder-icon.svg";
 
-import { FSDirectory, FSObject, isFSDirectory } from "../../stores/localFS";
+import useLocalFS, {
+  FSDirectory,
+  FSObject,
+  FSObjectType,
+  isFSDirectory,
+} from "../../stores/localFS";
 import useLocalFSWithHistory from "../../hooks/useLocalFSWithHistory";
 
 import "./FileBrowser.scss";
 import AppSideBar from "../../components/AppSideBar";
 import ContextMenu from "../../ContextMenu/ContextMenu";
 import { getMainContentContextItems } from "./contextMenus";
+import FullAppPrompt from "../../components/FullAppPrompt";
 const defaultPath = "/home/user";
 
 interface FileBrowserProps {
@@ -57,18 +63,25 @@ function TopBar({
 interface MainContentProps {
   currentDirectory: FSDirectory;
   openFSObject: (fsObject: FSObject) => void;
+  appRef: React.RefObject<HTMLDivElement>;
 }
 
-function MainContent({ currentDirectory, openFSObject }: MainContentProps) {
+function MainContent({
+  currentDirectory,
+  openFSObject,
+  appRef,
+}: MainContentProps) {
   const [selected, setSelected] = useState<string>("");
   const clickPosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [open, setOpen] = useState(false);
+  const [contextMenuOpen, setContextMenuOpen] = useState(false);
+  const [promptFor, setPromptFor] = useState<FSObjectType | null>(null);
+  const fs = useLocalFS();
 
   function handleRightClick(e: React.MouseEvent) {
     clickPosition.current = { x: e.clientX, y: e.clientY };
     e.stopPropagation();
     e.preventDefault();
-    setOpen(true);
+    setContextMenuOpen(true);
   }
 
   return (
@@ -76,11 +89,21 @@ function MainContent({ currentDirectory, openFSObject }: MainContentProps) {
       className="file-browser__main-content"
       onContextMenu={handleRightClick}
     >
-      {open && (
+      {promptFor && (
+        <FullAppPrompt
+          fieldName="Name"
+          promptName={`Create ${promptFor}`}
+          appRef={appRef}
+          close={() => setPromptFor(null)}
+          submit={(value) => fs.create(promptFor, value, currentDirectory)}
+          validate={fs.validateFSObjectName}
+        />
+      )}
+      {contextMenuOpen && (
         <ContextMenu
           position={clickPosition.current}
-          items={getMainContentContextItems()}
-          close={() => setOpen(!open)}
+          items={getMainContentContextItems(setPromptFor, setContextMenuOpen)}
+          close={() => setContextMenuOpen(!contextMenuOpen)}
         />
       )}
       {Object.values<FSObject>(currentDirectory.contents).map((fsObject) => (
@@ -133,6 +156,7 @@ function DirectoryOrFile({
 
 function FileBrowser({ path = defaultPath }: FileBrowserProps) {
   const fs = useLocalFSWithHistory(path);
+  const appRef = useRef<HTMLDivElement>(null);
 
   const [pathSearch, setPathSearch] = useState<string>(
     fs.currentDirectory.path
@@ -153,7 +177,7 @@ function FileBrowser({ path = defaultPath }: FileBrowserProps) {
   }
 
   return (
-    <div className="file-browser">
+    <div className="file-browser" ref={appRef}>
       <TopBar
         pathSearch={pathSearch}
         onPathInputChange={onPathInputChange}
@@ -173,6 +197,7 @@ function FileBrowser({ path = defaultPath }: FileBrowserProps) {
       <MainContent
         currentDirectory={fs.currentDirectory}
         openFSObject={fs.navToObject}
+        appRef={appRef}
       />
       <div className="file-browser__bottom-bar"></div>
     </div>

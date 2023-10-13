@@ -17,6 +17,8 @@ export type FSFile = {
 
 export type FSObject = FSDirectory | FSFile;
 
+export type FSObjectType = FSObject["type"];
+
 const pathSeparator = "/";
 
 const documentsDir: FSDirectory = {
@@ -112,6 +114,12 @@ export interface LocalFSState {
     contents?: string
   ) => FSFile | null;
   favorites: Array<{ path: string; name: string }>;
+  validateFSObjectName: (name: string) => string | null;
+  create: (
+    type: FSObjectType,
+    name: string,
+    parentDirectory: FSDirectory
+  ) => FSObject | null;
 }
 
 export const useLocalFS = create<LocalFSState>()(
@@ -177,9 +185,7 @@ export const useLocalFS = create<LocalFSState>()(
         return directory;
       },
       createFile(name, parentDirectory, contents) {
-        console.log("Creating", name, "with content", contents);
         if (parentDirectory.contents[name]) {
-          console.log("Exists");
           return null;
         }
 
@@ -199,6 +205,26 @@ export const useLocalFS = create<LocalFSState>()(
         set({ root: get().root });
 
         return file;
+      },
+
+      validateFSObjectName(name) {
+        if (!name) {
+          return "A value is required";
+        }
+        if (name.includes(pathSeparator)) {
+          return `${pathSeparator} is not allowed`;
+        }
+
+        return null;
+      },
+
+      create(type, name, parentDirectory) {
+        switch (type) {
+          case "directory":
+            return get().createDirectory(name, parentDirectory);
+          case "file":
+            return get().createFile(name, parentDirectory);
+        }
       },
     }),
     {

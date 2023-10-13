@@ -24,17 +24,19 @@ function useDetectMouseDownOutside<Element extends HTMLElement>({
 }: UseDetectMouseDownOutsideProps<Element>) {
   useEffect(() => {
     function handler(e: MouseEvent) {
-      // If the element has been clicked on, we dont want to invoke the callback
-      if (e.target === elementRef.current) return;
-
-      for (const child of elementRef.current?.childNodes ?? []) {
-        // If any of the elements children have been clicked,
-        // we dont want to invoke the callback
-        if (e.target === child) return;
+      const bounds = elementRef.current?.getBoundingClientRect();
+      if (e.clientX < (bounds?.left ?? 0)) {
+        return onMouseDown();
       }
-
-      // Click must be outside, so invoke callback
-      onMouseDown();
+      if (e.clientX > (bounds?.left ?? 0) + (bounds?.width ?? 0)) {
+        return onMouseDown();
+      }
+      if (e.clientY < (bounds?.top ?? 0)) {
+        return onMouseDown();
+      }
+      if (e.clientY > (bounds?.top ?? 0) + (bounds?.height ?? 0)) {
+        return onMouseDown();
+      }
     }
 
     window.addEventListener("mousedown", handler);
