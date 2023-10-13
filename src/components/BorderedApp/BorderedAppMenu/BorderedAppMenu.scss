@@ -4,12 +4,10 @@
   align-items: center;
   &-items {
     width: auto;
-    position: fixed;
+    position: absolute;
+    white-space: nowrap;
     box-sizing: border-box;
     box-shadow: 0 0 2px rgb(0, 0, 0, 0.5);
-    // Cant use backdrop-filter on fixed elements :(
-    //   backdrop-filter: blur(8px) brightness(130%);
-    // background-color: darkmagenta;
 
     &__content {
       box-sizing: border-box;

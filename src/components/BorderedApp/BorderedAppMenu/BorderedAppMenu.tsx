@@ -34,10 +34,10 @@ function BorderedAppMenuItem({
     // still it's initial value. This avoids incorrectly adding
     // multiple times when the effect fires multiple times.
     if (elementPosition.current.x === position.x) {
-      elementPosition.current.x += rect?.width ?? 0;
+      elementPosition.current.x = rect?.width ?? 0;
     }
     if (elementPosition.current.y === position.y) {
-      elementPosition.current.y += (rect?.height ?? 0) * (itemNo - 1);
+      elementPosition.current.y = (rect?.height ?? 0) * (itemNo - 1);
     }
   }, [elementRef, itemNo, position]);
   const [open, setOpen] = useState<boolean>(false);
