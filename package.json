@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/pako": "^2.0.1",
     "@types/uuid": "^9.0.4",
+    "base64-js": "^1.5.1",
+    "pako": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.67.0",

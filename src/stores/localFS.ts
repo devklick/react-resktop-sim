@@ -12,7 +12,7 @@ export type FSFile = {
   name: string;
   path: string;
   type: "file";
-  contents: string;
+  contents: string | undefined;
 };
 
 export type FSObject = FSDirectory | FSFile;
@@ -102,14 +102,29 @@ export function isFSFile(fsObject: FSObject): fsObject is FSFile {
 export interface LocalFSState {
   root: FSObject;
   getDirectory: (path: string) => FSDirectory | null;
-  favorites: Array<FSDirectory>;
+  createDirectory: (
+    name: string,
+    parentDirectory: FSDirectory
+  ) => FSDirectory | null;
+  createFile: (
+    name: string,
+    parentDirectory: FSDirectory,
+    contents?: string
+  ) => FSFile | null;
+  favorites: Array<{ path: string; name: string }>;
 }
 
 export const useLocalFS = create<LocalFSState>()(
   persist(
     (set, get) => ({
       root: rootDir,
-      favorites: [userDir, documentsDir, downloadsDir, musicDir, videosDir],
+      favorites: [
+        { name: userDir.name, path: userDir.path },
+        { name: documentsDir.name, path: documentsDir.path },
+        { name: downloadsDir.name, path: downloadsDir.path },
+        { name: musicDir.name, path: musicDir.path },
+        { name: videosDir.name, path: videosDir.path },
+      ],
       getDirectory(path) {
         if (!path.startsWith(pathSeparator)) {
           throw new Error("Invalid path");
@@ -141,6 +156,49 @@ export const useLocalFS = create<LocalFSState>()(
         }
 
         return dir ?? null;
+      },
+      createDirectory(name, parentDirectory) {
+        if (parentDirectory.contents[name]) return null;
+
+        const directory: FSDirectory = {
+          name,
+          path: [parentDirectory.path, name].join(pathSeparator),
+          type: "directory",
+          contents: {},
+        };
+
+        parentDirectory.contents[name] = directory;
+
+        // parentDirectory should be a pointer to whatever was returned
+        // from getDirectory, which means updating it should update the root.
+        // This means we can just update the root state
+        set({ root: get().root });
+
+        return directory;
+      },
+      createFile(name, parentDirectory, contents) {
+        console.log("Creating", name, "with content", contents);
+        if (parentDirectory.contents[name]) {
+          console.log("Exists");
+          return null;
+        }
+
+        const file: FSFile = {
+          name,
+          path: [parentDirectory.path, name].join(pathSeparator),
+          type: "file",
+          contents,
+        };
+
+        parentDirectory.contents[name] = file;
+
+        // parentDirectory should be a pointer to whatever was returned
+        // from getDirectory, which means updating it should update the root.
+        // This means we can just update the root state
+
+        set({ root: get().root });
+
+        return file;
       },
     }),
     {

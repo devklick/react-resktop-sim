@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { ReactComponent as FolderIcon } from "../../assets/icons/folder-icon.svg";
 
-import { FSObject, isFSDirectory } from "../../stores/localFS";
+import useLocalFS, {
+  FSDirectory,
+  FSObject,
+  isFSDirectory,
+} from "../../stores/localFS";
 import useLocalFSWithHistory from "../../hooks/useLocalFSWithHistory";
 
 import "./FileBrowser.scss";
 import AppSideBar from "../../components/AppSideBar";
+import useCompression from "../../hooks/useCompression";
 const defaultPath = "/home/user";
 
 interface FileBrowserProps {
@@ -53,31 +58,70 @@ function TopBar({
 }
 
 interface MainContentProps {
-  dirContents: Record<string, FSObject>;
+  currentDirectory: FSDirectory;
   openFSObject: (fsObject: FSObject) => void;
 }
 
-function MainContent({ dirContents, openFSObject }: MainContentProps) {
+function MainContent({ currentDirectory, openFSObject }: MainContentProps) {
   const [selected, setSelected] = useState<string>("");
+  const fs = useLocalFS();
+  const { compress } = useCompression();
+
+  function handleRightClick(e: React.MouseEvent) {
+    e.stopPropagation();
+    e.preventDefault();
+    //fs.createFile("test-create-file.txt", currentDirectory, compress("Hello world!"));
+  }
+
   return (
-    <div className="file-browser__main-content">
-      {Object.values<FSObject>(dirContents).map((fsObject) => (
-        <div
-          className={`file-browser__main-content__item ${
-            fsObject.path === selected ? "active" : ""
-          }`}
-          onDoubleClick={() => openFSObject(fsObject)}
-          onClick={() => setSelected(fsObject.path)}
-          key={fsObject.path}
-        >
-          {isFSDirectory(fsObject) ? (
-            <FolderIcon className="file-browser__main-content__item-icon" />
-          ) : null}
-          <span className="file-browser__main-content__item-name">
-            {fsObject.name}
-          </span>
-        </div>
+    <div
+      className="file-browser__main-content"
+      onContextMenu={handleRightClick}
+    >
+      {Object.values<FSObject>(currentDirectory.contents).map((fsObject) => (
+        <DirectoryOrFile
+          fsObject={fsObject}
+          openFSObject={openFSObject}
+          selected={selected === fsObject.path}
+          setSelected={setSelected}
+        />
       ))}
+    </div>
+  );
+}
+
+interface DirectoryOrFileProps {
+  fsObject: FSObject;
+  selected: boolean;
+  openFSObject: (fsObject: FSObject) => void;
+  setSelected: (path: string) => void;
+}
+
+function DirectoryOrFile({
+  fsObject,
+  openFSObject,
+  selected,
+  setSelected,
+}: DirectoryOrFileProps) {
+  function handleRightClick(event: React.MouseEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  return (
+    <div
+      className={`file-browser__main-content__item ${selected ? "active" : ""}`}
+      onDoubleClick={() => openFSObject(fsObject)}
+      onClick={() => setSelected(fsObject.path)}
+      key={fsObject.path}
+      onContextMenu={handleRightClick}
+    >
+      {isFSDirectory(fsObject) ? (
+        <FolderIcon className="file-browser__main-content__item-icon" />
+      ) : null}
+      <span className="file-browser__main-content__item-name">
+        {fsObject.name}
+      </span>
     </div>
   );
 }
@@ -117,12 +161,12 @@ function FileBrowser({ path = defaultPath }: FileBrowserProps) {
         items={fs.favorites.map((fav) => ({
           title: fav.name,
           isActive: fav.path === fs.currentDirectory.path,
-          onClick: () => fs.navToObject(fav),
+          onClick: () => fs.navToPath(fav.path),
         }))}
       />
 
       <MainContent
-        dirContents={fs.currentDirectory.contents}
+        currentDirectory={fs.currentDirectory}
         openFSObject={fs.navToObject}
       />
       <div className="file-browser__bottom-bar"></div>

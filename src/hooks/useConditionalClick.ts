@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
 type EventHandlerMap =
   | { type: "click" | "contextmenu"; handler: (e: MouseEvent) => void }
   | { type: "keydown" | "keyup"; handler: (e: KeyboardEvent) => void };
 
-interface UseConditionalClickProps {
+interface UseConditionalClickProps<Element extends HTMLElement> {
   /**
    * Whether the `clickHandler` should be invoked on right click, left click,
    * or either of these.
@@ -21,34 +21,39 @@ interface UseConditionalClickProps {
   /**
    * The function to be invoked when a matching click is detected.
    */
-  clickHandler: () => void;
+  clickHandler: (event: MouseEvent) => void;
 
   /**
    * A reference to the element on which click events should be listened to.
    */
-  elementRef: React.RefObject<HTMLElement> | null;
+  elementRef?: React.RefObject<Element> | null;
 }
 
 /**
  * Allows either left click or right click to be handled only when the specified
  * modifier keys are also pressed.
  */
-function useConditionalClick({
+function useConditionalClick<Element extends HTMLElement>({
   mouseButton,
   modifierKeys,
   clickHandler,
   elementRef,
-}: UseConditionalClickProps) {
+}: UseConditionalClickProps<Element>) {
   const keysDown = useRef(new Set<string>());
 
-  const onClick = useCallback(() => {
-    if (modifierKeys) {
-      for (const key of modifierKeys) {
-        if (!keysDown.current.has(key)) return;
+  const defaultRef = useRef<Element>(null);
+
+  const onClick = useCallback(
+    (e: MouseEvent) => {
+      if (modifierKeys) {
+        for (const key of modifierKeys) {
+          if (!keysDown.current.has(key)) return;
+        }
       }
-    }
-    clickHandler();
-  }, [clickHandler, modifierKeys]);
+      clickHandler(e);
+    },
+    [clickHandler, modifierKeys]
+  );
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -64,7 +69,7 @@ function useConditionalClick({
   }, []);
 
   useEffect(() => {
-    const ref = elementRef?.current;
+    const ref = elementRef ? elementRef?.current : defaultRef?.current;
 
     if (!ref) return;
 
@@ -100,6 +105,10 @@ function useConditionalClick({
       });
     };
   }, [clickHandler, elementRef, mouseButton, onClick, onKeyDown, onKeyUp]);
+
+  return {
+    ref: elementRef ?? defaultRef,
+  };
 }
 
 export default useConditionalClick;
