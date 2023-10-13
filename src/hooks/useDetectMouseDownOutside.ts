@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-interface UseDetectClickOutsideProps<Element extends HTMLElement> {
+interface UseDetectMouseDownOutsideProps<Element extends HTMLElement> {
   /**
    * A reference to the top-most element./
    * Clicks on any parents of this element will trigger the callback.
@@ -12,18 +12,18 @@ interface UseDetectClickOutsideProps<Element extends HTMLElement> {
    * The callback to be invoked when a click
    * has been detected outside
    */
-  onClick: () => void;
+  onMouseDown: () => void;
 }
 
 /**
  * Detects a click that has occurred outside of the specified element.
  */
-function useDetectClickOutside<Element extends HTMLElement>({
+function useDetectMouseDownOutside<Element extends HTMLElement>({
   elementRef,
-  onClick,
-}: UseDetectClickOutsideProps<Element>) {
+  onMouseDown,
+}: UseDetectMouseDownOutsideProps<Element>) {
   useEffect(() => {
-    function clickHandler(e: MouseEvent) {
+    function handler(e: MouseEvent) {
       // If the element has been clicked on, we dont want to invoke the callback
       if (e.target === elementRef.current) return;
 
@@ -34,13 +34,13 @@ function useDetectClickOutside<Element extends HTMLElement>({
       }
 
       // Click must be outside, so invoke callback
-      onClick();
+      onMouseDown();
     }
 
-    window.addEventListener("click", clickHandler);
+    window.addEventListener("mousedown", handler);
 
-    return () => window.removeEventListener("click", clickHandler);
+    return () => window.removeEventListener("mousedown", handler);
   });
 }
 
-export default useDetectClickOutside;
+export default useDetectMouseDownOutside;

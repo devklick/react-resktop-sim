@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import MenuItems, { MenuItemProps } from "../components/MenuItems";
 import "./ContextMenu.scss";
-import useDetectClickOutside from "../hooks/useDetectClickOutside";
+import useDetectMouseDownOutside from "../hooks/useDetectMouseDownOutside";
 
 interface ContextMenuProps {
   items: Array<MenuItemProps>;
@@ -12,7 +12,7 @@ interface ContextMenuProps {
 function ContextMenu({ items, position, close }: ContextMenuProps) {
   const elementRef = useRef<HTMLDivElement>(null);
 
-  useDetectClickOutside({ elementRef, onClick: close });
+  useDetectMouseDownOutside({ elementRef, onMouseDown: close });
 
   return (
     <div

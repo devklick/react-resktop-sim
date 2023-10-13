@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./BorderedAppMenu.scss";
-import useDetectClickOutside from "../../../hooks/useDetectClickOutside";
+import useDetectMouseDownOutside from "../../../hooks/useDetectMouseDownOutside";
 import MenuItems, { MenuItemProps } from "../../MenuItems";
 
 export interface BorderedAppMenuProps {
@@ -20,7 +20,7 @@ function BorderedAppMenu({ title, items }: BorderedAppMenuProps) {
   }, [elementRef]);
 
   // Close the menu if an outside click occurs
-  useDetectClickOutside({ elementRef, onClick: () => setOpen(false) });
+  useDetectMouseDownOutside({ elementRef, onMouseDown: () => setOpen(false) });
 
   return (
     <div
