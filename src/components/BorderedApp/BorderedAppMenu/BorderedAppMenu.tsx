@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./BorderedAppMenu.scss";
 import useSystemSettings from "../../../stores/systemSettingsStore";
+import useDetectClickOutside from "../../../hooks/useDetectClickOutside";
 
 export interface BorderedAppMenuItemProps {
   title: string;
@@ -154,6 +155,9 @@ function BorderedAppMenu({ title, items }: BorderedAppMenuProps) {
     // TODO: Look into where this -12 comes from
     position.current = { x: (rect?.left ?? 0) - 12, y: rect?.height ?? 0 };
   }, [elementRef]);
+
+  // Close the menu if an outside click occurs
+  useDetectClickOutside({ elementRef, onClick: () => setOpen(false) });
 
   return (
     <div
