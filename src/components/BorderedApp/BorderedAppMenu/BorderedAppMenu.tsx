@@ -23,40 +23,64 @@ function BorderedAppMenuItem({
   itemNo: number;
   position: { x: number; y: number };
 }) {
+  const hoverDelayMs = 400;
   const elementRef = useRef<HTMLDivElement>(null);
   const elementPosition = useRef({ ...position });
-  const hoverRevealDelayRef = useRef<NodeJS.Timeout>();
+  const hoverOpenDelayRef = useRef<NodeJS.Timeout>();
+  const hoverCloseDelayRef = useRef<NodeJS.Timeout>();
+  const [open, setOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(hoverCloseDelayRef.current);
+      clearTimeout(hoverOpenDelayRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     const rect = elementRef.current?.getBoundingClientRect();
-
-    // Since we're adding to the ref value, we first check if it's
-    // still it's initial value. This avoids incorrectly adding
-    // multiple times when the effect fires multiple times.
-    if (elementPosition.current.x === position.x) {
-      elementPosition.current.x = rect?.width ?? 0;
-    }
-    if (elementPosition.current.y === position.y) {
-      elementPosition.current.y = (rect?.height ?? 0) * (itemNo - 1);
-    }
+    elementPosition.current.x = rect?.width ?? 0;
+    elementPosition.current.y = (rect?.height ?? 0) * (itemNo - 1);
   }, [elementRef, itemNo, position]);
-  const [open, setOpen] = useState<boolean>(false);
 
   function handleOnMouseEnter() {
-    if (!open) {
-      hoverRevealDelayRef.current = setTimeout(() => {
-        if (!open) setOpen(true);
-      }, 400);
+    // Now that we've entered the item, if it's open
+    // and there's a pending timeout to close it,
+    // we want to cancel that
+    if (open && hoverCloseDelayRef.current) {
+      clearTimeout(hoverCloseDelayRef.current);
+      hoverCloseDelayRef.current = undefined;
+    }
+
+    // If it's not open yet and there's no pending
+    // timeout to open it, lets start one.
+    if (!open && !hoverOpenDelayRef.current) {
+      hoverOpenDelayRef.current = setTimeout(() => {
+        if (!open) {
+          setOpen(true);
+          hoverOpenDelayRef.current = undefined;
+        }
+      }, hoverDelayMs);
     }
   }
   function handleOnMouseLeave() {
-    if (hoverRevealDelayRef.current) {
-      clearTimeout(hoverRevealDelayRef.current);
+    // Now that we've left the item, if it's closed
+    // and there's a pending timeout to open it,
+    // we want to cancel that
+    if (!open && hoverOpenDelayRef.current) {
+      clearTimeout(hoverOpenDelayRef.current);
+      hoverOpenDelayRef.current = undefined;
     }
-    if (open) {
-      hoverRevealDelayRef.current = setTimeout(() => {
-        if (open) setOpen(false);
-      });
+
+    // If it's not closed yet and there's no pending
+    // timeout to close it, lets start one.
+    if (open && !hoverCloseDelayRef.current) {
+      hoverCloseDelayRef.current = setTimeout(() => {
+        if (open) {
+          setOpen(false);
+          hoverCloseDelayRef.current = undefined;
+        }
+      }, hoverDelayMs);
     }
   }
 
