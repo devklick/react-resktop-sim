@@ -5,6 +5,7 @@ import "./MenuItems.scss";
 export interface MenuItemsProps {
   items: Array<MenuItemProps>;
   position: { x: number; y: number };
+  positionType: "relative" | "absolute";
 }
 
 export interface MenuItemProps {
@@ -13,7 +14,7 @@ export interface MenuItemProps {
   items?: Array<MenuItemProps>;
 }
 
-function MenuItems({ items, position }: MenuItemsProps) {
+function MenuItems({ items, position, positionType }: MenuItemsProps) {
   const settings = useSystemSettings();
   return (
     <div
@@ -22,6 +23,7 @@ function MenuItems({ items, position }: MenuItemsProps) {
         left: position.x,
         top: position.y,
         backgroundColor: settings.mainColor,
+        position: positionType,
       }}
     >
       <div className="menu-items__content">
@@ -129,7 +131,11 @@ function MenuItem({
         {title}
       </span>
       {items && open && (
-        <MenuItems items={items} position={{ ...elementPosition.current }} />
+        <MenuItems
+          items={items}
+          position={{ ...elementPosition.current }}
+          positionType="absolute"
+        />
       )}
     </div>
   );

@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ReactComponent as FolderIcon } from "../../assets/icons/folder-icon.svg";
 
-import useLocalFS, {
-  FSDirectory,
-  FSObject,
-  isFSDirectory,
-} from "../../stores/localFS";
+import { FSDirectory, FSObject, isFSDirectory } from "../../stores/localFS";
 import useLocalFSWithHistory from "../../hooks/useLocalFSWithHistory";
 
 import "./FileBrowser.scss";
 import AppSideBar from "../../components/AppSideBar";
-import useCompression from "../../hooks/useCompression";
+import ContextMenu from "../../ContextMenu/ContextMenu";
+import { getMainContentContextItems } from "./contextMenus";
 const defaultPath = "/home/user";
 
 interface FileBrowserProps {
@@ -64,13 +61,14 @@ interface MainContentProps {
 
 function MainContent({ currentDirectory, openFSObject }: MainContentProps) {
   const [selected, setSelected] = useState<string>("");
-  const fs = useLocalFS();
-  const { compress } = useCompression();
+  const clickPosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [open, setOpen] = useState(false);
 
   function handleRightClick(e: React.MouseEvent) {
+    clickPosition.current = { x: e.clientX, y: e.clientY };
     e.stopPropagation();
     e.preventDefault();
-    //fs.createFile("test-create-file.txt", currentDirectory, compress("Hello world!"));
+    setOpen(true);
   }
 
   return (
@@ -78,6 +76,13 @@ function MainContent({ currentDirectory, openFSObject }: MainContentProps) {
       className="file-browser__main-content"
       onContextMenu={handleRightClick}
     >
+      {open && (
+        <ContextMenu
+          position={clickPosition.current}
+          items={getMainContentContextItems()}
+          close={() => setOpen(!open)}
+        />
+      )}
       {Object.values<FSObject>(currentDirectory.contents).map((fsObject) => (
         <DirectoryOrFile
           fsObject={fsObject}

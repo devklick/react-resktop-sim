@@ -29,7 +29,13 @@ function BorderedAppMenu({ title, items }: BorderedAppMenuProps) {
       onClick={() => setOpen(!open)}
     >
       <span className="bordered-app-menu__title">{title}</span>
-      {open && <MenuItems items={items} position={{ ...position.current }} />}
+      {open && (
+        <MenuItems
+          items={items}
+          position={{ ...position.current }}
+          positionType="absolute"
+        />
+      )}
     </div>
   );
 }

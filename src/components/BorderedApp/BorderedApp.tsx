@@ -3,13 +3,12 @@ import useWindowManagerStore, {
   BaseProps,
 } from "../../stores/windowManagerStore";
 import { Dimensions } from "../../hooks/useDragToResize";
-import BorderedAppMenu, {
-  BorderedAppMenuItemProps,
-} from "./BorderedAppMenu/BorderedAppMenu";
+import BorderedAppMenu from "./BorderedAppMenu/BorderedAppMenu";
 import usePositionableElement from "../../hooks/usePositionableElement";
 
 import "./BorderedApp.scss";
 import useSystemSettings from "../../stores/systemSettingsStore";
+import { MenuItemProps } from "../MenuItems";
 interface BorderedAppProps extends BaseProps {
   title: string;
   type: string;
@@ -17,7 +16,7 @@ interface BorderedAppProps extends BaseProps {
   initialDimensions: Dimensions;
   maxDimensions?: Dimensions;
   minDimensions?: Dimensions;
-  menus?: Array<BorderedAppMenuItemProps>;
+  menus?: Array<MenuItemProps>;
 }
 
 function BorderedApp({
