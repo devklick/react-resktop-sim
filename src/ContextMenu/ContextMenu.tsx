@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import MenuItems, { MenuItemProps } from "../components/MenuItems";
-import "./ContextMenu.scss";
 import useDetectMouseDownOutside from "../hooks/useDetectMouseDownOutside";
+
+import "./ContextMenu.scss";
 
 interface ContextMenuProps {
   items: Array<MenuItemProps>;

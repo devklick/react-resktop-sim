@@ -5,10 +5,11 @@ import useWindowManagerStore, {
 import { Dimensions } from "../../hooks/useDragToResize";
 import BorderedAppMenu from "./BorderedAppMenu/BorderedAppMenu";
 import usePositionableElement from "../../hooks/usePositionableElement";
-
-import "./BorderedApp.scss";
 import useSystemSettings from "../../stores/systemSettingsStore";
 import { MenuItemProps } from "../MenuItems";
+
+import "./BorderedApp.scss";
+
 interface BorderedAppProps extends BaseProps {
   title: string;
   type: string;

@@ -1,8 +1,10 @@
+import { v4 as uuid } from "uuid";
+
 import useDateTime from "../../../hooks/useDateTime";
 import useWindowManagerStore from "../../../stores/windowManagerStore";
 import BorderedApp from "../../BorderedApp";
+
 import "./ClockMenu.scss";
-import { v4 as uuid } from "uuid";
 
 const windowType = "clock";
 

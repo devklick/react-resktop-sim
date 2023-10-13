@@ -14,6 +14,8 @@ function WebBrowserLauncher({}: WebBrowserLauncherProps) {
       WindowTitle="Web Browser"
       initialDimensions={{ height: 400, width: 400 }}
       appContent={<WebBrowser />}
+      icon=""
+      menus={[]}
     ></Launcher>
   );
 }

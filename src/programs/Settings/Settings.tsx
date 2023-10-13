@@ -1,9 +1,10 @@
+import React, { HTMLInputTypeAttribute, useRef, useState } from "react";
+
 import AppSideBar from "../../components/AppSideBar";
 import { getPages } from "./settingsPageConfig";
+import useSystemSettings from "../../stores/systemSettingsStore";
 
 import "./Settings.scss";
-import React, { HTMLInputTypeAttribute, useRef, useState } from "react";
-import useSystemSettings from "../../stores/systemSettingsStore";
 
 interface SettingsSectionProps {
   title: string;

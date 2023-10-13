@@ -1,4 +1,5 @@
 import PowerMenu from "./PowerMenu";
+
 import "./SystemTray.scss";
 
 interface SystemTrayProps {}

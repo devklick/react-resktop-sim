@@ -1,15 +1,15 @@
-import React, { ReactNode, createRef } from "react";
+import React from "react";
 import { create } from "zustand";
 
 export interface BaseProps {
   zIndex?: number;
-  children?: ReactNode;
+  children?: React.ReactNode;
 }
 
 interface ComponentDefinition<Props extends BaseProps = BaseProps> {
   component: React.FC<Props>;
   props: Props;
-  children?: ReactNode;
+  children?: React.ReactNode;
   key: string | number;
 }
 
@@ -30,7 +30,7 @@ interface WindowManagerStoreState {
 }
 
 const useWindowManagerStore = create<WindowManagerStoreState>()((set, get) => ({
-  contentRef: createRef<HTMLDivElement>(),
+  contentRef: React.createRef<HTMLDivElement>(),
   windowsMap: new Map(),
   highestZIndex: 0,
   getWindowDefinitions() {
