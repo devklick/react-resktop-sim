@@ -9,8 +9,15 @@ function toPx(value: number) {
 interface UseWindowMinMaxProps {
   windowRef: React.RefObject<HTMLElement>;
   windowRect: MutableRefObject<Partial<Rect>>;
+  windowType: string;
+  windowId: string;
 }
-function useWindowMinMax({ windowRect, windowRef }: UseWindowMinMaxProps) {
+function useWindowMinMax({
+  windowRect,
+  windowRef,
+  windowId,
+  windowType,
+}: UseWindowMinMaxProps) {
   const winMan = useWindowManagerStore();
   const oldTransition = useRef<string>("");
   const oldTransform = useRef<string>("");
@@ -49,16 +56,14 @@ function useWindowMinMax({ windowRect, windowRef }: UseWindowMinMaxProps) {
 
   function handleTransitionEnd(e: TransitionEvent) {
     const window = windowRef.current;
-    if (!window) return;
-    if (e.target === window) {
-      console.log("Setting no display");
-      if (window.style) {
-        window.style.display = "inline";
-        window.style.transition = oldTransition.current;
-        window.style.transform = oldTransform.current;
-        window.style.opacity = oldOpacity.current;
-      }
-    }
+    if (!window?.style) return;
+    if (e.target !== window) return;
+
+    window.style.display = "none";
+    window.style.transition = oldTransition.current;
+    window.style.transform = oldTransform.current;
+    window.style.opacity = oldOpacity.current;
+    winMan.hideWindow(windowType, windowId);
   }
 
   useEffect(() => {

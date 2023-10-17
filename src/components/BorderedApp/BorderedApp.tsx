@@ -52,13 +52,13 @@ function BorderedApp({
   } = usePositionableElement({
     elementRef: appRef,
     minDimensions,
+    windowType: type,
+    windowId: id,
   });
 
   function onClickClose() {
     winMan.closeWindow(type, id);
   }
-
-  console.log("Hidden", hidden);
 
   return (
     <div
@@ -71,7 +71,6 @@ function BorderedApp({
         zIndex,
         backgroundColor: settings.mainColor,
         display: hidden === true ? "none" : "grid",
-        color: hidden === true ? "black" : "green",
       }}
     >
       <div className="bordered-app__corner-nw" ref={resizeHandleNW} />

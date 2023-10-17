@@ -28,6 +28,7 @@ interface WindowManagerStoreState {
   focusWindowsOfType: (windowType: string) => void;
   focusWindow: (windowType: string, windowId: string) => void;
   windowsOfTypeExist: (windowType: string) => boolean;
+  hideWindow: (windowType: string, windowId: string) => void;
 }
 
 const useWindowManagerStore = create<WindowManagerStoreState>()((set, get) => ({
@@ -121,6 +122,14 @@ const useWindowManagerStore = create<WindowManagerStoreState>()((set, get) => ({
   },
   windowsOfTypeExist(windowType) {
     return (get().windowsMap.get(windowType)?.size ?? 0) > 0;
+  },
+  hideWindow(windowType, windowId) {
+    const windowsMap = get().windowsMap;
+    const windowsOfType = windowsMap.get(windowType);
+    const window = windowsOfType?.get(windowId);
+    if (!windowsOfType || !window) return;
+    window.props.hidden = true;
+    set({ windowsMap });
   },
 }));
 

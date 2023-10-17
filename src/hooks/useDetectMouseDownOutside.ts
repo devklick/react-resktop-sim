@@ -37,8 +37,6 @@ function useDetectMouseDownOutside<Element extends HTMLElement>({
         return;
       }
 
-      console.log(elementRef.current);
-
       let call = true;
       function process(children: HTMLCollection) {
         for (const child of children) {
