@@ -10,14 +10,6 @@ import { Rect } from "./useDragToResize";
 
 // https://stackoverflow.com/a/39192992/6236042
 
-type StyledElement = {
-  style: CSSStyleDeclaration;
-};
-
-function hasStyle(value: unknown): value is StyledElement {
-  return !!value && typeof value === "object" && "style" in value;
-}
-
 interface UseDraggableProps {
   /**
    * A reference to the element that can be used to move the draggable element.
@@ -35,29 +27,23 @@ const useDragToMove = ({ moveRef = null, elementRect }: UseDraggableProps) => {
   const ref = useRef<HTMLElement | null>(null);
 
   const unsubscribe = useRef<VoidFunction>();
-  const moveHandle: RefCallback<HTMLElement> = useCallback(
-    (elem) => {
-      ref.current = elem;
-      if (unsubscribe.current) {
-        unsubscribe.current;
-      }
-      if (!elem) {
-        return;
-      }
-      const handleMouseDown = (e: MouseEvent) => {
-        const elem = moveRef?.current ?? e.target;
-        if (hasStyle(elem)) {
-          elem.style.userSelect = "none";
-        }
-        setPressed(true);
-      };
-      elem.addEventListener("mousedown", handleMouseDown);
-      unsubscribe.current = () => {
-        elem.removeEventListener("mousedown", handleMouseDown);
-      };
-    },
-    [moveRef]
-  );
+  const moveHandle: RefCallback<HTMLElement> = useCallback((elem) => {
+    ref.current = elem;
+    if (unsubscribe.current) {
+      unsubscribe.current;
+    }
+    if (!elem) {
+      return;
+    }
+    const handleMouseDown = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).classList.contains("drag-to-move")) return;
+      setPressed(true);
+    };
+    elem.addEventListener("mousedown", handleMouseDown);
+    unsubscribe.current = () => {
+      elem.removeEventListener("mousedown", handleMouseDown);
+    };
+  }, []);
 
   useEffect(() => {
     if (!pressed) {
@@ -82,11 +68,7 @@ const useDragToMove = ({ moveRef = null, elementRect }: UseDraggableProps) => {
         elem.style.top = `${elementRect.current.top}px`;
       }
     );
-    const handleMouseUp = (e: MouseEvent) => {
-      const elem = moveRef?.current ?? e.target;
-      if (hasStyle(elem)) {
-        elem.style.userSelect = "auto";
-      }
+    const handleMouseUp = () => {
       setPressed(false);
     };
     // subscribe to mousemove and mouseup on document, otherwise you
