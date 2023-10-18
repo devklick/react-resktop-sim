@@ -21,7 +21,11 @@ function BorderedAppMenu({ title, items }: BorderedAppMenuProps) {
   }, [elementRef]);
 
   // Close the menu if an outside click occurs
-  useDetectMouseDownOutside({ elementRef, onMouseDown: () => setOpen(false) });
+  useDetectMouseDownOutside({
+    elementRef,
+    onMouseDown: () => setOpen(false),
+    enabled: open,
+  });
 
   return (
     <div

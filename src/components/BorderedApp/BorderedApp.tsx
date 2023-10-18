@@ -29,6 +29,7 @@ function BorderedApp({
   minDimensions = { height: 350, width: 350 },
   menus,
   zIndex,
+  hidden,
 }: React.PropsWithChildren<BorderedAppProps>) {
   const winMan = useWindowManagerStore();
   const settings = useSystemSettings();
@@ -51,6 +52,8 @@ function BorderedApp({
   } = usePositionableElement({
     elementRef: appRef,
     minDimensions,
+    windowType: type,
+    windowId: id,
   });
 
   function onClickClose() {
@@ -67,6 +70,7 @@ function BorderedApp({
         height: initialDimensions.height,
         zIndex,
         backgroundColor: settings.mainColor,
+        display: hidden === true ? "none" : "grid",
       }}
     >
       <div className="bordered-app__corner-nw" ref={resizeHandleNW} />
@@ -74,12 +78,12 @@ function BorderedApp({
       <div className="bordered-app__corner-ne" ref={resizeHandleNE} />
       <div className="bordered-app__edge-e" ref={resizeHandleE} />
       <div
-        className="bordered-app__title-bar"
+        className="bordered-app__title-bar drag-to-move"
         ref={moveHandle}
         onDoubleClick={maximize}
       >
-        <div className="bordered-app__window-menus-wrapper">
-          <div className="bordered-app__window-menus">
+        <div className="bordered-app__window-menus-wrapper drag-to-move">
+          <div className="bordered-app__window-menus drag-to-move">
             {menus?.map((m) => (
               <BorderedAppMenu
                 title={m.title}
@@ -89,10 +93,10 @@ function BorderedApp({
             ))}
           </div>
         </div>
-        <div className="bordered-app__title-wrapper">
-          <div className="bordered-app__title">{title}</div>
+        <div className="bordered-app__title-wrapper drag-to-move">
+          <div className="bordered-app__title drag-to-move">{title}</div>
         </div>
-        <div className="bordered-app__window-buttons-wrapper">
+        <div className="bordered-app__window-buttons-wrapper drag-to-move">
           <div className="bordered-app__window-buttons">
             <div
               className="bordered-app__window-button minimize"

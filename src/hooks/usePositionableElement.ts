@@ -6,6 +6,8 @@ import useWindowMinMax from "./useWindowMinMax";
 interface UsePositionableElementProps {
   elementRef: React.RefObject<HTMLElement>;
   minDimensions: Dimensions;
+  windowType: string;
+  windowId: string;
 }
 
 /**
@@ -17,6 +19,8 @@ interface UsePositionableElementProps {
 function usePositionableElement({
   elementRef,
   minDimensions,
+  windowType,
+  windowId,
 }: UsePositionableElementProps) {
   // Hold a single ref for the elements rect,
   // so we dont have to call getBoundingClientRect every
@@ -65,6 +69,8 @@ function usePositionableElement({
   const { maximize, minimize } = useWindowMinMax({
     windowRef: elementRef,
     windowRect: elementRect,
+    windowType,
+    windowId,
   });
 
   return {

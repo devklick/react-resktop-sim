@@ -9,40 +9,61 @@ interface UseDetectMouseDownOutsideProps<Element extends HTMLElement> {
   elementRef: React.RefObject<Element>;
 
   /**
-   * The callback to be invoked when a click
-   * has been detected outside
+   * The callback to be invoked when a mouse down
+   * has been detected outside the element
    */
   onMouseDown: () => void;
+
+  enabled?: boolean;
 }
 
 /**
- * Detects a click that has occurred outside of the specified element.
+ * Detects a mouse down event that has occurred outside of the specified element.
+ *
+ * Note that the term "_outside_" refers to the DOM structure and not the
+ * position that the element is displayed on screen. Any clicks on the specified
+ * element of any of its children (or it's childrens childrens, recursively)
+ * is considered _inside_. Everything else is considered _outside_
  */
 function useDetectMouseDownOutside<Element extends HTMLElement>({
   elementRef,
   onMouseDown,
+  enabled = true,
 }: UseDetectMouseDownOutsideProps<Element>) {
   useEffect(() => {
-    function handler(e: MouseEvent) {
-      const bounds = elementRef.current?.getBoundingClientRect();
-      if (e.clientX < (bounds?.left ?? 0)) {
-        return onMouseDown();
+    if (!enabled) return;
+    function handler(event: MouseEvent) {
+      if (!elementRef.current || elementRef.current === event.target) {
+        return;
       }
-      if (e.clientX > (bounds?.left ?? 0) + (bounds?.width ?? 0)) {
-        return onMouseDown();
+
+      let call = true;
+      function process(children: HTMLCollection) {
+        for (const child of children) {
+          if (child === event.target) {
+            call = false;
+            return;
+          }
+
+          if (child.children) {
+            process(child.children);
+          }
+        }
       }
-      if (e.clientY < (bounds?.top ?? 0)) {
-        return onMouseDown();
+
+      if (elementRef.current.children) {
+        process(elementRef.current.children);
       }
-      if (e.clientY > (bounds?.top ?? 0) + (bounds?.height ?? 0)) {
-        return onMouseDown();
+
+      if (call) {
+        onMouseDown();
       }
     }
 
     window.addEventListener("mousedown", handler);
 
     return () => window.removeEventListener("mousedown", handler);
-  });
+  }, [elementRef, enabled, onMouseDown]);
 }
 
 export default useDetectMouseDownOutside;
