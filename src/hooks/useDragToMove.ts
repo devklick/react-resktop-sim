@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Rect } from "./useDragToResize";
+import { Position, Rect } from "./useDragToResize";
 
 // https://stackoverflow.com/a/39192992/6236042
 
@@ -19,12 +19,20 @@ interface UseDraggableProps {
   moveRef?: React.RefObject<HTMLElement> | null;
 
   elementRect: MutableRefObject<Partial<Rect>>;
+
+  threshold?: number;
 }
 
 // complex logic should be a hook, not a component
-const useDragToMove = ({ moveRef = null, elementRect }: UseDraggableProps) => {
+const useDragToMove = ({
+  moveRef = null,
+  elementRect,
+  threshold = 20,
+}: UseDraggableProps) => {
   const [pressed, setPressed] = useState(false);
   const ref = useRef<HTMLElement | null>(null);
+  const tempRect = useRef<Position>({ x: 0, y: 0 });
+  const moving = useRef(false);
 
   const unsubscribe = useRef<VoidFunction>();
   const moveHandle: RefCallback<HTMLElement> = useCallback((elem) => {
@@ -52,23 +60,37 @@ const useDragToMove = ({ moveRef = null, elementRect }: UseDraggableProps) => {
 
     const handleMouseMove = throttle(
       (event: { movementX: number; movementY: number }) => {
-        if (!ref.current || !elementRect.current) {
-          return;
+        const element = moveRef?.current ?? ref.current;
+
+        if (!element) return;
+
+        tempRect.current.x += event.movementX;
+        tempRect.current.y += event.movementY;
+
+        if (
+          Math.abs(tempRect.current.x) >= threshold ||
+          Math.abs(tempRect.current.y) >= threshold ||
+          moving.current
+        ) {
+          elementRect.current.left =
+            (elementRect.current.left ?? 0) + tempRect.current.x;
+
+          elementRect.current.top =
+            (elementRect.current.top ?? 0) + tempRect.current.y;
+
+          tempRect.current.x = 0;
+          tempRect.current.y = 0;
+          moving.current = true;
         }
 
-        elementRect.current.left =
-          (elementRect.current.left ?? 0) + event.movementX;
-
-        elementRect.current.top =
-          (elementRect.current.top ?? 0) + event.movementY;
-
-        const elem = moveRef?.current ?? ref.current;
-
-        elem.style.left = `${elementRect.current.left}px`;
-        elem.style.top = `${elementRect.current.top}px`;
+        element.style.left = `${elementRect.current.left}px`;
+        element.style.top = `${elementRect.current.top}px`;
       }
     );
     const handleMouseUp = () => {
+      tempRect.current.x = 0;
+      tempRect.current.y = 0;
+      moving.current = false;
       setPressed(false);
     };
     // subscribe to mousemove and mouseup on document, otherwise you
@@ -84,7 +106,7 @@ const useDragToMove = ({ moveRef = null, elementRect }: UseDraggableProps) => {
     // if `onDrag` wasn't defined with `useCallback`, we'd have to
     // resubscribe to 2 DOM events here, not to say it would mess
     // with `throttle` and reset its internal timer
-  }, [pressed, moveRef, elementRect]);
+  }, [pressed, moveRef, elementRect, threshold]);
 
   // actually it makes sense to return an array only when
   // you expect that on the caller side all of the fields
