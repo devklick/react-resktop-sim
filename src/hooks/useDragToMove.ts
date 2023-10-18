@@ -27,7 +27,7 @@ interface UseDraggableProps {
 const useDragToMove = ({
   moveRef = null,
   elementRect,
-  threshold = 20,
+  threshold = 7,
 }: UseDraggableProps) => {
   const [pressed, setPressed] = useState(false);
   const ref = useRef<HTMLElement | null>(null);
