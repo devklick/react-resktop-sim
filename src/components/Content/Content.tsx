@@ -1,6 +1,6 @@
 import useWindowManagerStore from "../../stores/windowManagerStore";
 
-import "./Content.scss";
+import { StyledContainer, StyledContent } from "./styles";
 
 interface ContentProps {}
 
@@ -9,8 +9,8 @@ function Content({}: ContentProps) {
   const winMan = useWindowManagerStore();
 
   return (
-    <div id="content__container">
-      <div id="content" ref={winMan.contentRef}>
+    <StyledContainer id="content__container">
+      <StyledContent id="content" ref={winMan.contentRef}>
         {winMan.getWindowDefinitions().map((definition) => {
           return (
             <definition.component {...definition.props} key={definition.key}>
@@ -18,8 +18,8 @@ function Content({}: ContentProps) {
             </definition.component>
           );
         })}
-      </div>
-    </div>
+      </StyledContent>
+    </StyledContainer>
   );
 }
 

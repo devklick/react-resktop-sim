@@ -3,7 +3,7 @@ import Content from "../Content";
 import BottomBar from "../BottomBar";
 import useSystemSettings from "../../stores/systemSettingsStore";
 
-import "./Desktop.scss";
+import { StyledBackground, StyledDesktop } from "./styles";
 
 interface DesktopProps {}
 
@@ -11,17 +11,12 @@ interface DesktopProps {}
 function Desktop({}: DesktopProps) {
   const settings = useSystemSettings();
   return (
-    <div id="desktop" style={{ color: settings.fontColor }}>
-      <div
-        id="desktop__background"
-        style={{
-          backgroundImage: `url(${settings.background})`,
-        }}
-      />
+    <StyledDesktop id="desktop">
+      <StyledBackground id="background" backgroundUrl={settings.background} />
       <TopBar />
       <Content />
       <BottomBar />
-    </div>
+    </StyledDesktop>
   );
 }
 

@@ -5,7 +5,7 @@ import useLocalFS, {
   isFSDirectory,
 } from "../../../stores/localFS";
 import "./DirectoryOrFile.scss";
-import ContextMenu from "../../../ContextMenu/ContextMenu";
+import ContextMenu from "../../../components/ContextMenu/ContextMenu";
 import { ContextMenuAction, getFSObjectContextMenu } from "../contextMenus";
 import { ReactComponent as FolderIcon } from "../../../assets/icons/folder-icon.svg";
 import useBindKeyToAction from "../../../hooks/useBindKeyToAction";

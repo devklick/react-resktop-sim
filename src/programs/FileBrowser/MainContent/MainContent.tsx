@@ -7,7 +7,7 @@ import useLocalFS, {
 import "./MainContent.scss";
 import { getMainContentContextItems } from "../contextMenus";
 import AppPopup from "../../../components/AppPopup";
-import ContextMenu from "../../../ContextMenu/ContextMenu";
+import ContextMenu from "../../../components/ContextMenu/ContextMenu";
 import DirectoryOrFile from "../DirectoryOrFile/DirectoryOrFile";
 import HeaderBar from "../../../components/HeaderBar";
 import Box from "../../../components/Box";

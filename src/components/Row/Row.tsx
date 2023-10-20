@@ -1,4 +1,4 @@
-import "./Row.scss";
+import { StyledRow } from "./styles";
 
 interface RowProps {
   gap?: number;
@@ -11,18 +11,9 @@ function Row({
   children,
 }: React.PropsWithChildren<RowProps>) {
   return (
-    <div
-      className="row"
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        width,
-        gap,
-      }}
-    >
+    <StyledRow width={width} gap={gap}>
       {children}
-    </div>
+    </StyledRow>
   );
 }
 

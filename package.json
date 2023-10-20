@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@types/pako": "^2.0.1",
     "@types/uuid": "^9.0.4",
     "base64-js": "^1.5.1",

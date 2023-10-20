@@ -1,5 +1,3 @@
-import "./FocusedWindowMenu.scss";
-
 interface FocusedWindowMenuProps {}
 
 // eslint-disable-next-line no-empty-pattern

@@ -1,4 +1,4 @@
-import "./Button.scss";
+import { StyledButton } from "./styles";
 
 interface ButtonProps {
   name: string;
@@ -8,9 +8,9 @@ interface ButtonProps {
 
 function Button({ name, width = "100%", onClick }: ButtonProps) {
   return (
-    <button style={{ width }} onClick={onClick}>
+    <StyledButton width={width} onClick={onClick}>
       {name}
-    </button>
+    </StyledButton>
   );
 }
 export default Button;

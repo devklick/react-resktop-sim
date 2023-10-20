@@ -3,7 +3,7 @@ import { Rect } from "../../hooks/useDragToResize";
 import useDetectMouseDownOutside from "../../hooks/useDetectMouseDownOutside";
 import useSystemSettings from "../../stores/systemSettingsStore";
 
-import "./AppPopup.scss";
+import { StyledContent, StyledPopup } from "./styles";
 
 interface AppPopupProps<Element extends HTMLElement> {
   appRef: React.RefObject<Element>;
@@ -44,21 +44,17 @@ function AppPopup<Element extends HTMLElement>({
   }
 
   return (
-    <div
-      className="app-popup"
+    <StyledPopup
+      {...rect}
       ref={thisRef}
-      style={{ ...rect }}
       onContextMenu={handleContextMenu}
       onClick={(e) => e.stopPropagation()}
       onDoubleClick={(e) => e.stopPropagation()}
     >
-      <div
-        className="app-popup__content"
-        style={{ backgroundColor: settings.mainColor }}
-      >
+      <StyledContent backgroundColor={settings.mainColor}>
         {children}
-      </div>
-    </div>
+      </StyledContent>
+    </StyledPopup>
   );
 }
 
