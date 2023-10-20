@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import useSystemSettings from "../../stores/systemSettingsStore";
 
-import "./MenuItems.scss";
+import { StyledItemsContent, StyledItems, StyledMenuItem } from "./styles";
 
 export interface MenuItemsProps {
   items: Array<MenuItemProps>;
@@ -15,31 +15,32 @@ export interface MenuItemProps {
   items?: Array<MenuItemProps>;
 }
 
-function MenuItems({ items, position, positionType }: MenuItemsProps) {
+function MenuItems({
+  items,
+  position: { x, y },
+  positionType,
+}: MenuItemsProps) {
   const settings = useSystemSettings();
   return (
-    <div
-      className="menu-items"
-      style={{
-        left: position.x,
-        top: position.y,
-        backgroundColor: settings.mainColor,
-        position: positionType,
-      }}
+    <StyledItems
+      left={x}
+      top={y}
+      backgroundColor={settings.mainColor}
+      position={positionType}
     >
-      <div className="menu-items__content">
+      <StyledItemsContent>
         {items.map((item, i) => (
           <MenuItem
             title={item.title}
             action={item.action}
             items={item.items}
             itemNo={i + 1}
-            position={{ ...position }}
+            position={{ x, y }}
             key={`${item.title}-${i}`}
           />
         ))}
-      </div>
-    </div>
+      </StyledItemsContent>
+    </StyledItems>
   );
 }
 
@@ -124,14 +125,13 @@ function MenuItem({
   }
 
   return (
-    <div
+    <StyledMenuItem
       ref={elementRef}
-      className="menu-item"
       onClick={handleOnClick}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
-      <span className="menu-item__title">{title}</span>
+      <span>{title}</span>
       {items && open && (
         <MenuItems
           items={items}
@@ -139,7 +139,7 @@ function MenuItem({
           positionType="absolute"
         />
       )}
-    </div>
+    </StyledMenuItem>
   );
 }
 
