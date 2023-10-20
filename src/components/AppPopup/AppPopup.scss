@@ -1,12 +1,12 @@
-.full-app-prompt {
-  backdrop-filter: brightness(80%) blur(1px);
+.app-popup {
+  backdrop-filter: brightness(80%);
   position: fixed;
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  &-content {
+  &__content {
     width: 300px;
     display: flex;
     flex-direction: column;

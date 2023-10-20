@@ -115,57 +115,46 @@ export interface LocalFSState {
   ) => FSFile | null;
   favorites: Array<{ path: string; name: string }>;
   validateFSObjectName: (name: string) => string | null;
+  fsObjectNameIsAvailable: (name: string, directory: FSDirectory) => boolean;
   create: (
     type: FSObjectType,
     name: string,
     parentDirectory: FSDirectory
   ) => FSObject | null;
+  rename: (
+    parentDirectory: FSDirectory,
+    fsObject: FSObject,
+    newName: string
+  ) => void;
+  delete: (parentDirectory: FSDirectory, fsObject: FSObject) => void;
+  getParentDirectory: (path: string) => FSDirectory | null;
+  getLastFromPath: (path: string) => string | null;
 }
 
 export const useLocalFS = create<LocalFSState>()(
   persist(
-    (set, get) => ({
-      root: rootDir,
-      favorites: [
-        { name: userDir.name, path: userDir.path },
-        { name: documentsDir.name, path: documentsDir.path },
-        { name: downloadsDir.name, path: downloadsDir.path },
-        { name: musicDir.name, path: musicDir.path },
-        { name: videosDir.name, path: videosDir.path },
-      ],
-      getDirectory(path) {
-        if (!path.startsWith(pathSeparator)) {
-          throw new Error("Invalid path");
+    (set, get) => {
+      const getLastFromPath: LocalFSState["getLastFromPath"] = (path) => {
+        const parts = path.split(pathSeparator);
+        return parts.length ? parts[parts.length - 1] : null;
+      };
+
+      const getDirectory: LocalFSState["getDirectory"] = (path) => {
+        const parent = get().getParentDirectory(path);
+        const lastPart = get().getLastFromPath(path);
+
+        if (parent && lastPart) {
+          const fsObject = parent.contents[lastPart];
+          if (fsObject.type === "directory") return fsObject;
         }
 
-        let dir: FSDirectory | undefined = get().root as FSDirectory;
+        return null;
+      };
 
-        if (path === dir.path) return dir;
-
-        // for each path part, skipping the initial separator
-        const pathParts = path.slice(1).split(pathSeparator);
-
-        for (const pathPart of pathParts) {
-          // If we dont have a dir, we cant check for any child objects,
-          // so need to break out - path doesnt exist
-          if (!dir) break;
-
-          // if we have a dir, we need to look in it's contents for the path part
-          const fsObject: FSObject | undefined = dir.contents[pathPart];
-
-          // if the path part pointed to an existing dir, capture it
-          if (fsObject && isFSDirectory(fsObject)) {
-            dir = fsObject;
-          }
-          // Otherwise the specified path does not exist
-          else {
-            throw new Error("Path not found");
-          }
-        }
-
-        return dir ?? null;
-      },
-      createDirectory(name, parentDirectory) {
+      const createDirectory: LocalFSState["createDirectory"] = (
+        name,
+        parentDirectory
+      ) => {
         if (parentDirectory.contents[name]) return null;
 
         const directory: FSDirectory = {
@@ -183,8 +172,13 @@ export const useLocalFS = create<LocalFSState>()(
         set({ root: get().root });
 
         return directory;
-      },
-      createFile(name, parentDirectory, contents) {
+      };
+
+      const createFile: LocalFSState["createFile"] = (
+        name,
+        parentDirectory,
+        contents
+      ) => {
         if (parentDirectory.contents[name]) {
           return null;
         }
@@ -205,9 +199,11 @@ export const useLocalFS = create<LocalFSState>()(
         set({ root: get().root });
 
         return file;
-      },
+      };
 
-      validateFSObjectName(name) {
+      const validateFSObjectName: LocalFSState["validateFSObjectName"] = (
+        name
+      ) => {
         if (!name) {
           return "A value is required";
         }
@@ -216,17 +212,103 @@ export const useLocalFS = create<LocalFSState>()(
         }
 
         return null;
-      },
+      };
 
-      create(type, name, parentDirectory) {
+      const create: LocalFSState["create"] = (type, name, parentDirectory) => {
         switch (type) {
           case "directory":
             return get().createDirectory(name, parentDirectory);
           case "file":
             return get().createFile(name, parentDirectory);
         }
-      },
-    }),
+      };
+
+      const fsObjectNameIsAvailable: LocalFSState["fsObjectNameIsAvailable"] = (
+        name,
+        directory
+      ) => {
+        return !directory.contents[name];
+      };
+      const getParentDirectory: LocalFSState["getParentDirectory"] = (path) => {
+        if (!path.startsWith(pathSeparator)) {
+          throw new Error("Invalid path");
+        }
+
+        let dir: FSDirectory | undefined = get().root as FSDirectory;
+
+        if (path === dir.path) return dir;
+
+        // for each path part, skipping the initial separator
+        const pathParts = path.slice(1).split(pathSeparator);
+
+        for (const [index, pathPart] of pathParts.entries()) {
+          if (index === pathParts.length - 1) break;
+
+          // If we dont have a dir, we cant check for any child objects,
+          // so need to break out - path doesnt exist
+          if (!dir) break;
+
+          // if we have a dir, we need to look in it's contents for the path part
+          const fsObject: FSObject | undefined = dir.contents[pathPart];
+
+          // if the path part pointed to an existing dir, capture it
+          if (fsObject && isFSDirectory(fsObject)) {
+            dir = fsObject;
+          }
+          // Otherwise the specified path does not exist
+          else {
+            throw new Error("Path not found");
+          }
+        }
+
+        return dir ?? null;
+      };
+
+      const deleteFSObject: LocalFSState["delete"] = (
+        parentDirectory,
+        fsObject
+      ) => {
+        delete parentDirectory.contents[fsObject.name];
+        set({ root: get().root });
+      };
+
+      const rename: LocalFSState["rename"] = (
+        parentDirectory,
+        fsObject,
+        newName
+      ) => {
+        const oldName = fsObject.name;
+        fsObject.name = newName;
+        fsObject.path = [
+          ...fsObject.path.split(pathSeparator).slice(0, -1),
+          newName,
+        ].join(pathSeparator);
+        parentDirectory.contents[newName] = fsObject;
+        delete parentDirectory.contents[oldName];
+
+        set({ root: get().root });
+      };
+      return {
+        root: rootDir,
+        favorites: [
+          { name: userDir.name, path: userDir.path },
+          { name: documentsDir.name, path: documentsDir.path },
+          { name: downloadsDir.name, path: downloadsDir.path },
+          { name: musicDir.name, path: musicDir.path },
+          { name: videosDir.name, path: videosDir.path },
+        ],
+        create,
+        createDirectory,
+        createFile,
+        delete: deleteFSObject,
+        fsObjectNameIsAvailable,
+        getDirectory,
+        getLastFromPath,
+        getParentDirectory,
+        rename,
+        validateFSObjectName,
+      };
+    },
     {
       name: "local-fs",
     }
