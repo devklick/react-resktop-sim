@@ -1,4 +1,4 @@
-import { StyledPowerIcon, StyledPowerMenu } from "./Styled.PowerMenu";
+import { StyledPowerIcon, StyledPowerMenu } from "./styles";
 
 interface PowerMenuProps {}
 

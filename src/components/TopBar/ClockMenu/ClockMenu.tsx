@@ -1,6 +1,6 @@
 import useDateTime from "../../../hooks/useDateTime";
 
-import { StyledClockMenu, StyledTimeContainer } from "./Styled.ClockMenu";
+import { StyledClockMenu, StyledTimeContainer } from "./styles";
 
 interface ClockMenuProps {}
 

@@ -1,8 +1,4 @@
-import {
-  StyledItem,
-  StyledItemContainer,
-  StyledSideBar,
-} from "./Styled.AppSideBar";
+import { StyledItem, StyledItemContainer, StyledSideBar } from "./styles";
 
 interface SideBarItem {
   title: string;

@@ -5,11 +5,7 @@ import TextEditorLauncher from "../../programs/TextEditor/TextEditorLauncher";
 import WebBrowserLauncher from "../../programs/WebBrowser/WebBrowserLauncher";
 import useSystemSettings from "../../stores/systemSettingsStore";
 
-import {
-  StyledBottomBar,
-  StyledContainer,
-  StyledContents,
-} from "./Styled.BottomBar";
+import { StyledBottomBar, StyledContainer, StyledContents } from "./styles";
 
 interface BottomBarProps {}
 

@@ -3,7 +3,7 @@ import Content from "../Content";
 import BottomBar from "../BottomBar";
 import useSystemSettings from "../../stores/systemSettingsStore";
 
-import { StyledBackground, StyledDesktop } from "./Styled.Desktop";
+import { StyledBackground, StyledDesktop } from "./styles";
 
 interface DesktopProps {}
 

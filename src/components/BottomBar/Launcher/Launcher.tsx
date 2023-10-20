@@ -7,7 +7,7 @@ import BorderedApp from "../../BorderedApp";
 import { Dimensions } from "../../../hooks/useDragToResize";
 import { MenuItemProps } from "../../MenuItems";
 
-import { StyledIcon, StyledLauncher } from "./Styled.Launcher";
+import { StyledIcon, StyledLauncher } from "./styles";
 interface LauncherProps {
   windowType: string;
   WindowTitle: string;

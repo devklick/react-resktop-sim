@@ -1,5 +1,5 @@
 import PowerMenu from "./PowerMenu";
-import { StyledSystemTray } from "./Styled.SystemTray";
+import { StyledSystemTray } from "./styles";
 
 interface SystemTrayProps {}
 

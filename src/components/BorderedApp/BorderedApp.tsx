@@ -8,7 +8,19 @@ import usePositionableElement from "../../hooks/usePositionableElement";
 import useSystemSettings from "../../stores/systemSettingsStore";
 import { MenuItemProps } from "../MenuItems";
 
-import "./BorderedApp.scss";
+import {
+  StyledBorderedApp,
+  StyledCorner,
+  StyledContent,
+  StyledEdge,
+  StyledTitleBar,
+  StyledTitleWrapper,
+  StyledWindowButton,
+  StyledWindowButtons,
+  StyledWindowButtonsWrapper,
+  StyledWindowMenus,
+  StyledWindowMenusWrapper,
+} from "./styles";
 
 interface BorderedAppProps extends BaseProps {
   title: string;
@@ -61,29 +73,25 @@ function BorderedApp({
   }
 
   return (
-    <div
-      className="bordered-app"
+    <StyledBorderedApp
       ref={appRef}
       onMouseDown={() => winMan.focusWindow(type, id)}
-      style={{
-        width: initialDimensions.width,
-        height: initialDimensions.height,
-        zIndex,
-        backgroundColor: settings.mainColor,
-        display: hidden === true ? "none" : "grid",
-      }}
+      initialDimensions={initialDimensions}
+      zIndex={zIndex}
+      backgroundColor={settings.mainColor}
+      display={hidden === true ? "none" : "grid"}
     >
-      <div className="bordered-app__corner-nw" ref={resizeHandleNW} />
-      <div className="bordered-app__edge-n" ref={resizeHandleN} />
-      <div className="bordered-app__corner-ne" ref={resizeHandleNE} />
-      <div className="bordered-app__edge-e" ref={resizeHandleE} />
-      <div
-        className="bordered-app__title-bar drag-to-move"
+      <StyledCorner location="nw" ref={resizeHandleNW} />
+      <StyledEdge location="n" ref={resizeHandleN} />
+      <StyledCorner location="ne" ref={resizeHandleNE} />
+      <StyledEdge location="e" ref={resizeHandleE} />
+      <StyledTitleBar
+        className="drag-to-move"
         ref={moveHandle}
         onDoubleClick={maximize}
       >
-        <div className="bordered-app__window-menus-wrapper drag-to-move">
-          <div className="bordered-app__window-menus drag-to-move">
+        <StyledWindowMenusWrapper className="drag-to-move">
+          <StyledWindowMenus className="drag-to-move">
             {menus?.map((m) => (
               <BorderedAppMenu
                 title={m.title}
@@ -91,34 +99,34 @@ function BorderedApp({
                 key={m.title}
               />
             ))}
-          </div>
-        </div>
-        <div className="bordered-app__title-wrapper drag-to-move">
-          <div className="bordered-app__title drag-to-move">{title}</div>
-        </div>
-        <div className="bordered-app__window-buttons-wrapper drag-to-move">
-          <div className="bordered-app__window-buttons">
-            <div
-              className="bordered-app__window-button minimize"
+          </StyledWindowMenus>
+        </StyledWindowMenusWrapper>
+        <StyledTitleWrapper className="drag-to-move">
+          <span className="drag-to-move">{title}</span>
+        </StyledTitleWrapper>
+        <StyledWindowButtonsWrapper className="drag-to-move">
+          <StyledWindowButtons>
+            <StyledWindowButton
+              buttonType="min"
               onClick={minimize}
-            ></div>
-            <div
-              className="bordered-app__window-button maximize"
+            ></StyledWindowButton>
+            <StyledWindowButton
+              buttonType="max"
               onClick={maximize}
-            ></div>
-            <div
-              className="bordered-app__window-button close"
+            ></StyledWindowButton>
+            <StyledWindowButton
+              buttonType="close"
               onClick={onClickClose}
-            ></div>
-          </div>
-        </div>
-      </div>
-      <div className="bordered-app__content">{children}</div>
-      <div className="bordered-app__corner-sw" ref={resizeHandleSW} />
-      <div className="bordered-app__edge-s" ref={resizeHandleS} />
-      <div className="bordered-app__corner-se" ref={resizeHandleSE} />
-      <div className="bordered-app__edge-w" ref={resizeHandleW} />
-    </div>
+            ></StyledWindowButton>
+          </StyledWindowButtons>
+        </StyledWindowButtonsWrapper>
+      </StyledTitleBar>
+      <StyledContent>{children}</StyledContent>
+      <StyledCorner location="sw" ref={resizeHandleSW} />
+      <StyledEdge location="s" ref={resizeHandleS} />
+      <StyledCorner location="se" ref={resizeHandleSE} />
+      <StyledEdge location="w" ref={resizeHandleW} />
+    </StyledBorderedApp>
   );
 }
 

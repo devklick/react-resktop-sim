@@ -3,7 +3,7 @@ import { Rect } from "../../hooks/useDragToResize";
 import useDetectMouseDownOutside from "../../hooks/useDetectMouseDownOutside";
 import useSystemSettings from "../../stores/systemSettingsStore";
 
-import { StyledContent, StyledPopup } from "./Styled.AppPopup";
+import { StyledContent, StyledPopup } from "./styles";
 
 interface AppPopupProps<Element extends HTMLElement> {
   appRef: React.RefObject<Element>;

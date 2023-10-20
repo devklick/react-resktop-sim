@@ -1,6 +1,6 @@
 import useWindowManagerStore from "../../stores/windowManagerStore";
 
-import { StyledContainer, StyledContent } from "./Styled.Content";
+import { StyledContainer, StyledContent } from "./styles";
 
 interface ContentProps {}
 

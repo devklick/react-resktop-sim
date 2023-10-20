@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import useDetectMouseDownOutside from "../../../hooks/useDetectMouseDownOutside";
 import MenuItems, { MenuItemProps } from "../../MenuItems";
 
-import "./BorderedAppMenu.scss";
+import { StyledAppMenu } from "./styles";
 
 export interface BorderedAppMenuProps {
   title: string;
@@ -16,8 +16,8 @@ function BorderedAppMenu({ title, items }: BorderedAppMenuProps) {
 
   useEffect(() => {
     const rect = elementRef.current?.getBoundingClientRect();
-    // TODO: Look into where this -12 comes from
-    position.current = { x: (rect?.left ?? 0) - 12, y: rect?.height ?? 0 };
+    // TODO: Look into where this -10 comes from
+    position.current = { x: (rect?.left ?? 0) - 10, y: rect?.height ?? 0 };
   }, [elementRef]);
 
   // Close the menu if an outside click occurs
@@ -28,12 +28,8 @@ function BorderedAppMenu({ title, items }: BorderedAppMenuProps) {
   });
 
   return (
-    <div
-      ref={elementRef}
-      className="bordered-app-menu"
-      onClick={() => setOpen(!open)}
-    >
-      <span className="bordered-app-menu__title">{title}</span>
+    <StyledAppMenu ref={elementRef} onClick={() => setOpen(!open)}>
+      <span>{title}</span>
       {open && (
         <MenuItems
           items={items}
@@ -41,7 +37,7 @@ function BorderedAppMenu({ title, items }: BorderedAppMenuProps) {
           positionType="absolute"
         />
       )}
-    </div>
+    </StyledAppMenu>
   );
 }
 

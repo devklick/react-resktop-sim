@@ -7,7 +7,7 @@ import {
   StyledTopBar,
   StyledTopBarContainer,
   StyledTopBarContents,
-} from "./Styled.TopBar";
+} from "./styles";
 
 interface TopBarProps {}
 
