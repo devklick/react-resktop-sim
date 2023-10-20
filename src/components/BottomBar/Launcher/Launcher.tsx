@@ -7,7 +7,7 @@ import BorderedApp from "../../BorderedApp";
 import { Dimensions } from "../../../hooks/useDragToResize";
 import { MenuItemProps } from "../../MenuItems";
 
-import "./Launcher.scss";
+import { StyledIcon, StyledLauncher } from "./Styled.Launcher";
 interface LauncherProps {
   windowType: string;
   WindowTitle: string;
@@ -77,9 +77,13 @@ function Launcher({
   });
 
   return (
-    <div ref={ref} tabIndex={1} className="launcher">
-      <img src={icon} className="launcher-icon" alt={windowType}></img>
-    </div>
+    <StyledLauncher ref={ref} tabIndex={1} className="launcher">
+      <StyledIcon
+        src={icon}
+        className="launcher-icon"
+        alt={windowType}
+      ></StyledIcon>
+    </StyledLauncher>
   );
 }
 
