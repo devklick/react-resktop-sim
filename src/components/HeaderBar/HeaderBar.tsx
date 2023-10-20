@@ -1,6 +1,6 @@
-import { CSSProperties } from "react";
-import "./HeaderBar.scss";
 import useSystemSettings from "../../stores/systemSettingsStore";
+
+import { StyledHeaderBar } from "./styles";
 
 interface HeaderBarProps {
   header: string;
@@ -20,37 +20,18 @@ function HeaderBar({
   borderRadiusBottom = 10,
 }: HeaderBarProps) {
   const settings = useSystemSettings();
-  function getJustifyContent(): CSSProperties["justifyContent"] {
-    switch (position) {
-      case "left":
-        return "flex-start";
-      case "right":
-        return "flex-end";
-      case "centre":
-      default:
-        return "center";
-    }
-  }
+
   return (
-    <div
-      className="header-bar__container"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: getJustifyContent(),
-        paddingTop: padVertical,
-        paddingBottom: padVertical,
-        paddingLeft: padHorizontal,
-        paddingRight: padHorizontal,
-        backgroundColor: settings.mainColor,
-        borderTopLeftRadius: borderRadiusTop,
-        borderTopRightRadius: borderRadiusTop,
-        borderBottomLeftRadius: borderRadiusBottom,
-        borderBottomRightRadius: borderRadiusBottom,
-      }}
+    <StyledHeaderBar
+      backgroundColor={settings.mainColor}
+      position={position}
+      padVertical={padVertical}
+      padHorizontal={padHorizontal}
+      borderRadiusTop={borderRadiusTop}
+      borderRadiusBottom={borderRadiusBottom}
     >
       <span className="header-bar__header">{header}</span>
-    </div>
+    </StyledHeaderBar>
   );
 }
 
