@@ -1,4 +1,8 @@
-import "./AppSideBar.scss";
+import {
+  StyledItem,
+  StyledItemContainer,
+  StyledSideBar,
+} from "./Styled.AppSideBar";
 
 interface SideBarItem {
   title: string;
@@ -12,21 +16,15 @@ interface AppSideBarProps {
 
 function AppSideBar({ items }: AppSideBarProps) {
   return (
-    <div className="app-side-bar">
-      <div className="app-side-bar__items">
-        {items.map((item) => {
-          return (
-            <div
-              className={`app-side-bar__item ${item.isActive ? "active" : ""} `}
-              onClick={item.onClick}
-              key={item.title}
-            >
-              {item.title}
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    <StyledSideBar>
+      <StyledItemContainer>
+        {items.map((item) => (
+          <StyledItem onClick={item.onClick} key={item.title}>
+            {item.title}
+          </StyledItem>
+        ))}
+      </StyledItemContainer>
+    </StyledSideBar>
   );
 }
 
