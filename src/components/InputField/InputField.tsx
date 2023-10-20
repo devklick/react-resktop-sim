@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from "react";
-import "./InputField.scss";
+
+import { StyledContainer, StyledInput } from "./styles";
 
 interface InputFieldProps<T> {
   name: string;
@@ -30,28 +31,16 @@ function InputField<T>({
   }
 
   return (
-    <div
-      className="input-field__container"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        width: "100%",
-        gap: 10,
-      }}
-    >
-      <span className="input-field__name">{name}</span>
-      <input
-        className="input-field__value"
+    <StyledContainer>
+      <span>{name}</span>
+      <StyledInput
         type={getInputType()}
         defaultValue={defaultValue}
         onChange={handleChange}
-        style={{ width: "100%", boxSizing: "border-box" }}
         autoFocus
-      ></input>
+      />
       {error && <span className="input-field__error">{error}</span>}
-    </div>
+    </StyledContainer>
   );
 }
 
