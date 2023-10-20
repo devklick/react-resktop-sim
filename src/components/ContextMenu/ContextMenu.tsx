@@ -2,7 +2,7 @@ import { useRef } from "react";
 import MenuItems, { MenuItemProps } from "../MenuItems";
 import useDetectMouseDownOutside from "../../hooks/useDetectMouseDownOutside";
 
-import "./ContextMenu.scss";
+import { StyledContextMenu } from "./styles";
 
 interface ContextMenuProps {
   items: Array<MenuItemProps>;
@@ -16,20 +16,13 @@ function ContextMenu({ items, position, close }: ContextMenuProps) {
   useDetectMouseDownOutside({ elementRef, onMouseDown: close });
 
   return (
-    <div
-      className="context-menu"
-      ref={elementRef}
-      style={{
-        left: position.x,
-        top: position.y,
-      }}
-    >
+    <StyledContextMenu position={position} ref={elementRef}>
       <MenuItems
         items={items}
         position={{ x: 0, y: 0 }}
         positionType="relative"
       />
-    </div>
+    </StyledContextMenu>
   );
 }
 
