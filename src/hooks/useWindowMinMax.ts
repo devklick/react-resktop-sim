@@ -49,7 +49,7 @@ function useWindowMinMax({
 
     window.style.transition = "all 0.2s linear";
     window.style.opacity = "0";
-    window.style.transform = "scale(0.5) translate(0, 500%)";
+    window.style.transform = "scale(0.2) translate(0, 500%)";
 
     window.addEventListener("transitionend", handleTransitionEnd);
   }

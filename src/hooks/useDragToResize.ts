@@ -12,7 +12,7 @@ export interface Rect extends Dimensions {
   left: number;
 }
 
-interface Position {
+export interface Position {
   x: number;
   y: number;
 }
