@@ -1,15 +1,14 @@
 import PowerMenu from "./PowerMenu";
-
-import "./SystemTray.scss";
+import { StyledSystemTray } from "./Styled.SystemTray";
 
 interface SystemTrayProps {}
 
 // eslint-disable-next-line no-empty-pattern
 function SystemTray({}: SystemTrayProps) {
   return (
-    <div id="system-tray">
+    <StyledSystemTray id="system-tray">
       <PowerMenu />
-    </div>
+    </StyledSystemTray>
   );
 }
 

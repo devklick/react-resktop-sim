@@ -2,7 +2,12 @@ import useSystemSettings from "../../stores/systemSettingsStore";
 import ClockMenu from "./ClockMenu";
 import FocusedWindowMenu from "./FocusedWindowMenu";
 import SystemTray from "./SystemTray";
-import "./TopBar.scss";
+
+import {
+  StyledTopBar,
+  StyledTopBarContainer,
+  StyledTopBarContents,
+} from "./Styled.TopBar";
 
 interface TopBarProps {}
 
@@ -10,15 +15,15 @@ interface TopBarProps {}
 function TopBar({}: TopBarProps) {
   const settings = useSystemSettings();
   return (
-    <div id="top-bar__container">
-      <div id="top-bar" style={{ backgroundColor: settings.mainColor }}>
-        <div id="top-bar__contents">
+    <StyledTopBarContainer id="top-bar__container">
+      <StyledTopBar id="top-bar" backgroundColor={settings.mainColor}>
+        <StyledTopBarContents id="top-bar__contents">
           <FocusedWindowMenu />
           <ClockMenu />
           <SystemTray />
-        </div>
-      </div>
-    </div>
+        </StyledTopBarContents>
+      </StyledTopBar>
+    </StyledTopBarContainer>
   );
 }
 

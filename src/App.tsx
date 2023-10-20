@@ -9,8 +9,9 @@ function App() {
     <div className="App">
       <Global
         styles={css`
-          background-color: ${settings.mainColor};
-          color: ${settings.fontColor};
+          body {
+            color: ${settings.fontColor};
+          }
         `}
       />
       <Desktop />
