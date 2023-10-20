@@ -1,4 +1,4 @@
-import "./Box.scss";
+import { StyledBox } from "./styles";
 
 interface BoxProps {
   flow?: "horizontal" | "vertical";
@@ -11,19 +11,9 @@ function Box({
   children,
 }: React.PropsWithChildren<BoxProps>) {
   return (
-    <div
-      className="box"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: flow == "horizontal" ? "row" : "column",
-        gap,
-        padding: gap,
-        boxSizing: "border-box",
-      }}
-    >
+    <StyledBox flow={flow} gap={gap}>
       {children}
-    </div>
+    </StyledBox>
   );
 }
 
