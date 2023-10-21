@@ -13,6 +13,7 @@ import {
   StyledSections,
   StyledSettings,
 } from "./styles";
+import Button from "../../components/Button";
 
 interface SettingsSectionProps {
   title: string;
@@ -37,6 +38,8 @@ function SettingsSection(section: SettingsSectionProps) {
         return "color";
       case "url":
         return "url";
+      case "button":
+        return "button";
       default:
         return "text";
     }
@@ -62,15 +65,26 @@ function SettingsSection(section: SettingsSectionProps) {
     }, 1000);
   }
 
-  return (
-    <StyledSection>
-      <StyledSectionTitle>{section.title}</StyledSectionTitle>
-      <StyledSectionDescription>{section.description}</StyledSectionDescription>
+  function getInputField() {
+    const type = getInputType(section.type);
+    if (type === "button")
+      return (
+        <Button name="Restore" onClick={() => section.onValueChanged("")} />
+      );
+    return (
       <StyledSectionValue
         type={getInputType(section.type)}
         value={String(value)}
         onChange={handleChange}
-      ></StyledSectionValue>
+      />
+    );
+  }
+
+  return (
+    <StyledSection>
+      <StyledSectionTitle>{section.title}</StyledSectionTitle>
+      <StyledSectionDescription>{section.description}</StyledSectionDescription>
+      {getInputField()}
     </StyledSection>
   );
 }

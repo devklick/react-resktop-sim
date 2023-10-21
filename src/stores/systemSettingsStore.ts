@@ -1,6 +1,24 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+type FunctionPropertyNames<T> = {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  [K in keyof T]: T[K] extends Function ? K : never;
+}[keyof T];
+
+type Theme = Omit<
+  SystemSettingState,
+  FunctionPropertyNames<SystemSettingState>
+>;
+
+const defaultTheme: Theme = {
+  mainColor: "#2e3440",
+  accentColor: "#454e60",
+  fontColor: "#ffffff",
+  iconColor: "#9298b9",
+  background: "https://regolith-linux.org/images/releases/nord-dark.png",
+};
+
 export interface SystemSettingState {
   mainColor: string;
   accentColor: string;
@@ -12,16 +30,13 @@ export interface SystemSettingState {
   setFontColor: (color: string) => void;
   setIconColor: (color: string) => void;
   setBackground: (url: string) => void;
+  restoreDefaultTheme: () => void;
 }
 
 export const useSystemSettings = create<SystemSettingState>()(
   persist(
     (set) => ({
-      mainColor: "#2e3440",
-      accentColor: "#454e60",
-      fontColor: "#ffffff",
-      iconColor: "#9298b9",
-      background: "https://regolith-linux.org/images/releases/nord-dark.png",
+      ...defaultTheme,
       setAccentColor(accentColor) {
         set({ accentColor });
       },
@@ -36,6 +51,9 @@ export const useSystemSettings = create<SystemSettingState>()(
       },
       setBackground(background) {
         set({ background });
+      },
+      restoreDefaultTheme() {
+        set({ ...defaultTheme });
       },
     }),
     {
