@@ -15,11 +15,11 @@ change fairly often, sometimes for better, sometimes for worse.
 ## Scope And Purpose
 
 The purpose of this app, as with most of my apps, is for fun and practice.
-It doesn't really serve any useful purpose. It's fun to work on, hopefully it's
-interesting to others too, either to work on (feel free to get involved) or just
-play around with.
+It doesn't really serve any useful purpose. It's fun to work on, and hopefully
+you find it interesting in some way, either to work on (feel free to get involved) 
+or just play around with.
 
-There's no defined scope, really. It's something that will likely slowly be built 
+There's no defined scope. It's something that will likely slowly be built 
 up more and more over time. With that being said, there are at least a few things 
 that are definitely out of scope:
 
@@ -40,7 +40,7 @@ system, but it's enough for you to create files and folders as required.
 ### Moveable/Resizable Applications
 
 You can position your applications anywhere on the desktop, resizing them to fit
-your requirements. You can even maximize and minimize them when necessary.
+your requirements. You can also minimize and maximize files as required. 
 
 ### File Browser Application
 
@@ -63,7 +63,7 @@ save the file). The same goes for loading saved files.
 
 ### Settings Application
 
-The settings application will be for controlling the various settings of the 
+The settings application is for viewing and modifying various settings of the 
 desktop environment. At present, this is limited to:
 
 #### Appearance
@@ -72,8 +72,10 @@ You can control the appearance of your simulated desktop environment, changing
 things like:
 
 - Background image
-- UI color
+- UI main color
+- UI accent color
 - Font color
+- Simple icon color
 
 Hopefully the list of configurable appearance settings will continue to grow 
 over time.

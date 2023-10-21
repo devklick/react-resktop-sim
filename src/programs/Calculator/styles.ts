@@ -20,7 +20,7 @@ export const StyledInputOutput = styled.div<{
   direction: "input" | "output";
 }>`
   box-shadow: 0px 0px 4px rgb(0, 0, 0, 0.5) inset;
-  font-size: ${(props) => (props.direction === "input" ? 22 : 18)}px;
+  font-size: ${(props) => (props.direction === "input" ? 20 : 16)}px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -61,7 +61,7 @@ export const StyledButton = styled.button`
   align-items: center;
   background-color: inherit;
   color: inherit;
-  border-width: 1px;
+  border: none;
 
   &:hover {
     backdrop-filter: brightness(150%);
