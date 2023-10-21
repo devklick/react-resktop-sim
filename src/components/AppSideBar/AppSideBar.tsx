@@ -1,3 +1,4 @@
+import useSystemSettings from "../../stores/systemSettingsStore";
 import { StyledItem, StyledItemContainer, StyledSideBar } from "./styles";
 
 interface SideBarItem {
@@ -11,11 +12,17 @@ interface AppSideBarProps {
 }
 
 function AppSideBar({ items }: AppSideBarProps) {
+  const settings = useSystemSettings();
   return (
     <StyledSideBar>
       <StyledItemContainer>
         {items.map((item) => (
-          <StyledItem onClick={item.onClick} key={item.title}>
+          <StyledItem
+            onClick={item.onClick}
+            key={item.title}
+            active={item.isActive ?? false}
+            activeColor={settings.accentColor}
+          >
             {item.title}
           </StyledItem>
         ))}

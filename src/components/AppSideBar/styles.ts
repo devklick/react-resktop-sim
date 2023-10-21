@@ -11,13 +11,15 @@ export const StyledItemContainer = styled.div`
   box-sizing: border-box;
 `;
 
-export const StyledItem = styled.div`
+export const StyledItem = styled.div<{ active: boolean; activeColor: string }>`
   border-radius: 10px;
   padding: 6px 10px;
   box-sizing: border-box;
   box-shadow: 2px 2px 4px rgb(0, 0, 0, 0);
+  background-color: ${(props) =>
+    props.active ? props.activeColor : undefined};
   &:hover {
-    backdrop-filter: brightness(150%);
+    background-color: ${(props) => props.activeColor};
     transition: ease-in 0.2s;
   }
   &:active {
