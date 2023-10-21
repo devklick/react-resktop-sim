@@ -4,17 +4,17 @@ import useLocalFS, {
   FSObject,
   FSObjectType,
 } from "../../../stores/localFS";
-import "./MainContent.scss";
 import { getMainContentContextItems } from "../contextMenus";
 import AppPopup from "../../../components/AppPopup";
 import ContextMenu from "../../../components/ContextMenu/ContextMenu";
-import DirectoryOrFile from "../DirectoryOrFile/DirectoryOrFile";
+import DirectoryOrFile from "../DirectoryOrFile";
 import HeaderBar from "../../../components/HeaderBar";
 import Box from "../../../components/Box";
 import InputField from "../../../components/InputField";
 import Row from "../../../components/Row";
 import Button from "../../../components/Button";
 import useBindKeyToAction from "../../../hooks/useBindKeyToAction";
+import { StyledMainContent } from "./styles";
 
 interface MainContentProps {
   currentDirectory: FSDirectory;
@@ -40,10 +40,7 @@ function MainContent({
   }
 
   return (
-    <div
-      className="file-browser__main-content"
-      onContextMenu={handleRightClick}
-    >
+    <StyledMainContent onContextMenu={handleRightClick}>
       {contextMenuOpen && (
         <ContextMenu
           position={clickPosition.current}
@@ -70,7 +67,7 @@ function MainContent({
           currentDirectory={currentDirectory}
         />
       ))}
-    </div>
+    </StyledMainContent>
   );
 }
 

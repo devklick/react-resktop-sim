@@ -13,7 +13,6 @@ function SettingsLauncher({}: SettingsLauncherProps) {
       menus={[]}
       appContent={<Settings />}
       icon=""
-      // icon={icon}
     ></Launcher>
   );
 }

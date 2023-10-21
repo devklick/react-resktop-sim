@@ -1,6 +1,5 @@
 import FileBrowser from "..";
 import Launcher from "../../../components/BottomBar/Launcher";
-import "./FileBrowserLauncher.scss";
 
 interface FileBrowserLauncherProps {}
 
