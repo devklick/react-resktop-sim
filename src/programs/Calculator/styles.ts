@@ -61,7 +61,7 @@ export const StyledButton = styled.button`
   align-items: center;
   background-color: inherit;
   color: inherit;
-  border-width: 1px;
+  border: none;
 
   &:hover {
     backdrop-filter: brightness(150%);
