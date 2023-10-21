@@ -99,6 +99,7 @@ function BorderedApp({
           <StyledWindowMenus className="drag-to-move">
             {menus?.map((m) => (
               <BorderedAppMenu
+                appRef={appRef}
                 title={m.title}
                 items={m.items ?? []}
                 key={m.title}
