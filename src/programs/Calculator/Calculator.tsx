@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 
-import "./Calculator.scss";
+import {
+  StyledButton,
+  StyledButtonContent,
+  StyledButtons,
+  StyledCalc,
+  StyledInputOutput,
+  StyledInputOutputContents,
+} from "./styles";
 
 interface CalculatorProps {}
 
@@ -55,24 +62,22 @@ function Calculator({}: CalculatorProps) {
     }
 
     return (
-      <div className="calculator__button normal" onClick={handleClick}>
-        <span className="calculator_button-contents">{displayChar}</span>
-      </div>
+      <StyledButton onClick={handleClick}>
+        <StyledButtonContent>{displayChar}</StyledButtonContent>
+      </StyledButton>
     );
   }
 
   return (
-    <div className="calculator">
-      <div className="calculator__input">
-        <div className="calculator__input-contents">{input}</div>
-      </div>
-      <div className="calculator__output">
-        <div className="calculator__output-contents">{output}</div>
-      </div>
-      <div className="calculator__buttons">
+    <StyledCalc>
+      <StyledInputOutput direction="input">
+        <StyledInputOutputContents>{input}</StyledInputOutputContents>
+      </StyledInputOutput>
+      <StyledInputOutput direction="output">
+        <StyledInputOutputContents>{output}</StyledInputOutputContents>
+      </StyledInputOutput>
+      <StyledButtons>
         <Button mathematicalChar={"AC"} action="clear" />
-        {/* <Button mathematicalChar={8} action="append-to-end" />
-        <Button mathematicalChar={'%'} action="append-to-end" /> */}
         <div />
         <div />
         <Button mathematicalChar="/" displayChar="÷" action="append-to-end" />
@@ -93,8 +98,8 @@ function Calculator({}: CalculatorProps) {
         <Button mathematicalChar="." action="append-to-end" />
         <Button mathematicalChar="←" action="remove-from-end" />
         <Button mathematicalChar="=" action="evaluate" />
-      </div>
-    </div>
+      </StyledButtons>
+    </StyledCalc>
   );
 }
 

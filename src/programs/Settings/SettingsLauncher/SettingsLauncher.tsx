@@ -1,6 +1,5 @@
 import Settings from "..";
 import Launcher from "../../../components/BottomBar/Launcher";
-import "./SettingsLauncher.scss";
 
 interface SettingsLauncherProps {}
 
@@ -14,7 +13,6 @@ function SettingsLauncher({}: SettingsLauncherProps) {
       menus={[]}
       appContent={<Settings />}
       icon=""
-      // icon={icon}
     ></Launcher>
   );
 }

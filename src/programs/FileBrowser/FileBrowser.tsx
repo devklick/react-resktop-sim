@@ -4,7 +4,14 @@ import useLocalFSWithHistory from "../../hooks/useLocalFSWithHistory";
 import AppSideBar from "../../components/AppSideBar";
 import MainContent from "./MainContent";
 
-import "./FileBrowser.scss";
+import {
+  StyledBottomBar,
+  StyledFileBrowser,
+  StyledTopBar,
+  StyledTopBarButton,
+  StyledTopBarButtons,
+  StyledTopBarPath,
+} from "./styles";
 
 const defaultPath = "/home/user";
 
@@ -27,28 +34,17 @@ function TopBar({
   navBack,
 }: TopBarProps) {
   return (
-    <div className="file-browser__top-bar">
-      <div className="file-browser__top-bar__button-nav">
-        <div
-          className="file-browser__top-bar__button-nav__left"
-          onClick={navBack}
-        >
-          ←
-        </div>
-        <div
-          className="file-browser__top-bar__button-nav__right"
-          onClick={navForward}
-        >
-          →
-        </div>
-      </div>
-      <input
-        className="file-browser__top-bar__path-nav"
+    <StyledTopBar>
+      <StyledTopBarButtons>
+        <StyledTopBarButton onClick={navBack}>←</StyledTopBarButton>
+        <StyledTopBarButton onClick={navForward}>→</StyledTopBarButton>
+      </StyledTopBarButtons>
+      <StyledTopBarPath
         value={pathSearch}
         onChange={onPathInputChange}
         onKeyDown={onPathInputSubmit}
       />
-    </div>
+    </StyledTopBar>
   );
 }
 
@@ -75,7 +71,7 @@ function FileBrowser({ path = defaultPath }: FileBrowserProps) {
   }
 
   return (
-    <div className="file-browser" ref={appRef}>
+    <StyledFileBrowser ref={appRef}>
       <TopBar
         pathSearch={pathSearch}
         onPathInputChange={onPathInputChange}
@@ -97,8 +93,8 @@ function FileBrowser({ path = defaultPath }: FileBrowserProps) {
         openFSObject={fs.navToObject}
         appRef={appRef}
       />
-      <div className="file-browser__bottom-bar"></div>
-    </div>
+      <StyledBottomBar />
+    </StyledFileBrowser>
   );
 }
 

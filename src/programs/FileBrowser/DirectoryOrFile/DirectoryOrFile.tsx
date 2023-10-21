@@ -4,10 +4,9 @@ import useLocalFS, {
   FSObject,
   isFSDirectory,
 } from "../../../stores/localFS";
-import "./DirectoryOrFile.scss";
 import ContextMenu from "../../../components/ContextMenu/ContextMenu";
 import { ContextMenuAction, getFSObjectContextMenu } from "../contextMenus";
-import { ReactComponent as FolderIcon } from "../../../assets/icons/folder-icon.svg";
+
 import useBindKeyToAction from "../../../hooks/useBindKeyToAction";
 import AppPopup from "../../../components/AppPopup";
 import HeaderBar from "../../../components/HeaderBar";
@@ -15,6 +14,7 @@ import Box from "../../../components/Box";
 import InputField from "../../../components/InputField";
 import Row from "../../../components/Row";
 import Button from "../../../components/Button";
+import { StyledFolderIcon, StyledItem, StyledItemName } from "./styles";
 
 interface DirectoryOrFileProps {
   fsObject: FSObject;
@@ -47,8 +47,8 @@ function DirectoryOrFile({
   }
 
   return (
-    <div
-      className={`file-browser__main-content__item ${selected ? "active" : ""}`}
+    <StyledItem
+      selected={selected}
       onDoubleClick={() => openFSObject(fsObject)}
       onClick={() => setSelected(fsObject.path)}
       key={fsObject.path}
@@ -81,13 +81,9 @@ function DirectoryOrFile({
           fsObject={fsObject}
         />
       )}
-      {isFSDirectory(fsObject) ? (
-        <FolderIcon className="file-browser__main-content__item-icon" />
-      ) : null}
-      <span className="file-browser__main-content__item-name">
-        {fsObject.name}
-      </span>
-    </div>
+      {isFSDirectory(fsObject) ? <StyledFolderIcon /> : null}
+      <StyledItemName>{fsObject.name}</StyledItemName>
+    </StyledItem>
   );
 }
 
