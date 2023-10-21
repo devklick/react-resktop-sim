@@ -82,9 +82,9 @@ function FileBrowser({ path = defaultPath }: FileBrowserProps) {
 
       <AppSideBar
         items={fs.favorites.map((fav) => ({
-          title: fav.name,
-          isActive: fav.path === fs.currentDirectory.path,
-          onClick: () => fs.navToPath(fav.path),
+          title: fs.getNameFromPath(fav) ?? "",
+          isActive: fav === fs.currentDirectory.path,
+          onClick: () => fs.navToPath(fav),
         }))}
       />
 

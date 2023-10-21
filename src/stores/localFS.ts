@@ -20,53 +20,49 @@ export type FSObject = FSDirectory | FSFile;
 export type FSObjectType = FSObject["type"];
 
 const pathSeparator = "/";
+const rootDirPath = "/";
+const homeDirPath = rootDirPath + "home";
+const userDirPath = [homeDirPath, "user"].join(pathSeparator);
+const documentsDirPath = [userDirPath, "Documents"].join(pathSeparator);
+const picturesDirPath = [userDirPath, "Pictures"].join(pathSeparator);
+const downloadsDirPath = [userDirPath, "Downloads"].join(pathSeparator);
+const musicDirPath = [userDirPath, "Music"].join(pathSeparator);
+const videosDirPath = [userDirPath, "Videos"].join(pathSeparator);
 
 const documentsDir: FSDirectory = {
   name: "Documents",
-  get path() {
-    return [userDir.path, this.name].join(pathSeparator);
-  },
+  path: documentsDirPath,
   type: "directory",
   contents: {},
 };
 const picturesDir: FSDirectory = {
   name: "Pictures",
-  get path() {
-    return [userDir.path, this.name].join(pathSeparator);
-  },
+  path: picturesDirPath,
   type: "directory",
   contents: {},
 };
 const downloadsDir: FSDirectory = {
   name: "Downloads",
-  get path() {
-    return [userDir.path, this.name].join(pathSeparator);
-  },
+  path: downloadsDirPath,
   type: "directory",
   contents: {},
 };
 const musicDir: FSDirectory = {
   name: "Music",
-  get path() {
-    return [userDir.path, this.name].join(pathSeparator);
-  },
+  path: musicDirPath,
   type: "directory",
   contents: {},
 };
 const videosDir: FSDirectory = {
   name: "Videos",
-  get path() {
-    return [userDir.path, this.name].join(pathSeparator);
-  },
+  path: videosDirPath,
   type: "directory",
   contents: {},
 };
 
 const userDir: FSDirectory = {
   name: "user",
-  get path() {
-    return [homeDir.path, this.name].join(pathSeparator);
-  },
+  path: userDirPath,
   type: "directory",
   contents: {
     [documentsDir.name]: documentsDir,
@@ -79,9 +75,7 @@ const userDir: FSDirectory = {
 
 const homeDir: FSDirectory = {
   name: "home",
-  get path() {
-    return pathSeparator + this.name;
-  },
+  path: homeDirPath,
   type: "directory",
   contents: { [userDir.name]: userDir },
 };
@@ -113,7 +107,7 @@ export interface LocalFSState {
     parentDirectory: FSDirectory,
     contents?: string
   ) => FSFile | null;
-  favorites: Array<{ path: string; name: string }>;
+  favorites: Array<string>;
   validateFSObjectName: (name: string) => string | null;
   fsObjectNameIsAvailable: (name: string, directory: FSDirectory) => boolean;
   create: (
@@ -278,24 +272,39 @@ export const useLocalFS = create<LocalFSState>()(
         newName
       ) => {
         const oldName = fsObject.name;
+        const oldPath = fsObject.path;
+
+        // Update the FSObject to have the new name
         fsObject.name = newName;
         fsObject.path = [
           ...fsObject.path.split(pathSeparator).slice(0, -1),
           newName,
         ].join(pathSeparator);
-        parentDirectory.contents[newName] = fsObject;
+
+        // Delete the old one from the parent
         delete parentDirectory.contents[oldName];
 
-        set({ root: get().root });
+        // Update the parent so it knows about the rename
+        parentDirectory.contents[newName] = fsObject;
+
+        // If the FSObject is in the favorites, update that too.
+        const favorites = get().favorites;
+        const favIndex = favorites.findIndex((fav) => fav === oldPath);
+        if (favIndex) {
+          favorites[favIndex] = fsObject.path;
+        }
+
+        set({ root: get().root, favorites });
       };
       return {
         root: rootDir,
         favorites: [
-          { name: userDir.name, path: userDir.path },
-          { name: documentsDir.name, path: documentsDir.path },
-          { name: downloadsDir.name, path: downloadsDir.path },
-          { name: musicDir.name, path: musicDir.path },
-          { name: videosDir.name, path: videosDir.path },
+          userDir.path,
+          documentsDir.path,
+          downloadsDir.path,
+          musicDir.path,
+          picturesDir.path,
+          videosDir.path,
         ],
         create,
         createDirectory,

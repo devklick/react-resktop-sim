@@ -62,6 +62,7 @@ function useLocalFSWithHistory(currentPath: string) {
     getDirOrDefault,
     navForward,
     navBack,
+    getNameFromPath: fs.getLastFromPath,
   };
 }
 

@@ -6,7 +6,7 @@ export const StyledContainer = styled.div`
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  gap: 10;
+  gap: 10px;
 `;
 
 export const StyledInput = styled.input`

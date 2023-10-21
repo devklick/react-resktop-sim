@@ -66,7 +66,6 @@ function Launcher({
     // we want to focus them. This means revealing them if they
     // are minimized and bring them to the top of the window stack.
     if (winMan.windowsOfTypeExist(windowType)) {
-      console.log("Attempting to focus windows");
       winMan.focusWindowsOfType(windowType);
       return;
     }
@@ -111,7 +110,6 @@ function Launcher({
   function getContextPosition(numberOfItems: number): Position {
     const rect = ref.current?.getBoundingClientRect();
     if (!rect) return { x: 0, y: 0 };
-    console.log(rect);
     return {
       x: rect.x,
       y: rect.y - 20 - numberOfItems * 30,

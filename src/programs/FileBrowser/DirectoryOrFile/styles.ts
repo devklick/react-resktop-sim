@@ -24,10 +24,10 @@ export const StyledItem = styled.div<{
 
 export const StyledItemName = styled.span``;
 
-export const StyledFolderIcon = styled(FolderIcon)<{ fillColor: string }>`
+export const StyledFolderIcon = styled(FolderIcon)<{ fill: string }>`
   height: 80%;
   width: 80%;
   path {
-    fill: ${(props) => props.fillColor};
+    fill: ${(props) => props.fill};
   }
 `;
