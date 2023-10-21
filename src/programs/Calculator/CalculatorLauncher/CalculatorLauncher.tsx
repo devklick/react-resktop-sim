@@ -1,6 +1,5 @@
 import Calculator from "..";
 import Launcher from "../../../components/BottomBar/Launcher";
-import "./CalculatorLauncher.scss";
 
 interface CalculatorLauncherProps {}
 
