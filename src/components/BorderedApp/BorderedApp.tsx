@@ -71,6 +71,7 @@ function BorderedApp({
   function onClickClose() {
     winMan.closeWindow(type, id);
   }
+  console.log("Bordered app, hidden", String(hidden));
 
   return (
     <StyledBorderedApp

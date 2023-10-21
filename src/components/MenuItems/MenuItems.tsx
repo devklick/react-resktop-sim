@@ -60,6 +60,7 @@ function MenuItem({
   const hoverOpenDelayRef = useRef<NodeJS.Timeout>();
   const hoverCloseDelayRef = useRef<NodeJS.Timeout>();
   const [open, setOpen] = useState<boolean>(false);
+  const settings = useSystemSettings();
 
   useEffect(() => {
     return () => {
@@ -130,6 +131,7 @@ function MenuItem({
       onClick={handleOnClick}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
+      hoverColor={settings.accentColor}
     >
       <span>{title}</span>
       {items && open && (
