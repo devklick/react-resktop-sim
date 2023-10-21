@@ -76,6 +76,13 @@ export function getPages(
             systemsSettings.setIconColor(value);
           },
         },
+        {
+          title: "Restore Default Theme",
+          description: "Revert to the default theme",
+          type: "button",
+          onValueChanged: () => systemsSettings.restoreDefaultTheme(),
+          currentValue: undefined,
+        },
       ],
     },
   };
