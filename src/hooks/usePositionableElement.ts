@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import useDragToResize, { Dimensions, Rect } from "./useDragToResize";
+import useDragToResize, { Dimensions, Position, Rect } from "./useDragToResize";
 import useDragToMove from "./useDragToMove";
 import useWindowMinMax from "./useWindowMinMax";
 
@@ -8,6 +8,7 @@ interface UsePositionableElementProps {
   minDimensions: Dimensions;
   windowType: string;
   windowId: string;
+  initialPosition: Position;
 }
 
 /**
@@ -21,6 +22,7 @@ function usePositionableElement({
   minDimensions,
   windowType,
   windowId,
+  initialPosition,
 }: UsePositionableElementProps) {
   // Hold a single ref for the elements rect,
   // so we dont have to call getBoundingClientRect every
@@ -40,11 +42,11 @@ function usePositionableElement({
       elementRect.current = {
         height: rect.height,
         width: rect.width,
-        left: rect.left,
-        top: rect.top,
+        left: initialPosition.x,
+        top: initialPosition.y,
       };
     }
-  }, [elementRef]);
+  }, [elementRef, initialPosition.x, initialPosition.y]);
 
   // The resize hook allows the app to be resized
   // by dragging the corners or edges of the element.

@@ -34,6 +34,16 @@ function Launcher({
 
   function addWindow() {
     const id = windowId ?? uuid();
+    const boundingRect = winMan.contentRef.current?.getBoundingClientRect();
+    function getInitialPosition(axis: "x" | "y"): number {
+      if (!boundingRect) return 0;
+      const dimension = axis === "x" ? "width" : "height";
+      return (
+        (boundingRect[axis] ?? 0) +
+        (boundingRect[dimension] ?? 0) / 2 -
+        initialDimensions[dimension] / 2
+      );
+    }
     winMan.addWindow(windowType, id, {
       component: BorderedApp,
       props: {
@@ -41,6 +51,10 @@ function Launcher({
         title: WindowTitle,
         type: windowType,
         initialDimensions,
+        initialPosition: {
+          x: getInitialPosition("x"),
+          y: getInitialPosition("y"),
+        },
         menus,
       },
       key: id,

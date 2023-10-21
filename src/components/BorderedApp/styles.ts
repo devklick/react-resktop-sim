@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
-import { Dimensions } from "../../hooks/useDragToResize";
+import { Dimensions, Position } from "../../hooks/useDragToResize";
 
 interface StyledBorderedAppProps {
   initialDimensions: Dimensions;
+  initialPosition: Position;
   zIndex: number | undefined;
   backgroundColor: string;
   display: "none" | "grid";
@@ -25,6 +26,8 @@ export const StyledBorderedApp = styled.div<StyledBorderedAppProps>`
   z-index: ${(props) => props.zIndex};
   background-color: ${(props) => props.backgroundColor};
   display: ${(props) => props.display};
+  left: ${(props) => props.initialPosition.x}px;
+  top: ${(props) => props.initialPosition.y}px;
 `;
 export const StyledCorner = styled.div<{
   location: "ne" | "se" | "sw" | "nw";

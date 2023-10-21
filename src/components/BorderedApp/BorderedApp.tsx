@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import useWindowManagerStore, {
   BaseProps,
 } from "../../stores/windowManagerStore";
-import { Dimensions } from "../../hooks/useDragToResize";
+import { Dimensions, Position } from "../../hooks/useDragToResize";
 import BorderedAppMenu from "./BorderedAppMenu/BorderedAppMenu";
 import usePositionableElement from "../../hooks/usePositionableElement";
 import useSystemSettings from "../../stores/systemSettingsStore";
@@ -27,6 +27,7 @@ interface BorderedAppProps extends BaseProps {
   type: string;
   id: string;
   initialDimensions: Dimensions;
+  initialPosition: Position;
   maxDimensions?: Dimensions;
   minDimensions?: Dimensions;
   menus?: Array<MenuItemProps>;
@@ -38,6 +39,7 @@ function BorderedApp({
   id,
   children,
   initialDimensions,
+  initialPosition,
   minDimensions = { height: 350, width: 350 },
   menus,
   zIndex,
@@ -64,6 +66,7 @@ function BorderedApp({
   } = usePositionableElement({
     elementRef: appRef,
     minDimensions,
+    initialPosition,
     windowType: type,
     windowId: id,
   });
@@ -78,6 +81,7 @@ function BorderedApp({
       ref={appRef}
       onMouseDown={() => winMan.focusWindow(type, id)}
       initialDimensions={initialDimensions}
+      initialPosition={initialPosition}
       zIndex={zIndex}
       backgroundColor={settings.mainColor}
       display={hidden === true ? "none" : "grid"}
