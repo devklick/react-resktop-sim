@@ -22,7 +22,10 @@ export const StyledItemsContent = styled.div`
   box-sizing: border-box;
 `;
 
-export const StyledMenuItem = styled.div`
+export const StyledMenuItem = styled.div<{ hoverColor: string }>`
   padding: 5px 12px;
   height: 20px;
+  :hover {
+    background-color: ${(props) => props.hoverColor};
+  }
 `;

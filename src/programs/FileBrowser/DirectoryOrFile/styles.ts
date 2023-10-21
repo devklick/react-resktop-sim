@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
 import { ReactComponent as FolderIcon } from "../../../assets/icons/folder-icon.svg";
 
-export const StyledItem = styled.div<{ selected: boolean }>`
+export const StyledItem = styled.div<{
+  selected: boolean;
+  selectedColor: string;
+}>`
   width: 100%;
   padding: 10px;
   overflow-wrap: break-word;
@@ -15,14 +18,16 @@ export const StyledItem = styled.div<{ selected: boolean }>`
   flex-direction: column;
   gap: 10px;
   border-radius: 10px;
+  background-color: ${(props) =>
+    props.selected ? props.selectedColor : undefined};
 `;
 
 export const StyledItemName = styled.span``;
 
-export const StyledFolderIcon = styled(FolderIcon)`
+export const StyledFolderIcon = styled(FolderIcon)<{ fillColor: string }>`
   height: 80%;
   width: 80%;
   path {
-    fill: white;
+    fill: ${(props) => props.fillColor};
   }
 `;

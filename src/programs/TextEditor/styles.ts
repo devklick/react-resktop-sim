@@ -5,7 +5,7 @@ export const StyledTextEditor = styled.div`
   width: 100%;
 `;
 
-export const StyledTextArea = styled.textarea`
+export const StyledTextArea = styled.textarea<{ selectedColor: string }>`
   width: 100%;
   height: 100%;
   border: none;
@@ -21,5 +21,9 @@ export const StyledTextArea = styled.textarea`
 
   &:focus-visible {
     outline: none;
+  }
+
+  ::selection {
+    background-color: ${(props) => props.selectedColor};
   }
 `;

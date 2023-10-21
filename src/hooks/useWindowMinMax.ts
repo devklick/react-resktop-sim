@@ -58,12 +58,11 @@ function useWindowMinMax({
     const window = windowRef.current;
     if (!window?.style) return;
     if (e.target !== window) return;
+    winMan.hideWindow(windowType, windowId);
 
-    window.style.display = "none";
     window.style.transition = oldTransition.current;
     window.style.transform = oldTransform.current;
     window.style.opacity = oldOpacity.current;
-    winMan.hideWindow(windowType, windowId);
   }
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import MenuItems, { MenuItemProps } from "../MenuItems";
 import useDetectMouseDownOutside from "../../hooks/useDetectMouseDownOutside";
 
 import { StyledContextMenu } from "./styles";
+import useBindKeyToAction from "../../hooks/useBindKeyToAction";
 
 interface ContextMenuProps {
   items: Array<MenuItemProps>;
@@ -14,6 +15,7 @@ function ContextMenu({ items, position, close }: ContextMenuProps) {
   const elementRef = useRef<HTMLDivElement>(null);
 
   useDetectMouseDownOutside({ elementRef, onMouseDown: close });
+  useBindKeyToAction({ keys: ["Escape"], action: close });
 
   return (
     <StyledContextMenu position={position} ref={elementRef}>

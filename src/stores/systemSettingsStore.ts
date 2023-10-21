@@ -18,9 +18,9 @@ export const useSystemSettings = create<SystemSettingState>()(
   persist(
     (set) => ({
       mainColor: "#2e3440",
-      accentColor: "#ffffff",
+      accentColor: "#454e60",
       fontColor: "#ffffff",
-      iconColor: "#ffffff",
+      iconColor: "#9298b9",
       background: "https://regolith-linux.org/images/releases/nord-dark.png",
       setAccentColor(accentColor) {
         set({ accentColor });

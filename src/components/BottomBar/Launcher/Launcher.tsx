@@ -1,13 +1,14 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
 
 import useConditionalClick from "../../../hooks/useConditionalClick";
 import useWindowManagerStore from "../../../stores/windowManagerStore";
 import BorderedApp from "../../BorderedApp";
-import { Dimensions } from "../../../hooks/useDragToResize";
+import { Dimensions, Position } from "../../../hooks/useDragToResize";
 import { MenuItemProps } from "../../MenuItems";
 
 import { StyledIcon, StyledLauncher } from "./styles";
+import ContextMenu from "../../ContextMenu";
 interface LauncherProps {
   windowType: string;
   WindowTitle: string;
@@ -29,9 +30,20 @@ function Launcher({
 }: React.PropsWithChildren<LauncherProps>) {
   const winMan = useWindowManagerStore();
   const ref = useRef<HTMLDivElement>(null);
+  const [contextOpen, setContextOpen] = useState(false);
 
   function addWindow() {
     const id = windowId ?? uuid();
+    const boundingRect = winMan.contentRef.current?.getBoundingClientRect();
+    function getInitialPosition(axis: "x" | "y"): number {
+      if (!boundingRect) return 0;
+      const dimension = axis === "x" ? "width" : "height";
+      return (
+        (boundingRect[axis] ?? 0) +
+        (boundingRect[dimension] ?? 0) / 2 -
+        initialDimensions[dimension] / 2
+      );
+    }
     winMan.addWindow(windowType, id, {
       component: BorderedApp,
       props: {
@@ -39,6 +51,10 @@ function Launcher({
         title: WindowTitle,
         type: windowType,
         initialDimensions,
+        initialPosition: {
+          x: getInitialPosition("x"),
+          y: getInitialPosition("y"),
+        },
         menus,
       },
       key: id,
@@ -50,6 +66,7 @@ function Launcher({
     // we want to focus them. This means revealing them if they
     // are minimized and bring them to the top of the window stack.
     if (winMan.windowsOfTypeExist(windowType)) {
+      console.log("Attempting to focus windows");
       winMan.focusWindowsOfType(windowType);
       return;
     }
@@ -58,10 +75,7 @@ function Launcher({
     addWindow();
   }
   function onRightClick() {
-    // TODO: Display a context menu with various options that are
-    // specified by the program-specific launcher and passed via props.
-    // This will include things like "open new window", "close windows", etc.
-    console.log("right clicked");
+    setContextOpen(true);
   }
 
   useConditionalClick({
@@ -76,14 +90,44 @@ function Launcher({
     clickHandler: onRightClick,
   });
 
+  function getContextMenu() {
+    const items: Array<MenuItemProps> = [
+      {
+        title: "New Window",
+        action: () => {
+          addWindow();
+          setContextOpen(false);
+        },
+      },
+    ];
+    return (
+      <ContextMenu
+        close={() => setContextOpen(false)}
+        items={items}
+        position={getContextPosition(items.length)}
+      />
+    );
+  }
+  function getContextPosition(numberOfItems: number): Position {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return { x: 0, y: 0 };
+    console.log(rect);
+    return {
+      x: rect.x,
+      y: rect.y - 20 - numberOfItems * 30,
+    };
+  }
   return (
-    <StyledLauncher ref={ref} tabIndex={1} className="launcher">
-      <StyledIcon
-        src={icon}
-        className="launcher-icon"
-        alt={windowType}
-      ></StyledIcon>
-    </StyledLauncher>
+    <>
+      {contextOpen && getContextMenu()}
+      <StyledLauncher ref={ref} tabIndex={1} className="launcher">
+        <StyledIcon
+          src={icon}
+          className="launcher-icon"
+          alt={windowType}
+        ></StyledIcon>
+      </StyledLauncher>
+    </>
   );
 }
 

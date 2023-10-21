@@ -85,6 +85,7 @@ const useWindowManagerStore = create<WindowManagerStoreState>()((set, get) => ({
     const windowsOfType = windowsMap.get(windowType);
 
     // If no windows of this type exist, nothing to do
+    console.log(`${windowsOfType?.size} Windows of type ${windowType}`);
     if (!windowsOfType?.size) return;
 
     let highestZIndex = get().highestZIndex;

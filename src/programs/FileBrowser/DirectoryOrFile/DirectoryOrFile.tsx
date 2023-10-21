@@ -15,6 +15,7 @@ import InputField from "../../../components/InputField";
 import Row from "../../../components/Row";
 import Button from "../../../components/Button";
 import { StyledFolderIcon, StyledItem, StyledItemName } from "./styles";
+import useSystemSettings from "../../../stores/systemSettingsStore";
 
 interface DirectoryOrFileProps {
   fsObject: FSObject;
@@ -38,6 +39,7 @@ function DirectoryOrFile({
   const [contextAction, setContextAction] = useState<ContextMenuAction | null>(
     null
   );
+  const settings = useSystemSettings();
 
   function handleRightClick(event: React.MouseEvent) {
     clickPosition.current = { x: event.clientX, y: event.clientY };
@@ -49,6 +51,7 @@ function DirectoryOrFile({
   return (
     <StyledItem
       selected={selected}
+      selectedColor={settings.accentColor}
       onDoubleClick={() => openFSObject(fsObject)}
       onClick={() => setSelected(fsObject.path)}
       key={fsObject.path}
@@ -81,7 +84,9 @@ function DirectoryOrFile({
           fsObject={fsObject}
         />
       )}
-      {isFSDirectory(fsObject) ? <StyledFolderIcon /> : null}
+      {isFSDirectory(fsObject) ? (
+        <StyledFolderIcon fillColor={settings.iconColor} />
+      ) : null}
       <StyledItemName>{fsObject.name}</StyledItemName>
     </StyledItem>
   );
