@@ -1,6 +1,5 @@
 import Settings from "..";
 import Launcher from "../../../components/BottomBar/Launcher";
-import "./SettingsLauncher.scss";
 
 interface SettingsLauncherProps {}
 

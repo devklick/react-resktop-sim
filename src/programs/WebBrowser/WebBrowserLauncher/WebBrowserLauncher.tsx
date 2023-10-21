@@ -1,6 +1,5 @@
 import Launcher from "../../../components/BottomBar/Launcher";
 import WebBrowser from "../WebBrowser";
-import "./WebBrowserLauncher.scss";
 
 interface WebBrowserLauncherProps {}
 

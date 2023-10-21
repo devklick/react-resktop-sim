@@ -1,13 +1,13 @@
-import "./TextEditor.scss";
+import { StyledTextArea, StyledTextEditor } from "./styles";
 
 interface TextEditorProps {}
 
 // eslint-disable-next-line no-empty-pattern
 function TextEditor({}: TextEditorProps) {
   return (
-    <div className="text-editor">
-      <textarea className="text-editor__text-area" />
-    </div>
+    <StyledTextEditor>
+      <StyledTextArea />
+    </StyledTextEditor>
   );
 }
 

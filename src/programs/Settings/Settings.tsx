@@ -4,7 +4,15 @@ import AppSideBar from "../../components/AppSideBar";
 import { getPages } from "./settingsPageConfig";
 import useSystemSettings from "../../stores/systemSettingsStore";
 
-import "./Settings.scss";
+import {
+  StyledPage,
+  StyledSection,
+  StyledSectionDescription,
+  StyledSectionTitle,
+  StyledSectionValue,
+  StyledSections,
+  StyledSettings,
+} from "./styles";
 
 interface SettingsSectionProps {
   title: string;
@@ -55,18 +63,15 @@ function SettingsSection(section: SettingsSectionProps) {
   }
 
   return (
-    <div className="settings__page-section">
-      <h1 className="settings__page-section__title">{section.title}</h1>
-      <p className="settings__page-section__description">
-        {section.description}
-      </p>
-      <input
-        className="settings__page-section__value"
+    <StyledSection>
+      <StyledSectionTitle>{section.title}</StyledSectionTitle>
+      <StyledSectionDescription>{section.description}</StyledSectionDescription>
+      <StyledSectionValue
         type={getInputType(section.type)}
         value={String(value)}
         onChange={handleChange}
-      ></input>
-    </div>
+      ></StyledSectionValue>
+    </StyledSection>
   );
 }
 
@@ -77,13 +82,13 @@ export interface SettingsPageProps {
 
 function SettingsPage({ sections }: SettingsPageProps) {
   return (
-    <div className="settings__page">
-      <div className="settings__page-sections">
+    <StyledPage>
+      <StyledSections>
         {sections.map((section) => (
           <SettingsSection {...section} key={section.title} />
         ))}
-      </div>
-    </div>
+      </StyledSections>
+    </StyledPage>
   );
 }
 
@@ -95,25 +100,19 @@ function Settings({}: SettingsProps) {
   const pages = getPages(systemSettings);
   const [currentPage, setCurrentPage] = useState<string>(Object.keys(pages)[0]);
 
-  function getAppBar() {
-    return (
-      <AppSideBar
-        items={Object.entries<SettingsPageProps>(pages).map(([type, page]) => {
-          return {
-            title: page.name,
-            isActive: currentPage === type,
-            onClick: () => setCurrentPage(type),
-          };
-        })}
-      />
-    );
+  function getItems(): Parameters<typeof AppSideBar>[0]["items"] {
+    return Object.entries<SettingsPageProps>(pages).map(([type, page]) => ({
+      title: page.name,
+      isActive: currentPage === type,
+      onClick: () => setCurrentPage(type),
+    }));
   }
 
   return (
-    <div className="settings">
-      {getAppBar()}
+    <StyledSettings>
+      <AppSideBar items={getItems()} />
       <SettingsPage {...pages[currentPage]} />
-    </div>
+    </StyledSettings>
   );
 }
 

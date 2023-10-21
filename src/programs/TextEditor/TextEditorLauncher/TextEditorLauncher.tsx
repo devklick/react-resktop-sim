@@ -1,7 +1,6 @@
 import TextEditor from "..";
 import Launcher from "../../../components/BottomBar/Launcher";
 import { MenuItemProps } from "../../../components/MenuItems";
-import "./TextEditorLauncher.scss";
 import icon from "./text-editor-launcher-icon.svg";
 
 const windowType = "text-editor";
