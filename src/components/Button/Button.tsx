@@ -4,11 +4,17 @@ interface ButtonProps {
   name: string;
   onClick: () => void;
   width?: string | number;
+  disabled?: boolean;
 }
 
-function Button({ name, width = "100%", onClick }: ButtonProps) {
+function Button({
+  name,
+  width = "100%",
+  disabled = false,
+  onClick,
+}: ButtonProps) {
   return (
-    <StyledButton width={width} onClick={onClick}>
+    <StyledButton width={width} onClick={onClick} disabled={disabled}>
       {name}
     </StyledButton>
   );

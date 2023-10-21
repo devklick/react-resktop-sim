@@ -134,7 +134,11 @@ function CreateFSObjectPopup({
 
         <Row>
           <Button name="Cancel" onClick={close} />
-          <Button name="Confirm" onClick={handleClickConfirm} />
+          <Button
+            name="Confirm"
+            onClick={handleClickConfirm}
+            disabled={!!error}
+          />
         </Row>
       </Box>
     </AppPopup>

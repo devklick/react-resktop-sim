@@ -85,7 +85,7 @@ function DirectoryOrFile({
         />
       )}
       {isFSDirectory(fsObject) ? (
-        <StyledFolderIcon fillColor={settings.iconColor} />
+        <StyledFolderIcon fill={settings.iconColor} />
       ) : null}
       <StyledItemName>{fsObject.name}</StyledItemName>
     </StyledItem>
@@ -155,7 +155,11 @@ function RenamePopup({
 
         <Row>
           <Button name="Cancel" onClick={close} />
-          <Button name="Confirm" onClick={handleClickConfirm} />
+          <Button
+            name="Confirm"
+            onClick={handleClickConfirm}
+            disabled={!!error}
+          />
         </Row>
       </Box>
     </AppPopup>
