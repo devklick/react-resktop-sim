@@ -265,6 +265,7 @@ export const useLocalFS = create<LocalFSState>()(
         fsObject
       ) => {
         delete parentDirectory.contents[fsObject.name];
+        get().removeFromFavorites(fsObject.path);
         set({ root: get().root });
       };
 
