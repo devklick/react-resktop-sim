@@ -40,6 +40,7 @@ function DirectoryOrFile({
     null
   );
   const settings = useSystemSettings();
+  const fs = useLocalFS();
 
   function handleRightClick(event: React.MouseEvent) {
     clickPosition.current = { x: event.clientX, y: event.clientY };
@@ -61,7 +62,8 @@ function DirectoryOrFile({
         <ContextMenu
           position={clickPosition.current}
           items={getFSObjectContextMenu(
-            fsObject.type,
+            fsObject,
+            fs,
             setContextAction,
             setContextMenuOpen
           )}

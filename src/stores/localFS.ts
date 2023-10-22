@@ -123,6 +123,8 @@ export interface LocalFSState {
   delete: (parentDirectory: FSDirectory, fsObject: FSObject) => void;
   getParentDirectory: (path: string) => FSDirectory | null;
   getLastFromPath: (path: string) => string | null;
+  addToFavorites: (path: string) => void;
+  removeFromFavorites: (path: string) => void;
 }
 
 export const useLocalFS = create<LocalFSState>()(
@@ -290,11 +292,31 @@ export const useLocalFS = create<LocalFSState>()(
         // If the FSObject is in the favorites, update that too.
         const favorites = get().favorites;
         const favIndex = favorites.findIndex((fav) => fav === oldPath);
-        if (favIndex) {
+        if (favIndex >= 0) {
           favorites[favIndex] = fsObject.path;
         }
 
         set({ root: get().root, favorites });
+      };
+
+      const addToFavorites: LocalFSState["addToFavorites"] = (path) => {
+        const oldFavorites = get().favorites;
+        const favorites = [...oldFavorites];
+        if (!favorites.includes(path)) {
+          favorites.push(path);
+        }
+        set({ favorites });
+      };
+      const removeFromFavorites: LocalFSState["removeFromFavorites"] = (
+        path
+      ) => {
+        const oldFavorites = get().favorites;
+        const favorites = [...oldFavorites];
+        const index = favorites.indexOf(path);
+        if (index >= 0) {
+          favorites.splice(index, 1);
+        }
+        set({ favorites });
       };
       return {
         root: rootDir,
@@ -316,6 +338,8 @@ export const useLocalFS = create<LocalFSState>()(
         getParentDirectory,
         rename,
         validateFSObjectName,
+        addToFavorites,
+        removeFromFavorites,
       };
     },
     {

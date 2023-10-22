@@ -1,5 +1,5 @@
 import { MenuItemProps } from "../../components/MenuItems";
-import { FSObjectType } from "../../stores/localFS";
+import { FSObject, FSObjectType, LocalFSState } from "../../stores/localFS";
 
 export type ContextMenuAction = "delete" | "rename";
 
@@ -29,15 +29,21 @@ export function getMainContentContextItems(
 }
 
 export function getFSObjectContextMenu(
-  fsObjectType: FSObjectType,
+  fsObject: FSObject,
+  fs: LocalFSState,
   setContextAction: (action: ContextMenuAction) => void,
   setContextMenuOpen: (open: boolean) => void
 ): Array<MenuItemProps> {
-  switch (fsObjectType) {
+  switch (fsObject.type) {
     case "file":
       return getFSFileContextMenu(setContextAction, setContextMenuOpen);
     case "directory":
-      return getFSDirectoryContextMenu(setContextAction, setContextMenuOpen);
+      return getFSDirectoryContextMenu(
+        fsObject,
+        fs,
+        setContextAction,
+        setContextMenuOpen
+      );
   }
 }
 
@@ -64,7 +70,10 @@ function getFSFileContextMenu(
 }
 
 function getFSDirectoryContextMenu(
+  fsObject: FSObject,
+  fs: LocalFSState,
   setContextAction: (action: ContextMenuAction) => void,
+
   setContextMenuOpen: (open: boolean) => void
 ): Array<MenuItemProps> {
   return [
@@ -79,6 +88,17 @@ function getFSDirectoryContextMenu(
       title: "Delete Directory",
       action: () => {
         setContextAction("delete");
+        setContextMenuOpen(false);
+      },
+    },
+    {
+      title: fs.favorites.includes(fsObject.path)
+        ? "Remove from Favorites"
+        : "Add to Favorites",
+      action: () => {
+        fs.favorites.includes(fsObject.path)
+          ? fs.removeFromFavorites(fsObject.path)
+          : fs.addToFavorites(fsObject.path);
         setContextMenuOpen(false);
       },
     },
