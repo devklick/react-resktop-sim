@@ -98,6 +98,10 @@ function Launcher({
           setContextOpen(false);
         },
       },
+      {
+        title: "Change Icon",
+        action: () => {},
+      },
     ];
     return (
       <ContextMenu

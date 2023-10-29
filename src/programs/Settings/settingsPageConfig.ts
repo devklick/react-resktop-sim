@@ -43,7 +43,7 @@ export function getPages(
         {
           title: "Accent Color",
           description:
-            "The accent for the desktop UI, for things such as currently-selected items (not yet supported)",
+            "The accent for the desktop UI, for things such as currently-selected items",
           currentValue: systemsSettings.accentColor,
           type: "color",
           valueValidation: (value) =>
@@ -67,7 +67,7 @@ export function getPages(
           title: "Icon Color",
           description: `The color to display any basic icons in. This will affect icons which 
             are essentially just outlines, however more complex icons such as launcher 
-            icons will remain unaffected (not yet supported)`,
+            icons will remain unaffected`,
           currentValue: systemsSettings.iconColor,
           type: "color",
           valueValidation: (value) =>
