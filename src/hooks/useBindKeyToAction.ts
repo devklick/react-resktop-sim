@@ -17,7 +17,7 @@ function useBindKeyToAction({ keys, action }: UseBindKeyToActionProps) {
     window?.addEventListener("keydown", handler);
 
     return () => {
-      window?.addEventListener("keydown", handler);
+      window?.removeEventListener("keydown", handler);
     };
   }, [action, keys]);
 }
