@@ -50,8 +50,6 @@ function MainContent({
       }
     );
 
-    console.log(objects.map((o) => o.name));
-
     return objects;
   }
 
