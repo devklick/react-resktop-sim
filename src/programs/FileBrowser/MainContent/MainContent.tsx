@@ -39,6 +39,22 @@ function MainContent({
     setContextMenuOpen(true);
   }
 
+  function getFSObjects() {
+    const objects = Object.values<FSObject>(currentDirectory.contents).sort(
+      (a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0;
+      }
+    );
+
+    console.log(objects.map((o) => o.name));
+
+    return objects;
+  }
+
   return (
     <StyledMainContent onContextMenu={handleRightClick}>
       {contextMenuOpen && (
@@ -56,7 +72,7 @@ function MainContent({
           close={() => setPromptFor(null)}
         />
       )}
-      {Object.values<FSObject>(currentDirectory.contents).map((fsObject) => (
+      {getFSObjects().map((fsObject) => (
         <DirectoryOrFile
           fsObject={fsObject}
           openFSObject={openFSObject}
