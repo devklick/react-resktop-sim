@@ -276,19 +276,38 @@ export const useLocalFS = create<LocalFSState>()(
       ) => {
         const oldName = fsObject.name;
         const oldPath = fsObject.path;
-
-        // Update the FSObject to have the new name
-        fsObject.name = newName;
-        fsObject.path = [
+        const newPath = [
           ...fsObject.path.split(pathSeparator).slice(0, -1),
           newName,
         ].join(pathSeparator);
 
-        // Delete the old one from the parent
-        delete parentDirectory.contents[oldName];
-
         // Update the parent so it knows about the rename
         parentDirectory.contents[newName] = fsObject;
+        delete parentDirectory.contents[oldName];
+
+        // Update the FSObject to have the new name
+        fsObject.name = newName;
+
+        // The path is also stored on each of the children,
+        // so we need to update the renamed dir on them to.
+        // This isnt ideal, as we'll going to have to loop over
+        // them all recursively. A better way to do this might be to not
+        // store the path on each FSObject and instead store a reference to
+        // the parent FSDirectory, but this would very tricky to persist
+        function updatePathRecursive(fsObject: FSObject) {
+          console.log("Updating", fsObject.path);
+          const regex = new RegExp(`^${oldPath}`);
+          fsObject.path = fsObject.path.replace(regex, newPath);
+          console.log("Updated to", fsObject.path);
+
+          if (!isFSDirectory(fsObject)) return;
+
+          for (const child of Object.values<FSObject>(fsObject.contents)) {
+            updatePathRecursive(child);
+          }
+        }
+
+        updatePathRecursive(fsObject);
 
         // If the FSObject is in the favorites, update that too.
         const favorites = get().favorites;
