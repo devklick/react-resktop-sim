@@ -295,10 +295,8 @@ export const useLocalFS = create<LocalFSState>()(
         // store the path on each FSObject and instead store a reference to
         // the parent FSDirectory, but this would very tricky to persist
         function updatePathRecursive(fsObject: FSObject) {
-          console.log("Updating", fsObject.path);
           const regex = new RegExp(`^${oldPath}`);
           fsObject.path = fsObject.path.replace(regex, newPath);
-          console.log("Updated to", fsObject.path);
 
           if (!isFSDirectory(fsObject)) return;
 
