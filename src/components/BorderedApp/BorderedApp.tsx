@@ -77,6 +77,7 @@ function BorderedApp({
 
   return (
     <StyledBorderedApp
+      className="bordered-app"
       ref={appRef}
       onMouseDown={() => winMan.focusWindow(type, id)}
       initialDimensions={initialDimensions}
@@ -90,7 +91,7 @@ function BorderedApp({
       <StyledCorner location="ne" ref={resizeHandleNE} />
       <StyledEdge location="e" ref={resizeHandleE} />
       <StyledTitleBar
-        className="drag-to-move"
+        className="bordered-app__title-bar drag-to-move"
         ref={moveHandle}
         onDoubleClick={maximize}
       >
@@ -126,7 +127,9 @@ function BorderedApp({
           </StyledWindowButtons>
         </StyledWindowButtonsWrapper>
       </StyledTitleBar>
-      <StyledContent>{children}</StyledContent>
+      <StyledContent className="bordered-app__content">
+        {children}
+      </StyledContent>
       <StyledCorner location="sw" ref={resizeHandleSW} />
       <StyledEdge location="s" ref={resizeHandleS} />
       <StyledCorner location="se" ref={resizeHandleSE} />

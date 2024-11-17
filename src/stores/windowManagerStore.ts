@@ -16,6 +16,13 @@ interface ComponentDefinition<Props extends BaseProps = BaseProps> {
 
 interface WindowManagerStoreState {
   contentRef: React.RefObject<HTMLDivElement>;
+  /**
+   * A map of open windows, where the key is the type of window,
+   * and the value is another map, where the key is the ID of the window
+   * and the value is the component serving as the window content.
+   *
+   * Minimized windows are included in this map.
+   */
   windowsMap: Map<string, Map<string, ComponentDefinition>>;
   highestZIndex: number;
   getWindowDefinitions: () => Array<ComponentDefinition>;

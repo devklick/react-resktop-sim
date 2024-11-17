@@ -1,8 +1,17 @@
 import styled from "@emotion/styled";
 
-export const StyledTabBar = styled.div<{ backgroundColor: string }>`
+export const StyledTabBar = styled.div`
+  width: 100%;
   height: 40px;
-  padding: 4px;
+  display: flex;
+  flex-direction: row;
+`;
+export const StyledTabBarTabs = styled.div<{ backgroundColor: string }>`
+  height: 40px;
+  padding: 4px 0;
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
   gap: 4px;
   box-sizing: border-box;
   display: flex;
@@ -16,9 +25,14 @@ export const StyledTab = styled.div<{
 }>`
   height: 100%;
   width: 100px;
+  min-width: min-content;
   border-radius: 10px;
   background-color: ${(props) => props.backgroundColor};
   display: flex;
+  flex-direction: row;
+  padding: 5px;
+  padding-right: 0;
+  gap: 5px;
   justify-content: center;
   align-items: center;
   box-shadow: 2px 2px 4px rgb(0, 0, 0, 0.5);
@@ -32,6 +46,16 @@ export const StyledTab = styled.div<{
   &:active {
     box-shadow: 2px 2px 4px rgb(0, 0, 0, 0.5) inset;
   }
+`;
+
+export const StyledTabCloseButton = styled.button`
+  height: 100%;
+  aspect-ratio: 1/1;
+  background: none;
+  color: white;
+  outline: none;
+  border: none;
+  justify-self: flex-end;
 `;
 
 export const StyledNewTabButton = styled.button`
