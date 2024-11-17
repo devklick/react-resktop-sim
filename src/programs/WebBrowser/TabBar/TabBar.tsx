@@ -7,11 +7,12 @@ import {
   StyledTabBarTabs,
   StyledTabCloseButton,
 } from "./styles";
+import { TabInfo } from "../useTabs";
 
 export type TabDefinition = Omit<TabProps, "onClick" | "onClose">;
 
 interface TabBarProps {
-  tabs: Array<TabDefinition>;
+  tabs: ReadonlyArray<TabInfo>;
   createTab: () => void;
   setActiveTab: (id: string) => void;
   closeTab: (id: string) => void;
